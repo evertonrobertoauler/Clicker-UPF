@@ -1,0 +1,13 @@
+<section data-ng-controller="ClassroomsController" data-ng-init="find()">
+    <div class="page-header">
+        <h1>Turmas</h1>
+    </div>
+    <div class="list-group">
+        <a data-ng-repeat="classroom in classrooms" data-ng-href="#!/classrooms/{{classroom._id}}" class="list-group-item">
+			<h4 class="list-group-item-heading" data-ng-bind="classroom.name"></h4>
+        </a>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!classrooms.$resolved || classrooms.length">
+    	Nenhuma turma cadastrada, <a href="/#!/classrooms/create">cadastre uma</a>?
+    </div>
+</section>

@@ -1,5 +1,5 @@
 <section class="row" data-ng-controller="SettingsController">
-	<h3 class="col-md-12 text-center" data-ng-show="hasConnectedAdditionalSocialAccounts()">Connected social accounts:</h3>
+	<h3 class="col-md-12 text-center" data-ng-show="hasConnectedAdditionalSocialAccounts()">Conectado as seguintes redes sociais:</h3>
 	<div class="col-md-12 text-center">
 		<div data-ng-repeat="(providerName, providerData) in user.additionalProvidersData" class="remove-account-container">
 			<img ng-src="/modules/users/img/buttons/{{providerName}}.png">
@@ -8,7 +8,7 @@
 			</a>
 		</div>
 	</div>
-	<h3 class="col-md-12 text-center">Connect other social accounts:</h3>
+	<h3 class="col-md-12 text-center" data-ng-show="hasAnyAdditionalProviderAvailable()">Conectar-se:</h3>
 	<div class="col-md-12 text-center">
 		<a href="/auth/facebook" data-ng-hide="isConnectedSocialAccount('facebook')" class="undecorated-link">
 			<img src="/modules/users/img/buttons/facebook.png">
@@ -18,9 +18,6 @@
 		</a>
 		<a href="/auth/google" data-ng-hide="isConnectedSocialAccount('google')" class="undecorated-link">
 			<img src="/modules/users/img/buttons/google.png">
-		</a>
-		<a href="/auth/linkedin" data-ng-hide="isConnectedSocialAccount('linkedin')" class="undecorated-link">
-			<img src="/modules/users/img/buttons/linkedin.png">
 		</a>
 	</div>
 </section>

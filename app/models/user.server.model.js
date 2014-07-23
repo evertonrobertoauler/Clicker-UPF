@@ -29,13 +29,13 @@ var UserSchema = new Schema({
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+		validate: [validateLocalStrategyProperty, 'Nome é obrigatório']
 	},
 	lastName: {
 		type: String,
 		trim: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+		validate: [validateLocalStrategyProperty, 'Sobrenome é obrigatório']
 	},
 	displayName: {
 		type: String,
@@ -44,20 +44,18 @@ var UserSchema = new Schema({
 	email: {
 		type: String,
 		trim: true,
+		unique: true,
 		default: '',
-		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
-		match: [/.+\@.+\..+/, 'Please fill a valid email address']
+		validate: [validateLocalStrategyProperty, 'E-mail é obrigatório'],
+		match: [/.+\@.+\..+/, 'E-mail inválido']
 	},
 	username: {
-		type: String,
-		unique: true,
-		required: 'Please fill in a username',
-		trim: true
+		type: String
 	},
 	password: {
 		type: String,
 		default: '',
-		validate: [validateLocalStrategyPassword, 'Password should be longer']
+		validate: [validateLocalStrategyPassword, 'Campo Senha é obrigatório']
 	},
 	salt: {
 		type: String
@@ -71,9 +69,9 @@ var UserSchema = new Schema({
 	roles: {
 		type: [{
 			type: String,
-			enum: ['user', 'admin']
+			enum: ['student', 'professor']
 		}],
-		default: ['user']
+		default: ['student']
 	},
 	updated: {
 		type: Date

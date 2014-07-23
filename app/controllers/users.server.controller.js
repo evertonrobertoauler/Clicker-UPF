@@ -18,10 +18,10 @@ var getErrorMessage = function(err) {
 		switch (err.code) {
 			case 11000:
 			case 11001:
-				message = 'Username already exists';
+				message = 'Já existe outro Usuário com o mesmo E-mail';
 				break;
 			default:
-				message = 'Something went wrong';
+				message = 'Erro desconhecido';
 		}
 	} else {
 		for (var errName in err.errors) {
@@ -126,7 +126,7 @@ exports.update = function(req, res) {
 		});
 	} else {
 		res.send(400, {
-			message: 'User is not signed in'
+			message: 'Usuário não autenticado!'
 		});
 	}
 };
@@ -157,7 +157,7 @@ exports.changePassword = function(req, res, next) {
 										res.send(400, err);
 									} else {
 										res.send({
-											message: 'Password changed successfully'
+											message: 'Senha atualizada com sucesso'
 										});
 									}
 								});
@@ -165,23 +165,23 @@ exports.changePassword = function(req, res, next) {
 						});
 					} else {
 						res.send(400, {
-							message: 'Passwords do not match'
+							message: 'Senhas não correspondem'
 						});
 					}
 				} else {
 					res.send(400, {
-						message: 'Current password is incorrect'
+						message: 'Senha atual incorreta'
 					});
 				}
 			} else {
 				res.send(400, {
-					message: 'User is not found'
+					message: 'Usuário não encontrado'
 				});
 			}
 		});
 	} else {
 		res.send(400, {
-			message: 'User is not signed in'
+			message: 'Usuário não autenticado'
 		});
 	}
 };
@@ -229,7 +229,7 @@ exports.userByID = function(req, res, next, id) {
 		_id: id
 	}).exec(function(err, user) {
 		if (err) return next(err);
-		if (!user) return next(new Error('Failed to load User ' + id));
+		if (!user) return next(new Error('Falha ao busar Usuário ' + id));
 		req.profile = user;
 		next();
 	});
@@ -241,7 +241,7 @@ exports.userByID = function(req, res, next, id) {
 exports.requiresLogin = function(req, res, next) {
 	if (!req.isAuthenticated()) {
 		return res.send(401, {
-			message: 'User is not logged in'
+			message: 'Usuário não autenticado'
 		});
 	}
 
@@ -256,11 +256,12 @@ exports.hasAuthorization = function(roles) {
 
 	return function(req, res, next) {
 		_this.requiresLogin(req, res, function() {
+
 			if (_.intersection(req.user.roles, roles).length) {
 				return next();
 			} else {
 				return res.send(403, {
-					message: 'User is not authorized'
+					message: 'Usuário não autorizado'
 				});
 			}
 		});

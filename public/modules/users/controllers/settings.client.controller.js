@@ -20,6 +20,13 @@ angular.module('users').controller('SettingsController', ['$scope', '$http', '$l
 		$scope.isConnectedSocialAccount = function(provider) {
 			return $scope.user.provider === provider || ($scope.user.additionalProvidersData && $scope.user.additionalProvidersData[provider]);
 		};
+		
+		$scope.hasAnyAdditionalProviderAvailable = function(){
+			
+			var providers = Object.keys($scope.user.additionalProvidersData || {});
+			
+			return ($scope.user.provider === 'local' && providers.length < 3) || providers.length < 2;
+		};
 
 		// Remove a user social account
 		$scope.removeUserSocialAccount = function(provider) {
