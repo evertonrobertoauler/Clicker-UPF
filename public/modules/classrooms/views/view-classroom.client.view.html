@@ -1,13 +1,16 @@
 <section data-ng-controller="ClassroomsController" data-ng-init="findOne()">
-	<div class="page-header">
-		<h1 data-ng-bind="classroom.name"></h1>
-	</div>
-	<div class="pull-right" data-ng-show="authentication.user._id == classroom.user._id">
-		<a class="btn btn-primary" href="/#!/classrooms/{{classroom._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" data-ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
-	</div>
+  <div class="page-header">
+    <h1 data-ng-bind="classroom.name"></h1>
+  </div>
+  <ol>
+    <li ng-repeat="s in classroom.students">{{ s.displayName }}</li>
+  </ol>
+  <div class="pull-right">
+    <a class="btn btn-primary" href="/#!/classrooms/{{classroom._id}}/edit">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+    <a class="btn btn-primary" data-ng-click="remove();">
+      <i class="glyphicon glyphicon-trash"></i>
+    </a>
+  </div>
 </section>

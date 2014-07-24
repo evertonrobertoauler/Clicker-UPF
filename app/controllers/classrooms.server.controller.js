@@ -97,27 +97,40 @@ exports.delete = function(req, res) {
  * List of Classrooms
  */
 exports.list = function(req, res) {
-  Classroom.find().sort('-created').populate('user', 'displayName').exec(function(err, classrooms) {
-    if (err) {
-      return res.send(400, {
-        message: getErrorMessage(err)
-      });
-    } else {
-      res.jsonp(classrooms);
-    }
-  });
+  Classroom.find({user: req.user}).sort('name -created')
+    .populate('user', 'displayName')
+    .populate({
+      path: 'students',
+      sort: {displayName: 'asc'},
+      select: 'displayName',
+    })
+    .exec(function(err, classrooms) {
+      if (err) {
+        return res.send(400, {
+          message: getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(classrooms);
+      }
+    });
 };
 
 /**
  * Classroom middleware
  */
 exports.classroomByID = function(req, res, next, id) {
-  Classroom.findById(id).populate('user', 'displayName').exec(function(err, classroom) {
-    if (err) return next(err);
-    if (!classroom) return next(new Error('Falha ao buscar Turma ' + id));
-    req.classroom = classroom;
-    next();
-  });
+  Classroom.findById(id)
+    .populate('user', 'displayName')
+    .populate({
+      path: 'students',
+      sort: {displayName: 'asc'},
+      select: 'displayName',
+    }).exec(function(err, classroom) {
+      if (err) return next(err);
+      if (!classroom) return next(new Error('Falha ao buscar Turma ' + id));
+      req.classroom = classroom;
+      next();
+    });
 };
 
 /**

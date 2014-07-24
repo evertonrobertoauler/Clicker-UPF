@@ -1,15 +1,19 @@
 'use strict';
 
 // Classrooms controller
-angular.module('classrooms').controller('ClassroomsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Classrooms',
-  function($scope, $stateParams, $location, Authentication, Classrooms) {
+angular.module('classrooms').controller('ClassroomsController', [
+  '$scope', '$stateParams', '$location', 'Authentication', 'Classrooms', 'Users',
+  function($scope, $stateParams, $location, Authentication, Classrooms, Users) {
     $scope.authentication = Authentication;
+
+    $scope.students = [];
 
     // Create new Classroom
     $scope.create = function() {
       // Create new Classroom object
       var classroom = new Classrooms({
-        name: this.name
+        name: this.name,
+        students: this.students
       });
 
       // Redirect after save
@@ -61,6 +65,25 @@ angular.module('classrooms').controller('ClassroomsController', ['$scope', '$sta
       $scope.classroom = Classrooms.get({
         classroomId: $stateParams.classroomId
       });
+    };
+
+    $scope.studentsIds = function() {
+      $scope.findOne();
+      $scope.classroom.$promise.then(function(c) {
+        c.students = c.students.map(function(s) {
+          return s._id;
+        });
+      });
+    };
+
+    $scope.displayStudents = function(classroom) {
+      return classroom.students.map(function(s) {
+        return s.displayName;
+      }).join(', ');
+    };
+
+    $scope.findStudents = function() {
+      $scope.allStudents = Users.query();
     };
   }
 ]);

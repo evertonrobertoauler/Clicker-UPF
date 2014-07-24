@@ -23,7 +23,7 @@ module.exports = function(grunt) {
       },
       serverJS: {
         files: watchFiles.serverJS,
-        tasks: ['newer:jsbeautifier:files', 'newer:jshint'],
+        tasks: ['newer:jshint'],
         options: {
           livereload: true
         }
@@ -36,7 +36,7 @@ module.exports = function(grunt) {
       },
       clientJS: {
         files: watchFiles.clientJS,
-        tasks: ['newer:jsbeautifier:files', 'newer:jshint'],
+        tasks: ['newer:jshint'],
         options: {
           livereload: true
         }
@@ -46,49 +46,6 @@ module.exports = function(grunt) {
         tasks: ['csslint'],
         options: {
           livereload: true
-        }
-      }
-    },
-    jsbeautifier: {
-      files: [
-        'Gruntfile.js',
-        'gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js',
-        'public/js/*.js', 'public/modules/**/*.js',
-        'app/tests/**/*.js'
-      ],
-      options: {
-        html: {
-          braceStyle: 'collapse',
-          indentChar: ' ',
-          indentScripts: 'keep',
-          indentSize: 2,
-          maxPreserveNewlines: 3,
-          preserveNewlines: true,
-          unformatted: ['a', 'sub', 'sup', 'b', 'i', 'u'],
-          wrapLineLength: 0
-        },
-        css: {
-          indentChar: ' ',
-          indentSize: 2
-        },
-        js: {
-          braceStyle: 'collapse',
-          breakChainedMethods: false,
-          e4x: false,
-          evalCode: false,
-          indentChar: ' ',
-          indentLevel: 0,
-          indentSize: 2,
-          indentWithTabs: false,
-          jslintHappy: false,
-          keepArrayIndentation: false,
-          keepFunctionIndentation: false,
-          maxPreserveNewlines: 3,
-          preserveNewlines: true,
-          spaceBeforeConditional: true,
-          spaceInParen: false,
-          unescapeStrings: false,
-          wrapLineLength: 0
         }
       }
     },

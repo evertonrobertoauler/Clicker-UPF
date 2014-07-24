@@ -132,6 +132,24 @@ exports.update = function(req, res) {
 };
 
 /**
+ * List of Users
+ */
+exports.list = function(req, res) {
+  User.find({}, 'displayName')
+    .where("_id").ne(req.user._id)
+    .sort('displayName')
+    .exec(function(err, users) {
+      if (err) {
+        return res.send(400, {
+          message: getErrorMessage(err)
+        });
+      } else {
+        res.jsonp(users);
+      }
+    });
+};
+
+/**
  * Change Password
  */
 exports.changePassword = function(req, res, next) {
