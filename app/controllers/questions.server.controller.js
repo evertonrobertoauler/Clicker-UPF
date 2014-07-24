@@ -20,7 +20,7 @@ var getErrorMessage = function(err) {
 				message = 'Question already exists';
 				break;
 			default:
-				message = 'Something went wrong';
+				message = 'Erro desconhecido';
 		}
 	} else {
 		for (var errName in err.errors) {

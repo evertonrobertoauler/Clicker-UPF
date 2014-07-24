@@ -4,15 +4,17 @@ module.exports = function(app) {
 	var users = require('../../app/controllers/users');
 	var questions = require('../../app/controllers/questions');
 
+  var professor = users.hasAuthorization(['professor']);
+
 	// Questions Routes
 	app.route('/questions')
-		.get(questions.list)
-		.post(users.requiresLogin, questions.create);
+		.get(professor, questions.list)
+		.post(professor, questions.create);
 
 	app.route('/questions/:questionId')
-		.get(questions.read)
-		.put(users.requiresLogin, questions.hasAuthorization, questions.update)
-		.delete(users.requiresLogin, questions.hasAuthorization, questions.delete);
+		.get(professor, questions.read)
+		.put(professor, questions.hasAuthorization, questions.update)
+		.delete(professor, questions.hasAuthorization, questions.delete);
 
 	// Finish by binding the Question middleware
 	app.param('questionId', questions.questionByID);

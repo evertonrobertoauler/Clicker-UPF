@@ -4,8 +4,8 @@
 angular.module('questions').run(['Menus',
 	function(Menus) {
 		// Set top bar menu items
-		Menus.addMenuItem('topbar', 'Questions', 'questions', 'dropdown', '/questions(/create)?');
-		Menus.addSubMenuItem('topbar', 'questions', 'List Questions', 'questions');
-		Menus.addSubMenuItem('topbar', 'questions', 'New Question', 'questions/create');
+		Menus.addMenuItem('topbar', 'Perguntas', 'questions', 'dropdown', '/questions(/create)?');
+		Menus.addSubMenuItem('topbar', 'questions', 'Listar', 'questions');
+		Menus.addSubMenuItem('topbar', 'questions', 'Nova Pergunta', 'questions/create');
 	}
 ]);

@@ -136,7 +136,7 @@ exports.update = function(req, res) {
  */
 exports.list = function(req, res) {
   User.find({}, 'displayName')
-    .where("_id").ne(req.user._id)
+    .where('_id').ne(req.user._id)
     .sort('displayName')
     .exec(function(err, users) {
       if (err) {
