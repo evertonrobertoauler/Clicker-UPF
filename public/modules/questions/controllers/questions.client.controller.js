@@ -1,65 +1,73 @@
 'use strict';
 
 // Questions controller
-angular.module('questions').controller('QuestionsController', ['$scope', '$stateParams', '$location', 'Authentication', 'Questions',
-	function($scope, $stateParams, $location, Authentication, Questions ) {
-		$scope.authentication = Authentication;
+angular.module('questions').controller('QuestionsController', [
+  '$scope', '$stateParams', '$location', 'Authentication', 'Questions',
+  function($scope, $stateParams, $location, Authentication, Questions) {
+    $scope.authentication = Authentication;
 
-		// Create new Question
-		$scope.create = function() {
-			// Create new Question object
-			var question = new Questions ({
-				text: this.text
-			});
+    $scope.answers = [''];
+    $scope.rightAnswer = 0;
 
-			// Redirect after save
-			question.$save(function(response) {
-				$location.path('questions/' + response._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
+    // Create new Question
+    $scope.create = function() {
+      // Create new Question object
+      var question = new Questions({
+        text: this.text,
+        answers: this.answers,
+        rightAnswer: this.rightAnswer
+      });
 
-			// Clear form fields
-			this.text = '';
-		};
+      // Redirect after save
+      question.$save(function(response) {
+        $location.path('questions/' + response._id);
+      }, function(errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
 
-		// Remove existing Question
-		$scope.remove = function( question ) {
-			if ( question ) { question.$remove();
+      // Clear form fields
+      this.text = '';
+      this.answers = [];
+    };
 
-				for (var i in $scope.questions ) {
-					if ($scope.questions [i] === question ) {
-						$scope.questions.splice(i, 1);
-					}
-				}
-			} else {
-				$scope.question.$remove(function() {
-					$location.path('questions');
-				});
-			}
-		};
+    // Remove existing Question
+    $scope.remove = function(question) {
+      if (question) {
+        question.$remove();
 
-		// Update existing Question
-		$scope.update = function() {
-			var question = $scope.question ;
+        for (var i in $scope.questions) {
+          if ($scope.questions [i] === question) {
+            $scope.questions.splice(i, 1);
+          }
+        }
+      } else {
+        $scope.question.$remove(function() {
+          $location.path('questions');
+        });
+      }
+    };
 
-			question.$update(function() {
-				$location.path('questions/' + question._id);
-			}, function(errorResponse) {
-				$scope.error = errorResponse.data.message;
-			});
-		};
+    // Update existing Question
+    $scope.update = function() {
+      var question = $scope.question;
 
-		// Find a list of Questions
-		$scope.find = function() {
-			$scope.questions = Questions.query();
-		};
+      question.$update(function() {
+        $location.path('questions/' + question._id);
+      }, function(errorResponse) {
+        $scope.error = errorResponse.data.message;
+      });
+    };
 
-		// Find existing Question
-		$scope.findOne = function() {
-			$scope.question = Questions.get({ 
-				questionId: $stateParams.questionId
-			});
-		};
-	}
+    // Find a list of Questions
+    $scope.find = function() {
+      $scope.questions = Questions.query();
+    };
+
+    // Find existing Question
+    $scope.findOne = function() {
+      $scope.question = Questions.get({
+        questionId: $stateParams.questionId
+      });
+    };
+  }
 ]);
