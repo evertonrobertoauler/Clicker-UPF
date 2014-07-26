@@ -4,8 +4,8 @@
 angular.module('knoledge-tests').run(['Menus',
 	function(Menus) {
 		// Set top bar menu items
-		Menus.addMenuItem('topbar', 'Knoledge tests', 'knoledge-tests', 'dropdown', '/knoledge-tests(/create)?');
-		Menus.addSubMenuItem('topbar', 'knoledge-tests', 'List Knoledge tests', 'knoledge-tests');
-		Menus.addSubMenuItem('topbar', 'knoledge-tests', 'New Knoledge test', 'knoledge-tests/create');
+		Menus.addMenuItem('topbar', 'Avaliações', 'knoledge-tests', 'dropdown', '/knoledge-tests(/create)?', null, ['professor']);
+		Menus.addSubMenuItem('topbar', 'knoledge-tests', 'Listar', 'knoledge-tests', null, null, ['professor']);
+		Menus.addSubMenuItem('topbar', 'knoledge-tests', 'Nova Avaliação', 'knoledge-tests/create', null, null, ['professor']);
 	}
 ]);

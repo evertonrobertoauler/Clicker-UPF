@@ -1,19 +1,15 @@
-<section data-ng-controller="KnoledgeTestsController" data-ng-init="find()">
-    <div class="page-header">
-        <h1>Knoledge tests</h1>
-    </div>
-    <div class="list-group">
-        <a data-ng-repeat="knoledgeTest in knoledgeTests" data-ng-href="#!/knoledge-tests/{{knoledgeTest._id}}" class="list-group-item">
-			<small class="list-group-item-text">
-				Posted on
-				<span data-ng-bind="knoledgeTest.created | date:'medium'"></span>
-				by
-				<span data-ng-bind="knoledgeTest.user.displayName"></span>
-			</small>
-			<h4 class="list-group-item-heading" data-ng-bind="knoledgeTest.name"></h4>
-        </a>
-    </div>
-    <div class="alert alert-warning text-center" data-ng-hide="!knoledgeTests.$resolved || knoledgeTests.length">
-    	No Knoledge tests yet, why don't you <a href="/#!/knoledge-tests/create">create one</a>?
-    </div>
+<section ng-controller="KnoledgeTestsController" ng-init="find()">
+  <div class="page-header">
+    <h1>Avaliações de conhecimento</h1>
+  </div>
+  <div class="list-group">
+    <a ng-repeat="knoledgeTest in knoledgeTests"
+       ng-href="#!/knoledge-tests/{{knoledgeTest._id}}"
+       class="list-group-item">
+      <h4 class="list-group-item-heading" ng-bind="knoledgeTest.name"></h4>
+    </a>
+  </div>
+  <div class="alert alert-warning text-center" ng-hide="!knoledgeTests.$resolved || knoledgeTests.length">
+    Nenhuma avaliação cadastrada, <a href="/#!/knoledge-tests/create">cadastre uma</a>?
+  </div>
 </section>

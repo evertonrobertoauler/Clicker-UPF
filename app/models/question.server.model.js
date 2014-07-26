@@ -6,6 +6,12 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema;
 
+var answerSchema = {
+  type: String,
+  required: 'Preencha todas as alternativas',
+  trim: true
+};
+
 /**
  * Question Schema
  */
@@ -16,16 +22,12 @@ var QuestionSchema = new Schema({
     required: 'Preencha o campo de pergunta',
     trim: true
   },
-  answers: {
-    type: [
-      {
-        type: String,
-        required: 'Preencha todas as alternativas',
-        trim: true
-      }
-    ]
+  answers: [answerSchema],
+  rightAnswer: {
+    type: Number,
+    default: 0,
+    required: 'Marque a Alternativa Correta'
   },
-  rightAnswer: Number,
   created: {
     type: Date,
     default: Date.now
