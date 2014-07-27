@@ -4,27 +4,60 @@
     <h1>Nova Avaliação</h1>
   </div>
   <div class="col-sm-offset-3 col-sm-6">
-    <form class="form-horizontal" ng-submit="create()" novalidate>
+    <form class="form-horizontal" name="form" ng-submit="form.$valid && create()" novalidate>
       <fieldset>
-        <div class="form-group">
+        <div class="form-group" ng-class="{'has-error': form.classroom.$invalid}">
           <label class="control-label" for="classroom">Turma</label>
 
           <div class="controls">
-            <select ng-model="classroom" name="classroom" class="form-control" required ng-options="c.name for c in classrooms track by c._id"></select>
+            <select ng-model="classroom" name="classroom" class="form-control" required
+                    ng-options="c.name for c in classrooms track by c._id"></select>
           </div>
         </div>
-        <div class="form-group">
+        <div class="form-group" ng-class="{'has-error': form.question.$invalid}">
           <label class="control-label" for="question">Pergunta</label>
 
           <div class="controls">
-            <select ng-model="question" name="question" class="form-control" required ng-options="q.text for q in questions track by q._id"></select>
+            <select ng-model="question" name="question" class="form-control" required
+                    ng-options="q.text for q in questions track by q._id"></select>
+          </div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': form.startDate.$invalid}">
+          <label class="control-label" for="startDate">Data Início</label>
+
+          <div class="controls">
+            <div class="input-group">
+              <input type="text" class="form-control"
+                     name="startDate"
+                     datepicker-popup="dd/MM/yyyy"
+                     min-date="today"
+                     ng-model="startDate"
+                     is-open="opened"
+                     ng-required="true"
+                     close-text="Fechar"
+                     current-text="Hoje"
+                     clear-text="Limpar"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
           </div>
         </div>
         <div class="form-group">
-          <label class="control-label" for="start">Início</label>
+          <div class="col-sm-offset-3 col-sm-3">
+            <label class="control-label" for="startTime">Hora Início</label>
 
-          <div class="controls">
-            
+            <div class="controls">
+              <timepicker ng-model="startTime" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <label class="control-label" for="end">Tempo de Avaliação</label>
+
+            <div class="controls">
+              <timepicker ng-model="testTime" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+            </div>
           </div>
         </div>
         <div class="form-group">

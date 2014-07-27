@@ -99,6 +99,8 @@ exports.list = function(req, res) {
   KnoledgeTest.find()
     .sort('-start')
     .populate('user', 'displayName')
+    .populate('classroom', 'name')
+    .populate('question', 'text')
     .exec(function(err, knoledgeTests) {
       if (err) {
         return res.send(400, {
@@ -116,6 +118,8 @@ exports.list = function(req, res) {
 exports.knoledgeTestByID = function(req, res, next, id) {
   KnoledgeTest.findById(id)
     .populate('user', 'displayName')
+    .populate('classroom', 'name')
+    .populate('question', 'text')
     .exec(function(err, knoledgeTest) {
       if (err) return next(err);
       if (!knoledgeTest) return next(new Error('Failed to load Knoledge test ' + id));

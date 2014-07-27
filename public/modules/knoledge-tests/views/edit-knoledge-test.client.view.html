@@ -1,23 +1,63 @@
-<section ng-controller="KnoledgeTestsController" ng-init="findOne()">
-    <div class="page-header">
-        <h1>Edit Knoledge test</h1>
-    </div>
-    <div class="col-md-12">
-        <form class="form-horizontal" ng-submit="update()" novalidate>
-            <fieldset>
-                <div class="form-group">
-                    <label class="control-label" for="name">Name</label>
-                    <div class="controls">
-                        <input type="text" ng-model="knoledgeTest.name" id="name" class="form-control" placeholder="Name" required>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <input type="submit" value="Update" class="btn btn-default">
-                </div>
-				<div ng-show="error" class="text-danger">
-					<strong ng-bind="error"></strong>
-				</div>
-            </fieldset>
-        </form>
-    </div>
+<section ng-controller="KnoledgeTestsController" ng-init="findOneEdit()">
+  <div class="page-header text-center">
+    <h1>Editar Avaliação</h1>
+  </div>
+  <div class="col-sm-offset-3 col-sm-6">
+    <form name="form" class="form-horizontal" ng-submit="form.$valid && update()" novalidate>
+      <fieldset>
+        <div class="form-group">
+          <label class="control-label" for="turma">Turma</label>
+          <div class="controls">{{ knoledgeTest.classroom.name }}</div>
+        </div>
+        <div class="form-group">
+          <label class="control-label" for="pergunta">Pergunta</label>
+          <div class="controls">{{ knoledgeTest.question.text }}</div>
+        </div>
+        <div class="form-group" ng-class="{'has-error': form.startDate.$invalid}">
+          <label class="control-label" for="startDate">Data Início</label>
+
+          <div class="controls">
+            <div class="input-group">
+              <input type="text" class="form-control"
+                     name="startDate"
+                     datepicker-popup="dd/MM/yyyy"
+                     min-date="today"
+                     ng-model="startDate"
+                     is-open="opened"
+                     ng-required="true"
+                     close-text="Fechar"
+                     current-text="Hoje"
+                     clear-text="Limpar"/>
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-3">
+            <label class="control-label" for="startTime">Hora Início</label>
+
+            <div class="controls">
+              <timepicker ng-model="startTime" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+            </div>
+          </div>
+
+          <div class="col-sm-4">
+            <label class="control-label" for="end">Tempo de Avaliação</label>
+
+            <div class="controls">
+              <timepicker ng-model="testTime" hour-step="1" minute-step="1" show-meridian="false"></timepicker>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="submit" value="Atualizar" class="btn btn-primary">
+        </div>
+        <div ng-show="error" class="text-danger">
+          <strong ng-bind="error"></strong>
+        </div>
+      </fieldset>
+    </form>
+  </div>
 </section>

@@ -6,7 +6,16 @@
     <a ng-repeat="knoledgeTest in knoledgeTests"
        ng-href="#!/knoledge-tests/{{knoledgeTest._id}}"
        class="list-group-item">
-      <h4 class="list-group-item-heading" ng-bind="knoledgeTest.name"></h4>
+      <small class="list-group-item-text">
+        Turma: {{ knoledgeTest.classroom.name }}
+      </small>
+      <h4 class="list-group-item-heading">
+        Pergunta: {{ knoledgeTest.question.text }}
+      </h4>
+      <small class="list-group-item-text">
+        Período: {{ knoledgeTest.start | date : 'dd/MM/yyyy HH:mm'}} -
+        {{ knoledgeTest.end | date : 'dd/MM/yyyy HH:mm'}}
+      </small>
     </a>
   </div>
   <div class="alert alert-warning text-center" ng-hide="!knoledgeTests.$resolved || knoledgeTests.length">
