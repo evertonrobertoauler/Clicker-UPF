@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-  KnoledgeTest = mongoose.model('KnoledgeTest'),
+  KnowledgeTest = mongoose.model('KnowledgeTest'),
   _ = require('lodash');
 
 /**
@@ -17,7 +17,7 @@ var getErrorMessage = function(err) {
     switch (err.code) {
       case 11000:
       case 11001:
-        message = 'Knoledge test already exists';
+        message = 'Knowledge test already exists';
         break;
       default:
         message = 'Erro desconhecido';
@@ -32,107 +32,107 @@ var getErrorMessage = function(err) {
 };
 
 /**
- * Create a Knoledge test
+ * Create a Knowledge test
  */
 exports.create = function(req, res) {
-  var knoledgeTest = new KnoledgeTest(req.body);
-  knoledgeTest.user = req.user;
+  var knowledgeTest = new KnowledgeTest(req.body);
+  knowledgeTest.user = req.user;
 
-  knoledgeTest.save(function(err) {
+  knowledgeTest.save(function(err) {
     if (err) {
       return res.send(400, {
         message: getErrorMessage(err)
       });
     } else {
-      res.jsonp(knoledgeTest);
+      res.jsonp(knowledgeTest);
     }
   });
 };
 
 /**
- * Show the current Knoledge test
+ * Show the current Knowledge test
  */
 exports.read = function(req, res) {
-  res.jsonp(req.knoledgeTest);
+  res.jsonp(req.knowledgeTest);
 };
 
 /**
- * Update a Knoledge test
+ * Update a Knowledge test
  */
 exports.update = function(req, res) {
-  var knoledgeTest = req.knoledgeTest;
+  var knowledgeTest = req.knowledgeTest;
 
-  knoledgeTest = _.extend(knoledgeTest, req.body);
+  knowledgeTest = _.extend(knowledgeTest, req.body);
 
-  knoledgeTest.save(function(err) {
+  knowledgeTest.save(function(err) {
     if (err) {
       return res.send(400, {
         message: getErrorMessage(err)
       });
     } else {
-      res.jsonp(knoledgeTest);
+      res.jsonp(knowledgeTest);
     }
   });
 };
 
 /**
- * Delete an Knoledge test
+ * Delete an Knowledge test
  */
 exports.delete = function(req, res) {
-  var knoledgeTest = req.knoledgeTest;
+  var knowledgeTest = req.knowledgeTest;
 
-  knoledgeTest.remove(function(err) {
+  knowledgeTest.remove(function(err) {
     if (err) {
       return res.send(400, {
         message: getErrorMessage(err)
       });
     } else {
-      res.jsonp(knoledgeTest);
+      res.jsonp(knowledgeTest);
     }
   });
 };
 
 /**
- * List of Knoledge tests
+ * List of Knowledge tests
  */
 exports.list = function(req, res) {
-  KnoledgeTest.find()
+  KnowledgeTest.find()
     .sort('-start')
     .populate('user', 'displayName')
     .populate('classroom', 'name')
     .populate('question', 'text')
-    .exec(function(err, knoledgeTests) {
+    .exec(function(err, knowledgeTests) {
       if (err) {
         return res.send(400, {
           message: getErrorMessage(err)
         });
       } else {
-        res.jsonp(knoledgeTests);
+        res.jsonp(knowledgeTests);
       }
     });
 };
 
 /**
- * Knoledge test middleware
+ * Knowledge test middleware
  */
-exports.knoledgeTestByID = function(req, res, next, id) {
-  KnoledgeTest.findById(id)
+exports.knowledgeTestByID = function(req, res, next, id) {
+  KnowledgeTest.findById(id)
     .populate('user', 'displayName')
     .populate('classroom', 'name')
     .populate('question', 'text')
-    .exec(function(err, knoledgeTest) {
+    .exec(function(err, knowledgeTest) {
       if (err) return next(err);
-      if (!knoledgeTest) return next(new Error('Failed to load Knoledge test ' + id));
-      req.knoledgeTest = knoledgeTest;
+      if (!knowledgeTest) return next(new Error('Failed to load Knowledge test ' + id));
+      req.knowledgeTest = knowledgeTest;
       next();
     });
 };
 
 /**
- * Knoledge test authorization middleware
+ * Knowledge test authorization middleware
  */
 exports.hasAuthorization = function(req, res, next) {
-  if (req.knoledgeTest.user.id !== req.user.id) {
+  if (req.knowledgeTest.user.id !== req.user.id) {
     return res.send(403, 'User is not authorized');
   }
   next();

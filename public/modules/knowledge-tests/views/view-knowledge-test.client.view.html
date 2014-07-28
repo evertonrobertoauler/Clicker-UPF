@@ -1,0 +1,22 @@
+<section ng-controller="KnowledgeTestsController" ng-init="findOne()">
+	<div class="page-header">
+    <small class="list-group-item-text">
+      Turma: {{ knowledgeTest.classroom.name }}
+    </small>
+    <h1 class="list-group-item-heading">
+      Pergunta: {{ knowledgeTest.question.text }}
+    </h1>
+    <small class="list-group-item-text">
+      Período: {{ knowledgeTest.start | date : 'dd/MM/yyyy HH:mm'}} -
+      {{ knowledgeTest.end | date : 'dd/MM/yyyy HH:mm'}}
+    </small>
+	</div>
+	<div class="pull-right" ng-show="authentication.user._id == knowledgeTest.user._id">
+		<a class="btn btn-primary" href="/#!/knowledge-tests/{{knowledgeTest._id}}/edit">
+			<i class="glyphicon glyphicon-edit"></i>
+		</a>
+		<a class="btn btn-primary" ng-click="remove();">
+			<i class="glyphicon glyphicon-trash"></i>
+		</a>
+	</div>
+</section>

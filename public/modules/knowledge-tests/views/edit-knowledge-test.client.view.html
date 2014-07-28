@@ -1,4 +1,4 @@
-<section ng-controller="KnoledgeTestsController" ng-init="findOneEdit()">
+<section ng-controller="KnowledgeTestsController" ng-init="findOneEdit()">
   <div class="page-header text-center">
     <h1>Editar Avaliação</h1>
   </div>
@@ -7,11 +7,11 @@
       <fieldset>
         <div class="form-group">
           <label class="control-label" for="turma">Turma</label>
-          <div class="controls">{{ knoledgeTest.classroom.name }}</div>
+          <div class="controls">{{ knowledgeTest.classroom.name }}</div>
         </div>
         <div class="form-group">
           <label class="control-label" for="pergunta">Pergunta</label>
-          <div class="controls">{{ knoledgeTest.question.text }}</div>
+          <div class="controls">{{ knowledgeTest.question.text }}</div>
         </div>
         <div class="form-group" ng-class="{'has-error': form.startDate.$invalid}">
           <label class="control-label" for="startDate">Data Início</label>

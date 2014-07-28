@@ -6,17 +6,17 @@
 var should = require('should'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
-	KnoledgeTest = mongoose.model('KnoledgeTest');
+	KnowledgeTest = mongoose.model('KnowledgeTest');
 
 /**
  * Globals
  */
-var user, knoledgeTest;
+var user, knowledgeTest;
 
 /**
  * Unit tests
  */
-describe('Knoledge test Model Unit Tests:', function() {
+describe('Knowledge test Model Unit Tests:', function() {
 	beforeEach(function(done) {
 		user = new User({
 			firstName: 'Full',
@@ -28,8 +28,8 @@ describe('Knoledge test Model Unit Tests:', function() {
 		});
 
 		user.save(function() { 
-			knoledgeTest = new KnoledgeTest({
-				name: 'Knoledge test Name',
+			knowledgeTest = new KnowledgeTest({
+				name: 'Knowledge test Name',
 				user: user
 			});
 
@@ -39,16 +39,16 @@ describe('Knoledge test Model Unit Tests:', function() {
 
 	describe('Method Save', function() {
 		it('should be able to save without problems', function(done) {
-			return knoledgeTest.save(function(err) {
+			return knowledgeTest.save(function(err) {
 				should.not.exist(err);
 				done();
 			});
 		});
 
 		it('should be able to show an error when try to save without name', function(done) { 
-			knoledgeTest.name = '';
+			knowledgeTest.name = '';
 
-			return knoledgeTest.save(function(err) {
+			return knowledgeTest.save(function(err) {
 				should.exist(err);
 				done();
 			});
@@ -56,7 +56,7 @@ describe('Knoledge test Model Unit Tests:', function() {
 	});
 
 	afterEach(function(done) { 
-		KnoledgeTest.remove().exec();
+		KnowledgeTest.remove().exec();
 		User.remove().exec();
 
 		done();

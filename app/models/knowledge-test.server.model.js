@@ -15,9 +15,9 @@ var answerSchema = {
 };
 
 /**
- * Knoledge test Schema
+ * Knowledge test Schema
  */
-var KnoledgeTestSchema = new Schema({
+var KnowledgeTestSchema = new Schema({
   user: {
     type: Schema.ObjectId,
     ref: 'User'
@@ -43,4 +43,4 @@ var KnoledgeTestSchema = new Schema({
   answers: [answerSchema],
 });
 
-mongoose.model('KnoledgeTest', KnoledgeTestSchema);
+mongoose.model('KnowledgeTest', KnowledgeTestSchema);

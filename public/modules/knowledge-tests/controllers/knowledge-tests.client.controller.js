@@ -1,18 +1,18 @@
 'use strict';
 
-// Knoledge tests controller
-angular.module('knoledge-tests').controller('KnoledgeTestsController', [
-  '$scope', '$stateParams', '$location', 'Authentication', 'KnoledgeTests', 'Classrooms', 'Questions',
-  function($scope, $stateParams, $location, Authentication, KnoledgeTests, Classrooms, Questions) {
+// Knowledge tests controller
+angular.module('knowledge-tests').controller('KnowledgeTestsController', [
+  '$scope', '$stateParams', '$location', 'Authentication', 'KnowledgeTests', 'Classrooms', 'Questions',
+  function($scope, $stateParams, $location, Authentication, KnowledgeTests, Classrooms, Questions) {
     $scope.authentication = Authentication;
 
-    // Create new Knoledge test
+    // Create new Knowledge test
     $scope.create = function() {
 
       var period = $scope.getPeriodDate();
 
-      // Create new Knoledge test object
-      var knoledgeTest = new KnoledgeTests({
+      // Create new Knowledge test object
+      var knowledgeTest = new KnowledgeTests({
         question: this.question._id,
         classroom: this.classroom._id,
         start: period[0],
@@ -20,54 +20,54 @@ angular.module('knoledge-tests').controller('KnoledgeTestsController', [
       });
 
       // Redirect after save
-      knoledgeTest.$save(function(response) {
-        $location.path('knoledge-tests/' + response._id);
+      knowledgeTest.$save(function(response) {
+        $location.path('knowledge-tests/' + response._id);
       }, function(errorResponse) {
         $scope.error = errorResponse.data.message;
       });
     };
 
-    // Remove existing Knoledge test
-    $scope.remove = function(knoledgeTest) {
-      if (knoledgeTest) {
-        knoledgeTest.$remove();
+    // Remove existing Knowledge test
+    $scope.remove = function(knowledgeTest) {
+      if (knowledgeTest) {
+        knowledgeTest.$remove();
 
-        for (var i in $scope.knoledgeTests) {
-          if ($scope.knoledgeTests [i] === knoledgeTest) {
-            $scope.knoledgeTests.splice(i, 1);
+        for (var i in $scope.knowledgeTests) {
+          if ($scope.knowledgeTests [i] === knowledgeTest) {
+            $scope.knowledgeTests.splice(i, 1);
           }
         }
       } else {
-        $scope.knoledgeTest.$remove(function() {
-          $location.path('knoledge-tests');
+        $scope.knowledgeTest.$remove(function() {
+          $location.path('knowledge-tests');
         });
       }
     };
 
-    // Update existing Knoledge test
+    // Update existing Knowledge test
     $scope.update = function() {
-      var knoledgeTest = $scope.knoledgeTest;
+      var knowledgeTest = $scope.knowledgeTest;
 
       var period = $scope.getPeriodDate();
-      knoledgeTest.start = period[0];
-      knoledgeTest.end = period[1];
+      knowledgeTest.start = period[0];
+      knowledgeTest.end = period[1];
 
-      knoledgeTest.$update(function() {
-        $location.path('knoledge-tests/' + knoledgeTest._id);
+      knowledgeTest.$update(function() {
+        $location.path('knowledge-tests/' + knowledgeTest._id);
       }, function(errorResponse) {
         $scope.error = errorResponse.data.message;
       });
     };
 
-    // Find a list of Knoledge tests
+    // Find a list of Knowledge tests
     $scope.find = function() {
-      $scope.knoledgeTests = KnoledgeTests.query();
+      $scope.knowledgeTests = KnowledgeTests.query();
     };
 
-    // Find existing Knoledge test
+    // Find existing Knowledge test
     $scope.findOne = function() {
-      $scope.knoledgeTest = KnoledgeTests.get({
-        knoledgeTestId: $stateParams.knoledgeTestId
+      $scope.knowledgeTest = KnowledgeTests.get({
+        knowledgeTestId: $stateParams.knowledgeTestId
       });
     };
 
@@ -104,7 +104,7 @@ angular.module('knoledge-tests').controller('KnoledgeTestsController', [
 
     $scope.findOneEdit = function() {
       $scope.findOne();
-      $scope.knoledgeTest.$promise.then(function(k) {
+      $scope.knowledgeTest.$promise.then(function(k) {
         $scope.startDate = new Date(k.start);
         $scope.startTime = new Date(k.start);
 
