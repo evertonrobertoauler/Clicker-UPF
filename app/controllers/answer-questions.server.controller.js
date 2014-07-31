@@ -24,17 +24,21 @@ var getClassrooms = function(user) {
 var getKnowledgeTest = function(user) {
   return function(classrooms) {
     return new Promises(function(resolve) {
+
+      var end = new Date();
+      end.setMinutes(end.getMinutes() - 1);
+
       KnowledgeTest.find({
         classroom: {$in: classrooms},
         start: {$lte: new Date()},
-        end: {$gte: new Date()}
+        end: {$gte: end}
       }).populate('classroom', 'name -_id')
         .populate('user', 'displayName -_id')
         .populate('question', 'text answers -_id')
         .exec(function(err, tests) {
           (tests || []).forEach(function(t) {
             t.answers = (t.answers || []).filter(function(a) {
-              return a.student === user._id;
+              return a.student.toString() === user._id.toString();
             });
           });
 
@@ -44,32 +48,34 @@ var getKnowledgeTest = function(user) {
   };
 };
 
-var answerKnowledgeTest = function(user, body) {
+var answerKnowledgeTest = function(id, user, answer) {
   return function(classrooms) {
     return new Promises(function(resolve, reject) {
 
+      var end = new Date();
+      end.setMinutes(end.getMinutes() - 1);
+
       var filter = {
-        _id: body.id,
+        _id: id,
         classroom: {$in: classrooms},
         start: {$lte: new Date()},
-        end: {$gte: new Date()}
+        end: {$gte: end}
       };
 
       KnowledgeTest.findOne(filter, function(err, test) {
         if (test) {
           test.answers = test.answers.filter(function(a) {
-            return a.student !== user._id;
+            return a.student.toString() !== user._id.toString();
           });
 
-          var answer = {
+          test.answers.push({
             student: user._id,
-            answer: body.answer
-          };
+            answer: answer
+          });
 
-          test.answers.push(answer);
           test.save();
 
-          resolve(answer);
+          resolve('Resposta salva com sucesso!');
         } else {
           reject('Tempo para resposta encerrado!');
         }
@@ -83,9 +89,9 @@ var answerKnowledgeTest = function(user, body) {
  */
 exports.update = function(req, res) {
   getClassrooms(req.user)
-    .then(answerKnowledgeTest(req.user, req.body))
-    .then(function(answer) {
-      res.json(answer);
+    .then(answerKnowledgeTest(req.params.testId, req.user, req.body.answer))
+    .then(function(msg) {
+      res.json({success: msg});
     }, function(error) {
       res.json(410, {error: error}); // GONE
     });
