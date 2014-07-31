@@ -10,8 +10,5 @@ module.exports = function(app) {
     .get(users.requiresLogin, answerQuestions.list);
 
   app.route('/answer/questions/:questionId')
-    .put(users.requiresLogin, answerQuestions.canAnswer, answerQuestions.update);
-
-  // Finish by binding the Question middleware
-  app.param('questionId', questions.questionByID);
+    .put(users.requiresLogin, answerQuestions.update);
 };
