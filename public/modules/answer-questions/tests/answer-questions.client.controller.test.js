@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 (function() {
   // Answer questions Controller Spec
   describe('Answer questions Controller Tests', function() {
@@ -56,3 +56,4 @@
     }));
   });
 }());
+*/

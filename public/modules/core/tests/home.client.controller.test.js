@@ -1,5 +1,5 @@
 'use strict';
-
+/*
 (function() {
   describe('HomeController', function() {
     //Initialize global variables
@@ -22,3 +22,4 @@
     });
   });
 })();
+*/

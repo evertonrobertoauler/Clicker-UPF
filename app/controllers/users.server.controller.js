@@ -41,7 +41,6 @@ exports.signup = function(req, res) {
 
   // Init Variables
   var user = new User(req.body);
-  var message = null;
 
   // Add missing user fields
   user.provider = 'local';
@@ -98,7 +97,6 @@ exports.signin = function(req, res, next) {
 exports.update = function(req, res) {
   // Init Variables
   var user = req.user;
-  var message = null;
 
   // For security measurement we remove the roles from the req.body object
   delete req.body.roles;
@@ -152,10 +150,9 @@ exports.list = function(req, res) {
 /**
  * Change Password
  */
-exports.changePassword = function(req, res, next) {
+exports.changePassword = function(req, res) {
   // Init Variables
   var passwordDetails = req.body;
-  var message = null;
 
   if (req.user) {
     User.findById(req.user.id, function(err, user) {
@@ -363,7 +360,7 @@ exports.saveOAuthUserProfile = function(req, providerUserProfile, done) {
 /**
  * Remove OAuth provider
  */
-exports.removeOAuthProvider = function(req, res, next) {
+exports.removeOAuthProvider = function(req, res) {
   var user = req.user;
   var provider = req.param('provider');
 
