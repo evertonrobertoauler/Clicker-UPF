@@ -18,24 +18,26 @@
           ng-init="startCountDown(test)">
         {{ $index + 1 }}) {{ test.question.text }}
       </h3>
-      <div ng-show="success[test._id]"
-           class="alert alert-success">
-        <button type="button" class="close" ng-click="success[test._id] = ''">
-          <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
-        </button>
-        {{ success[test._id] }}
-      </div>
       <div class="form-group radio" ng-repeat="a in test.question.answers">
         <label>
-          <input type="radio" ng-model="answers[test._id]" ng-value="$index">
+          <input type="radio" ng-model="answers[test._id]" ng-click="answers[test._id] = $index" ng-value="$index">
           {{a}}
         </label>
       </div>
       <br />
-      <p>Você tem até {{ countDown[test._id] | date : 'dd/MM/yyyy HH:mm'}} para responder</p>
-      <br />
       <div class="form-group">
-        <button class="btn btn-primary" ng-click="update(test._id)" ng-disabled="answers[test._id] === undefined">Responder</button>
+        <p class="text-warning">
+          Você tem até {{ test.end | date : 'dd/MM/yyyy HH:mm'}} para responder
+        </p>
+        <button class="btn btn-primary"
+                ng-click="update(test._id)"
+                ng-disabled="answers[test._id] === undefined">
+          Responder
+        </button>
+        <span ng-show="success[test._id]"
+              class="text-success">
+          {{ success[test._id] }}
+        </span>
       </div>
     </form>
   </div>
