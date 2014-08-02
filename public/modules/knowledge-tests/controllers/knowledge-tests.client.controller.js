@@ -2,8 +2,8 @@
 
 // Knowledge tests controller
 angular.module('knowledge-tests').controller('KnowledgeTestsController', [
-  '$scope', '$stateParams', '$location', 'Authentication', 'KnowledgeTests', 'Classrooms', 'Questions',
-  function($scope, $stateParams, $location, Authentication, KnowledgeTests, Classrooms, Questions) {
+  '$scope', '$stateParams', '$location', '$timeout', 'Authentication', 'KnowledgeTests', 'Classrooms', 'Questions',
+  function($scope, $stateParams, $location, $timeout, Authentication, KnowledgeTests, Classrooms, Questions) {
     $scope.authentication = Authentication;
 
     // Create new Knowledge test
@@ -112,6 +112,69 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
           .add('minutes', moment(k.end).diff(moment(k.start), 'minutes'))
           .toDate();
       });
+    };
+
+    $scope.findOneView = function(){
+      if (/^\/knowledge-tests\/[^/]+$/.test($location.path())) {
+        $timeout($scope.findOneView, 5000);
+        $scope.findOne();
+        $scope.knowledgeTest.$promise.then(function(kt) {
+          $scope.populateAnswersChart(kt);
+          $scope.populateCorrectAnswerChart(kt);
+        });
+      }
+    };
+
+    $scope.populateAnswersChart = function(kt) {
+
+      var rows = (kt.question.answers || []).map(function(a) {
+        return {c: [
+          {v: a},
+          {v: 0}
+        ]};
+      });
+
+      for (var i in kt.answers) {
+        var a = kt.answers[i].answer;
+        rows[a].c[1].v += 1;
+      }
+
+      $scope.answersChart = {
+        type: 'PieChart',
+        options: {title: 'Gráfico de respostas', is3D: true},
+        data: {
+          'cols': [
+            {id: 't', label: 'Topping', type: 'string'},
+            {id: 's', label: 'Slices', type: 'number'}
+          ],
+          'rows': rows
+        }
+      };
+    };
+
+    $scope.populateCorrectAnswerChart = function(kt) {
+
+      var rows = [
+        {c: [{v: 'Correto'}, {v: 0}]},
+        {c: [{v: 'Errado'}, {v: 0}]},
+      ];
+
+      for (var i in kt.answers) {
+        var a = (kt.answers[i].answer === kt.question.rightAnswer ? 0 : 1);
+        rows[a].c[1].v += 1;
+      }
+
+      $scope.correctAnswerChart = {
+        type: 'PieChart',
+        options: {title: 'Gráfico de acertos', is3D: true},
+        data: {
+          'cols': [
+            {id: 't', label: 'Topping', type: 'string'},
+            {id: 's', label: 'Slices', type: 'number'}
+          ],
+          'rows': rows
+        }
+      };
     };
   }
 ]);

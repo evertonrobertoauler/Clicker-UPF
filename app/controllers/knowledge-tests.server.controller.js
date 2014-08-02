@@ -119,7 +119,7 @@ exports.knowledgeTestByID = function(req, res, next, id) {
   KnowledgeTest.findById(id)
     .populate('user', 'displayName')
     .populate('classroom', 'name')
-    .populate('question', 'text')
+    .populate('question', 'text answers rightAnswer')
     .exec(function(err, knowledgeTest) {
       if (err) return next(err);
       if (!knowledgeTest) return next(new Error('Failed to load Knowledge test ' + id));
