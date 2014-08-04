@@ -55,7 +55,7 @@ var UserSchema = new Schema({
   password: {
     type: String,
     default: '',
-    validate: [validateLocalStrategyPassword, 'Campo Senha é obrigatório e deve possuir no mínimo 6 caractéres']
+    validate: [validateLocalStrategyPassword, 'Campo Senha é obrigatório e deve possuir no mínimo 7 caractéres']
   },
   salt: {
     type: String
