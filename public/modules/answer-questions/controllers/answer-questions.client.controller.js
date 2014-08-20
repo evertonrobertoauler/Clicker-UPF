@@ -37,7 +37,7 @@ angular.module('answer-questions').controller('AnswerQuestionsController', [
     };
 
     $scope.setDefaults = function(test) {
-      if (!$scope.answers[test._id]) {
+      if (typeof $scope.answers[test._id] === 'undefined') {
         $scope.answers[test._id] = test.answers[0] && test.answers[0].answer;
       }
     };

@@ -1,4 +1,4 @@
-<section data-ng-controller="AnswerQuestionsController" ng-init="find()">
+<section class="container" data-ng-controller="AnswerQuestionsController" ng-init="find()">
   <h1 class="text-center"
       ng-show="answerQuestions.length > 0">
     Responda as sequintes perguntas
@@ -18,9 +18,9 @@
           ng-init="startCountDown(test)">
         {{ $index + 1 }}) {{ test.question.text }}
       </h3>
-      <div class="form-group radio" ng-repeat="a in test.question.answers">
-        <label>
-          <input type="radio" ng-model="answers[test._id]" ng-click="answers[test._id] = $index" ng-value="$index">
+      <div class="form-group radio" ng-repeat="a in test.question.answers track by $index">
+        <label ng-click="answers[test._id] = $index">
+          <input type="radio" ng-model="answers[test._id]" ng-value="$index">
           {{a}}
         </label>
       </div>
