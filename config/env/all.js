@@ -2,7 +2,7 @@
 
 module.exports = {
   app: {
-    title: 'Open Peer instruction',
+    title: 'Open Peer Instruction',
     description: 'Full-Stack JavaScript with MongoDB, Express, AngularJS, and Node.js',
     keywords: 'MongoDB, Express, AngularJS, Node.js'
   },
