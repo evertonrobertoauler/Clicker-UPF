@@ -25,16 +25,16 @@ module.exports = {
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'APP_ID',
     clientSecret: process.env.FACEBOOK_SECRET || 'APP_SECRET',
-    callbackURL: 'http://104.131.208.87/auth/facebook/callback'
+    callbackURL: 'https://openpi.com.br/auth/facebook/callback'
   },
   twitter: {
     clientID: process.env.TWITTER_KEY || 'APP_ID',
     clientSecret: process.env.TWITTER_SECRET || 'APP_SECRET',
-    callbackURL: 'http://104.131.208.87/auth/twitter/callback'
+    callbackURL: 'https://openpi.com.br/auth/twitter/callback'
   },
   google: {
     clientID: process.env.GOOGLE_ID || 'APP_ID',
     clientSecret: process.env.GOOGLE_SECRET || 'APP_SECRET',
-    callbackURL: 'http://104.131.208.87/auth/google/callback'
+    callbackURL: 'https://openpi.com.br/auth/google/callback'
   }
 };

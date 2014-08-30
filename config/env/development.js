@@ -3,7 +3,7 @@
 module.exports = {
   db: 'mongodb://localhost/clicker-dev',
   app: {
-    title: 'Clicker-UPF - Development Environment'
+    title: 'Open Peer instruction - Development Environment'
   },
   facebook: {
     // https://developers.facebook.com/apps/553883508057093/dashboard/

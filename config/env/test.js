@@ -4,7 +4,7 @@ module.exports = {
   db: 'mongodb://localhost/clicker-test',
   port: 3001,
   app: {
-    title: 'Clicker-UPF - Test Environment'
+    title: 'Open Peer instruction - Test Environment'
   },
   facebook: {
     clientID: process.env.FACEBOOK_ID || 'APP_ID',
