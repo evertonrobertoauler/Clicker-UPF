@@ -118,7 +118,7 @@ exports.list = function(req, res) {
 exports.knowledgeTestByID = function(req, res, next, id) {
   KnowledgeTest.findById(id)
     .populate('user', 'displayName')
-    .populate('classroom', 'name')
+    .populate('classroom', 'name students')
     .populate('question', 'text answers rightAnswer')
     .exec(function(err, knowledgeTest) {
       if (err) return next(err);

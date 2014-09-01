@@ -11,6 +11,14 @@
       {{ knowledgeTest.end | date : 'dd/MM/yyyy HH:mm'}}
     </small>
 	</div>
+  <progressbar class="progress-striped active"
+               value="(knowledgeTest.answers.length / knowledgeTest.classroom.students.length) * 100"
+               type="primary">
+    <i>{{ knowledgeTest.answers.length }} / {{ knowledgeTest.classroom.students.length}}</i>
+  </progressbar>
+  <div class="row" ng-show="knowledgeTest.answers.length == 0">
+    Nenhum aluno respondeu até o momento!
+  </div>
   <div class="row" ng-show="knowledgeTest.answers.length > 0">
     <div class="col-md-6">
       <div google-chart chart="answersChart" style="height:300px; width:100%;"></div>
@@ -18,9 +26,6 @@
     <div class="col-md-6">
       <div google-chart chart="correctAnswerChart" style="height:300px; width:100%;"></div>
     </div>
-  </div>
-  <div class="row" ng-show="knowledgeTest.answers.length == 0">
-    Nenhum aluno respondeu até o momento!
   </div>
 	<div class="pull-right" ng-show="authentication.user._id == knowledgeTest.user._id">
 		<a class="btn btn-primary" href="/#!/knowledge-tests/{{knowledgeTest._id}}/edit">

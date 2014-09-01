@@ -65,10 +65,19 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
     };
 
     // Find existing Knowledge test
-    $scope.findOne = function() {
-      $scope.knowledgeTest = KnowledgeTests.get({
+    $scope.findOne = function(callback) {
+      KnowledgeTests.get({
         knowledgeTestId: $stateParams.knowledgeTestId
-      });
+      }).$promise.then(function(kt) {
+          if (JSON.stringify($scope.knowledgeTest) !== JSON.stringify(kt)) {
+
+            $scope.knowledgeTest = kt;
+
+            if (callback) {
+              callback(kt);
+            }
+          }
+        });
     };
 
     $scope.loadOptions = function() {
@@ -103,8 +112,7 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
     };
 
     $scope.findOneEdit = function() {
-      $scope.findOne();
-      $scope.knowledgeTest.$promise.then(function(k) {
+      $scope.findOne(function(k) {
         $scope.startDate = new Date(k.start);
         $scope.startTime = new Date(k.start);
 
@@ -114,11 +122,10 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
       });
     };
 
-    $scope.findOneView = function(){
+    $scope.findOneView = function() {
       if (/^\/knowledge-tests\/[^/]+$/.test($location.path())) {
         $timeout($scope.findOneView, 5000);
-        $scope.findOne();
-        $scope.knowledgeTest.$promise.then(function(kt) {
+        $scope.findOne(function(kt) {
           $scope.populateAnswersChart(kt);
           $scope.populateCorrectAnswerChart(kt);
         });
@@ -155,8 +162,14 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
     $scope.populateCorrectAnswerChart = function(kt) {
 
       var rows = [
-        {c: [{v: 'Correto'}, {v: 0}]},
-        {c: [{v: 'Errado'}, {v: 0}]},
+        {c: [
+          {v: 'Correto'},
+          {v: 0}
+        ]},
+        {c: [
+          {v: 'Errado'},
+          {v: 0}
+        ]},
       ];
 
       for (var i in kt.answers) {

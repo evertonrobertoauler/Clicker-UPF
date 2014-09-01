@@ -1,20 +1,21 @@
 'use strict';
 
 angular.module('answer-questions').controller('AnswerQuestionsController', [
-  '$scope', '$interval', '$timeout', '$location', 'AnswerQuestions',
-  function($scope, $interval, $timeout, $location, AnswerQuestions) {
+  '$scope', '$timeout', '$location', 'AnswerQuestions',
+  function($scope, $timeout, $location, AnswerQuestions) {
 
     $scope.success = {};
     $scope.countDown = {};
     $scope.answers = {};
 
     $scope.find = function() {
-      if ($location.path() !== '/') {
-        $interval.cancel($scope.findInterval);
-      } else {
+      if ($location.path() === '/') {
+        $timeout($scope.find, 5000);
         AnswerQuestions.query(function(tests) {
-          $scope.answerQuestions = tests || [];
-          $scope.answerQuestions.forEach($scope.setDefaults);
+          if (JSON.stringify($scope.answerQuestions) !== JSON.stringify(tests)) {
+            $scope.answerQuestions = tests || [];
+            $scope.answerQuestions.forEach($scope.setDefaults);
+          }
         });
       }
     };
@@ -41,7 +42,5 @@ angular.module('answer-questions').controller('AnswerQuestionsController', [
         $scope.answers[test._id] = test.answers[0] && test.answers[0].answer;
       }
     };
-
-    $scope.findInterval = $interval($scope.find, 5000);
   }
 ]);

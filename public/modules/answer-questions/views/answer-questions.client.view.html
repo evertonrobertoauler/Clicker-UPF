@@ -1,8 +1,13 @@
 <section class="container" data-ng-controller="AnswerQuestionsController" ng-init="find()">
-  <h1 class="text-center"
+  <h3 class="text-center"
       ng-show="answerQuestions.length > 0">
     Responda as sequintes perguntas
-  </h1>
+  </h3>
+  <h3 class="text-center"
+      ng-show="answerQuestions.length == 0">
+    {{ authentication.user.displayName }},
+    nenhuma pergunta para você responder no momento!
+  </h3>
   <br ng-show="error" />
   <div ng-show="error"
        class="alert alert-danger">
