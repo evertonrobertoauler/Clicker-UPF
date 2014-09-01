@@ -96,7 +96,7 @@ exports.delete = function(req, res) {
  * List of Knowledge tests
  */
 exports.list = function(req, res) {
-  KnowledgeTest.find()
+  KnowledgeTest.find({user: req.user})
     .sort('-start')
     .populate('user', 'displayName')
     .populate('classroom', 'name')
