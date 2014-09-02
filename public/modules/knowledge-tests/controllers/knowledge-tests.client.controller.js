@@ -6,6 +6,33 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
   function($scope, $stateParams, $location, $timeout, Authentication, KnowledgeTests, Classrooms, Questions) {
     $scope.authentication = Authentication;
 
+    $scope.KnowledgeTests = KnowledgeTests;
+
+    $scope.config = [
+      {
+        label: 'Início',
+        classes: 'col-xs-4 col-sm-4 col-md-2 col-lg-2 text-center',
+        field: 'start',
+        filter: {date : 'dd/MM/yyyy HH:mm'}
+      },
+      {
+        label: 'Término',
+        classes: 'col-xs-4 col-sm-4 col-md-2 col-lg-2 text-center',
+        field: 'end',
+        filter: {date : 'dd/MM/yyyy HH:mm'}
+      },
+      {
+        label: 'Turma',
+        classes: 'col-xs-4 col-sm-4 col-md-2 col-lg-2',
+        field: 'classroom.name',
+      },
+      {
+        label: 'Pergunta',
+        classes: 'col-xs-12 col-sm-12 col-md-6 col-lg-6',
+        field: 'question.text',
+      },
+    ];
+
     // Create new Knowledge test
     $scope.create = function() {
 
@@ -25,23 +52,6 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
       }, function(errorResponse) {
         $scope.error = errorResponse.data.message;
       });
-    };
-
-    // Remove existing Knowledge test
-    $scope.remove = function(knowledgeTest) {
-      if (knowledgeTest) {
-        knowledgeTest.$remove();
-
-        for (var i in $scope.knowledgeTests) {
-          if ($scope.knowledgeTests [i] === knowledgeTest) {
-            $scope.knowledgeTests.splice(i, 1);
-          }
-        }
-      } else {
-        $scope.knowledgeTest.$remove(function() {
-          $location.path('knowledge-tests');
-        });
-      }
     };
 
     // Update existing Knowledge test
@@ -67,7 +77,7 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
     // Find existing Knowledge test
     $scope.findOne = function(callback) {
       KnowledgeTests.get({
-        knowledgeTestId: $stateParams.knowledgeTestId
+        id: $stateParams.knowledgeTestId
       }).$promise.then(function(kt) {
           if (JSON.stringify($scope.knowledgeTest) !== JSON.stringify(kt)) {
 

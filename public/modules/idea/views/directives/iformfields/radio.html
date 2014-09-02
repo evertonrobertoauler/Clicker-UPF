@@ -1,0 +1,13 @@
+<input type="hidden"
+       i-model
+       i-validators="validators"/>
+
+<div class="radio" ng-repeat="(k, v) in options">
+  <label>
+    <input type="radio"
+           ng-click="setValue(isArray && v || k)"
+           name="test"
+           ng-checked="(isArray && v || k) == value"/>
+    {{ v }}
+  </label>
+</div>

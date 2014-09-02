@@ -27,12 +27,14 @@
       <div google-chart chart="correctAnswerChart" style="height:300px; width:100%;"></div>
     </div>
   </div>
-	<div class="pull-right" ng-show="authentication.user._id == knowledgeTest.user._id">
-		<a class="btn btn-primary" href="/#!/knowledge-tests/{{knowledgeTest._id}}/edit">
+	<div class="pull-right">
+    <a class="btn btn-primary" href="/#!/knowledge-tests">
+      <i class="glyphicon glyphicon-circle-arrow-left"></i>
+    </a>
+		<a class="btn btn-primary"
+       ng-show="authentication.user._id == knowledgeTest.user._id"
+       href="/#!/knowledge-tests/edit/{{knowledgeTest._id}}">
 			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
 		</a>
 	</div>
 </section>

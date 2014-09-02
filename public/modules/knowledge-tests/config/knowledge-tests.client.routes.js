@@ -18,7 +18,7 @@ angular.module('knowledge-tests').config(['$stateProvider',
         templateUrl: 'modules/knowledge-tests/views/view-knowledge-test.client.view.html'
       })
       .state('editKnowledgeTest', {
-        url: '/knowledge-tests/:knowledgeTestId/edit',
+        url: '/knowledge-tests/edit/:knowledgeTestId',
         templateUrl: 'modules/knowledge-tests/views/edit-knowledge-test.client.view.html'
       });
   }

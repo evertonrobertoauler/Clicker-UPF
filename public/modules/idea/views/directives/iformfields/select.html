@@ -1,0 +1,8 @@
+<select class="form-control"
+        i-model
+        i-validators="validators">
+  <option value="">{{ placeholder }}</option>
+  <option ng-repeat="(k, v) in options track by $index" value="{{ isArray && v || k }}">
+    {{v}}
+  </option>
+</select>

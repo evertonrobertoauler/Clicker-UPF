@@ -96,20 +96,36 @@ exports.delete = function(req, res) {
  * List of Knowledge tests
  */
 exports.list = function(req, res) {
-  KnowledgeTest.find({user: req.user})
-    .sort('-start')
-    .populate('user', 'displayName')
-    .populate('classroom', 'name')
-    .populate('question', 'text')
-    .exec(function(err, knowledgeTests) {
-      if (err) {
-        return res.send(400, {
-          message: getErrorMessage(err)
-        });
-      } else {
-        res.jsonp(knowledgeTests);
-      }
-    });
+
+  var q = req.query.q ? JSON.parse(req.query.q) : {};
+
+  var limit = Math.min(10, q.limit || 10);
+  var offset = ((q.offset || 1) - 1) * limit;
+  var sort = q.sort || '-start';
+  var where = {user: req.user};
+
+  KnowledgeTest.count(where, function(err, count){
+
+    var obj = {length: count};
+
+    KnowledgeTest.find(where)
+      .populate('user', 'displayName')
+      .populate('classroom', 'name')
+      .populate('question', 'text')
+      .sort(sort)
+      .skip(offset)
+      .limit(limit)
+      .exec(function(err, knowledgeTests) {
+        if (err) {
+          return res.send(400, {
+            message: getErrorMessage(err)
+          });
+        } else {
+          obj.list = knowledgeTests;
+          res.jsonp(obj);
+        }
+      });
+  });
 };
 
 /**

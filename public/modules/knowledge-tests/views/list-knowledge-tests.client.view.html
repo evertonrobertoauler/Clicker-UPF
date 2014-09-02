@@ -1,24 +1,10 @@
-<section ng-controller="KnowledgeTestsController" ng-init="find()">
+<section ng-controller="KnowledgeTestsController">
   <div class="page-header">
     <h1>Avaliações de conhecimento</h1>
   </div>
-  <div class="list-group">
-    <a ng-repeat="knowledgeTest in knowledgeTests"
-       ng-href="#!/knowledge-tests/{{knowledgeTest._id}}"
-       class="list-group-item">
-      <small class="list-group-item-text">
-        Turma: {{ knowledgeTest.classroom.name }}
-      </small>
-      <h4 class="list-group-item-heading">
-        Pergunta: {{ knowledgeTest.question.text }}
-      </h4>
-      <small class="list-group-item-text">
-        Período: {{ knowledgeTest.start | date : 'dd/MM/yyyy HH:mm'}} -
-        {{ knowledgeTest.end | date : 'dd/MM/yyyy HH:mm'}}
-      </small>
-    </a>
-  </div>
-  <div class="alert alert-warning text-center" ng-hide="!knowledgeTests.$resolved || knowledgeTests.length">
-    Nenhuma avaliação cadastrada, <a href="/#!/knowledge-tests/create">cadastre uma</a>?
-  </div>
+  <i-list config="config"
+          resource="KnowledgeTests"
+          where-fields="{}"
+          href="#!/knowledge-tests">
+  </i-list>
 </section>
