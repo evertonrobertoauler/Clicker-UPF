@@ -40,8 +40,8 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
 
       // Create new Knowledge test object
       var knowledgeTest = new KnowledgeTests({
-        question: this.question._id,
-        classroom: this.classroom._id,
+        question: this.question,
+        classroom: this.classroom,
         start: period[0],
         end: period[1]
       });
@@ -91,8 +91,21 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
     };
 
     $scope.loadOptions = function() {
-      $scope.classrooms = Classrooms.query();
-      $scope.questions = Questions.query();
+
+      $scope.classrooms = {};
+      $scope.questions = {};
+
+      Classrooms.query().$promise.then(function(result){
+        result.forEach(function(classroom){
+          $scope.classrooms[classroom._id] = classroom.name;
+        });
+      });
+
+      Questions.query().$promise.then(function(result){
+        result.forEach(function(question){
+          $scope.questions[question._id] = question.text;
+        });
+      });
     };
 
     $scope.openDatePicker = function($event) {
@@ -110,12 +123,14 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
     $scope.getPeriodDate = function() {
 
       var start = moment(
-          ($scope.startDate || new Date()).toISOString().substr(0, 11) +
-          ($scope.startTime || new Date()).toISOString().substr(11, 5) + ':00'
+          (new Date($scope.startDate)).toISOString().substr(0, 11) +
+          (new Date($scope.startTime)).toISOString().substr(11, 5) + ':00'
       ).subtract('hours', 3).toDate();
 
-      var end = moment(start).add('hours', $scope.testTime.getHours())
-        .add('minutes', $scope.testTime.getMinutes())
+      var testTime = new Date($scope.testTime);
+
+      var end = moment(start).add('hours',testTime.getHours())
+        .add('minutes', testTime.getMinutes())
         .toDate();
 
       return [start, end];

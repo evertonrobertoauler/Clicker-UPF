@@ -1,0 +1,15 @@
+<input type="hidden"
+       i-model
+       i-validators="validators">
+<timepicker i-date
+            name="dateModel"
+            ng-model="dateModel"
+            hour-step="1"
+            minute-step="1"
+            show-meridian="false">
+</timepicker>
+
+<span class="help-block"
+      ng-show="placeholder">
+    {{ placeholder }}
+</span>

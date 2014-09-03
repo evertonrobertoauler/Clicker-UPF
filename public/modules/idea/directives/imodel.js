@@ -22,6 +22,10 @@ angular.module('idea').directive('iModel', function ($compile) {
           scope.value = value;
         };
 
+        scope.getValue = function(){
+          return scope.value;
+        };
+
         elem.attr('ng-model', 'value');
         elem.attr('name', scope.$parent.name || scope.$parent.model);
         elem.removeAttr('i-model');

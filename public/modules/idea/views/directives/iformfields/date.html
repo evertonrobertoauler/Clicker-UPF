@@ -1,5 +1,23 @@
-<input type="date"
-       class="form-control"
-       placeholder="{{ placeholder }}"
-       i-model
-       i-validators="validators"/>
+<div class="input-group" i-date>
+  <input type="hidden"
+         i-model
+         i-validators="validators">
+  <input type="text"
+         class="form-control"
+         name="dateModel"
+         ng-model="dateModel"
+         datepicker-popup="dd/MM/yyyy"
+         is-open="opened"
+         close-text="Fechar"
+         current-text="Hoje"
+         clear-text="Limpar"/>
+  <span class="input-group-btn">
+    <button type="button" class="btn btn-default" ng-click="openDatePicker($event)">
+      <i class="glyphicon glyphicon-calendar"></i>
+    </button>
+  </span>
+</div>
+<span class="help-block"
+      ng-show="placeholder">
+    {{ placeholder }}
+</span>
