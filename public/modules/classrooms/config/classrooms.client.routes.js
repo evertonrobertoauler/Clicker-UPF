@@ -1,10 +1,9 @@
 'use strict';
 
 //Setting up route
-angular.module('classrooms').config(['$stateProvider',
-  function($stateProvider) {
-    // Classrooms state routing
-    $stateProvider.
+angular.module('classrooms').config(function($stateProvider) {
+  // Classrooms state routing
+  $stateProvider.
     state('listClassrooms', {
       url: '/classrooms',
       templateUrl: 'modules/classrooms/views/list-classrooms.client.view.html'
@@ -18,8 +17,7 @@ angular.module('classrooms').config(['$stateProvider',
       templateUrl: 'modules/classrooms/views/view-classroom.client.view.html'
     }).
     state('editClassroom', {
-      url: '/classrooms/:classroomId/edit',
+      url: '/classrooms/edit/:classroomId',
       templateUrl: 'modules/classrooms/views/edit-classroom.client.view.html'
     });
-  }
-]);
+});

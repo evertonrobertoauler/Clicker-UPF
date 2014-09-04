@@ -1,0 +1,28 @@
+<div i-button-select>
+  <input type="hidden"
+         i-model
+         i-validators="validators">
+
+  <span ng-repeat="(k, v) in options | orderBy:v"
+        ng-show="selected.indexOf(k) !== -1">
+    <button type="button"
+            class="btn btn-info"
+            ng-click="selected.splice(selected.indexOf(k), 1)"
+            title="Remover">
+      <span class="glyphicon glyphicon-remove"></span> {{v}}
+    </button>
+  </span>
+
+  <span class="help-block" ng-show="selected.length == 0">Selecione alguns alunos abaixo</span>
+  <hr ng-show="selected.length !== Object.keys(options).length"/>
+
+  <span ng-repeat="(k, v) in options | orderBy:v"
+        ng-show="selected.indexOf(k) === -1">
+    <button type="button"
+            class="btn btn-default"
+            ng-click="selected.push(k)"
+            title="Selecionar">
+      <span class="glyphicon glyphicon-plus"></span> {{v}}
+    </button>
+  </span>
+</div>

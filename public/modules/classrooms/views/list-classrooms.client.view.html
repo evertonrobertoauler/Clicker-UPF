@@ -1,21 +1,10 @@
-<section ng-controller="ClassroomsController"
-         ng-init="find();">
-  <div class="page-header">
+<section ng-controller="ClassroomsController">
+  <div class="page-header text-center">
     <h1>Turmas</h1>
   </div>
-  <div class="list-group">
-    <a ng-repeat="classroom in classrooms"
-       ng-href="#!/classrooms/{{classroom._id}}"
-       class="list-group-item">
-      <h4 class="list-group-item-heading"
-          ng-bind="classroom.name">
-      </h4>
-
-      <p ng-bind="displayStudents(classroom)"></p>
-    </a>
-  </div>
-  <div class="alert alert-warning text-center"
-       ng-hide="!classrooms.$resolved || classrooms.length">
-    Nenhuma turma cadastrada, <a href="/#!/classrooms/create">cadastre uma</a>?
-  </div>
+  <i-list config="config"
+          resource="Classrooms"
+          where-fields="{}"
+          href="#!/classrooms">
+  </i-list>
 </section>

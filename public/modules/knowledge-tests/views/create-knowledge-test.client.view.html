@@ -21,16 +21,19 @@
       </i-form-field>
       <i-form-field type="date"
                     label="Data Início"
-                    model="startDate">
+                    model="startDate"
+                    validators="{'required': 1}">
       </i-form-field>
       <i-form-field type="time"
-                    label="Hora Início"
-                    model="startTime">
+                    label="Horário de Início"
+                    model="startTime"
+                    validators="{'required': 1}">
       </i-form-field>
       <i-form-field type="time"
                     label="Tempo de Avaliação"
                     model="testTime"
-                    placeholder="Tempos em Hora:Minuto">
+                    placeholder="Tempos em Hora(s) / Minuto(s)"
+                    validators="{'required': 1}">
       </i-form-field>
       <div class="form-group">
         <div class="col-sm-offset-3 col-sm-7 text-center">

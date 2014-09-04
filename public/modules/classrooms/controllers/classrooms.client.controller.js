@@ -6,6 +6,22 @@ angular.module('classrooms').controller('ClassroomsController', [
   function($scope, $stateParams, $location, Authentication, Classrooms, Users) {
     $scope.authentication = Authentication;
 
+    $scope.Classrooms = Classrooms;
+
+    $scope.config = [
+      {
+        label: 'Criada',
+        classes: 'col-xs-4 col-sm-4 col-md-2 col-lg-2 text-center',
+        field: 'created',
+        filter: {date : 'dd/MM/yyyy HH:mm'}
+      },
+      {
+        label: 'Nome',
+        classes: 'col-xs-8 col-sm-8 col-md-10 col-lg-10',
+        field: 'name',
+      },
+    ];
+
     $scope.students = [];
 
     // Create new Classroom
@@ -63,7 +79,7 @@ angular.module('classrooms').controller('ClassroomsController', [
     // Find existing Classroom
     $scope.findOne = function() {
       $scope.classroom = Classrooms.get({
-        classroomId: $stateParams.classroomId
+        id: $stateParams.classroomId
       });
     };
 
@@ -83,7 +99,14 @@ angular.module('classrooms').controller('ClassroomsController', [
     };
 
     $scope.findStudents = function() {
-      $scope.allStudents = Users.query();
+
+      $scope.allStudents = {};
+
+      Users.query().$promise.then(function(result){
+        result.forEach(function(student){
+          $scope.allStudents[student._id] = student.displayName;
+        });
+      });
     };
   }
 ]);

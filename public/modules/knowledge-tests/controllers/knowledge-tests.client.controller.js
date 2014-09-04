@@ -96,7 +96,7 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
       $scope.questions = {};
 
       Classrooms.query().$promise.then(function(result){
-        result.forEach(function(classroom){
+        result.list.forEach(function(classroom){
           $scope.classrooms[classroom._id] = classroom.name;
         });
       });

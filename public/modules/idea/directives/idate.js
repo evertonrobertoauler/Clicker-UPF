@@ -11,7 +11,7 @@ angular.module('idea').directive('iDate', function() {
 
         $scope.$watch('dateModel', function(){
           if (typeof $scope.dateModel !== 'undefined') {
-            $scope.setValue($scope.dateModel);
+            $scope.setValue($scope.dateModel || '');
           }
         });
 

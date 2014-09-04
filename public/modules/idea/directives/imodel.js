@@ -8,7 +8,7 @@ angular.module('idea').directive('iModel', function ($compile) {
 
         scope.$watch('value', function (value) {
           if (value !== undefined) {
-            scope.$parent.$parent.$eval(scope.$parent.model + ' = \'' + value + '\';');
+            scope.$parent.$parent.$eval(scope.$parent.model + ' = ' + JSON.stringify(value) + ';');
           }
         });
 

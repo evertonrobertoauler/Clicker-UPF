@@ -6,11 +6,13 @@
     <li ng-repeat="s in classroom.students">{{ s.displayName }}</li>
   </ol>
   <div class="pull-right">
-    <a class="btn btn-primary" href="/#!/classrooms/{{classroom._id}}/edit">
-      <i class="glyphicon glyphicon-edit"></i>
+    <a class="btn btn-primary" href="/#!/classrooms">
+      <i class="glyphicon glyphicon-circle-arrow-left"></i>
     </a>
-    <a class="btn btn-primary" ng-click="remove();">
-      <i class="glyphicon glyphicon-trash"></i>
+    <a class="btn btn-primary"
+       ng-show="authentication.user._id == classroom.user._id"
+       href="/#!/classrooms/edit/{{classroom._id}}">
+      <i class="glyphicon glyphicon-edit"></i>
     </a>
   </div>
 </section>

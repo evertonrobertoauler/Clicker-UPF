@@ -3,49 +3,26 @@
   <div class="page-header text-center">
     <h1>Nova Turma</h1>
   </div>
-  <div class="col-sm-offset-3 col-sm-6">
-    <form class="form-horizontal" ng-submit="create()" novalidate>
-      <fieldset>
-        <div class="form-group">
-          <label class="control-label" for="name">Nome</label>
-
-          <div class="controls">
-            <input type="text" ng-model="name" id="name" class="form-control" placeholder="Nome" required>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="students">Alunos</label>
-
-          <div class="controls">
-            <span ng-repeat="s in allStudents | orderBy:displayName"
-                  ng-show="students.indexOf(s._id) !== -1">
-              <button type="button"
-                      class="btn btn-info"
-                      ng-click="students.splice(students.indexOf(s._id), 1)"
-                      title="Remover">
-                <span class="glyphicon glyphicon-remove"></span> {{s.displayName}}
-              </button>
-            </span>
-            <span class="help-block" ng-show="students.length == 0">Selecione alguns alunos abaixo</span>
-            <hr ng-show="students.length !== allStudents.length"/>
-            <span ng-repeat="s in allStudents | orderBy:displayName"
-                  ng-show="students.indexOf(s._id) === -1">
-              <button type="button"
-                      class="btn btn-default"
-                      ng-click="students.push(s._id)"
-                      title="Selecionar">
-                <span class="glyphicon glyphicon-plus"></span> {{s.displayName}}
-              </button>
-            </span>
-          </div>
-        </div>
-        <div class="form-group">
+  <div class="col-sm-offset-2 col-sm-8">
+    <form i-form="create()">
+      <i-form-field type="text"
+                    label="Nome"
+                    model="name"
+                    validators="{required: 1}"
+                    placeholder="Nome da turma">
+      </i-form-field>
+      <i-form-field type="button-select"
+                    label="Alunos"
+                    model="students"
+                    placeholder="Selecione alguns alunos abaixo"
+                    options="allStudents">
+      </i-form-field>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-7 text-center">
           <input type="submit" class="btn btn-primary" value="Salvar">
+          <a href="#!/classrooms" class="btn btn-danger">Cancelar</a>
         </div>
-        <div ng-show="error" class="text-danger">
-          <strong ng-bind="error"></strong>
-        </div>
-      </fieldset>
+      </div>
     </form>
   </div>
 </section>
