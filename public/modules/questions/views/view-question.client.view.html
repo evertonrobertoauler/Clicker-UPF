@@ -2,13 +2,18 @@
 	<div class="page-header">
 		<h1 ng-bind="question.text"></h1>
 	</div>
-  <h3 ng-repeat="a in question.answers" ng-class="{'text-primary': $index == question.rightAnswer}">{{ $index + 1 }}. {{ a }}</h3>
-	<div class="pull-right" ng-show="authentication.user._id == question.user._id">
-		<a class="btn btn-primary" href="/#!/questions/{{question._id}}/edit">
-			<i class="glyphicon glyphicon-edit"></i>
-		</a>
-		<a class="btn btn-primary" ng-click="remove();">
-			<i class="glyphicon glyphicon-trash"></i>
-		</a>
+  <h3 ng-repeat="a in question.answers"
+      ng-class="{'text-primary': $index == question.rightAnswer}">
+    {{ (97 + $index | iFromCharCode) + ' ) ' + a }}
+  </h3>
+	<div class="pull-right">
+    <a class="btn btn-primary" href="/#!/questions">
+      <i class="glyphicon glyphicon-circle-arrow-left"></i>
+    </a>
+    <a class="btn btn-primary"
+       ng-show="authentication.user._id == question.user._id"
+       href="{{ '/#!/questions/edit/' + question._id }}">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
 	</div>
 </section>

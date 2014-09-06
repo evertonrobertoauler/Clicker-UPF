@@ -38,4 +38,9 @@ var QuestionSchema = new Schema({
   }
 });
 
+QuestionSchema.pre('remove', function(next) {
+  mongoose.model('KnowledgeTest').remove({question: this._id}).exec();
+  next();
+});
+
 mongoose.model('Question', QuestionSchema);

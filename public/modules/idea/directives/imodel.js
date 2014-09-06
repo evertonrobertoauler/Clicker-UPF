@@ -7,7 +7,10 @@ angular.module('idea').directive('iModel', function ($compile) {
       if (elem.attr('i-model') !== undefined) {
 
         scope.$watch('value', function (value) {
-          if (value !== undefined) {
+          if (
+              typeof value !== 'undefined' &&
+              JSON.stringify(scope.$parent.$parent.$eval(scope.$parent.model)) !== JSON.stringify(value)
+            ) {
             scope.$parent.$parent.$eval(scope.$parent.model + ' = ' + JSON.stringify(value) + ';');
           }
         });

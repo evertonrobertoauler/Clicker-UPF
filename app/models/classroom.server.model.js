@@ -34,4 +34,9 @@ var ClassroomSchema = new Schema({
   }
 });
 
+ClassroomSchema.pre('remove', function(next) {
+  mongoose.model('KnowledgeTest').remove({classroom: this._id}).exec();
+  next();
+});
+
 mongoose.model('Classroom', ClassroomSchema);

@@ -1,22 +1,35 @@
 'use strict';
 
 // Questions controller
-angular.module('questions').controller('QuestionsController', [
-  '$scope', '$stateParams', '$location', 'Authentication', 'Questions',
+angular.module('questions').controller('QuestionsController',
   function($scope, $stateParams, $location, Authentication, Questions) {
     $scope.authentication = Authentication;
 
-    $scope.answers = [''];
-    $scope.rightAnswer = 0;
+    $scope.Questions = Questions;
+
+    $scope.config = [
+      {
+        label: 'Criada',
+        classes: 'col-xs-4 col-sm-4 col-md-2 col-lg-2 text-center',
+        field: 'created',
+        filter: {date : 'dd/MM/yyyy HH:mm'}
+      },
+      {
+        label: 'Pergunta',
+        classes: 'col-xs-8 col-sm-8 col-md-10 col-lg-10',
+        field: 'text',
+      },
+    ];
+
+    $scope.question = {
+      answers: ['Alternativa 1'],
+      rightAnswer: 0
+    };
 
     // Create new Question
     $scope.create = function() {
-      // Create new Question object
-      var question = new Questions({
-        text: this.text,
-        answers: this.answers,
-        rightAnswer: this.rightAnswer
-      });
+
+      var question = new Questions($scope.question);
 
       // Redirect after save
       question.$save(function(response) {
@@ -66,8 +79,17 @@ angular.module('questions').controller('QuestionsController', [
     // Find existing Question
     $scope.findOne = function() {
       $scope.question = Questions.get({
-        questionId: $stateParams.questionId
+        id: $stateParams.questionId
       });
     };
-  }
-]);
+
+    $scope.$watch('question.answers', function(answers){
+      var options = {};
+
+      for (var i in answers || []){
+        options[i] = String.fromCharCode(97 + parseInt(i));
+      }
+
+      $scope.options = options;
+    }, true);
+  });

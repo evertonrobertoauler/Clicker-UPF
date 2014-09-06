@@ -29,7 +29,7 @@ angular.module('classrooms').controller('ClassroomsController', [
       // Create new Classroom object
       var classroom = new Classrooms({
         name: this.name,
-        students: this.students
+        students: this.students || []
       });
 
       // Redirect after save
@@ -63,6 +63,8 @@ angular.module('classrooms').controller('ClassroomsController', [
     // Update existing Classroom
     $scope.update = function() {
       var classroom = $scope.classroom;
+
+      classroom.students = classroom.students || [];
 
       classroom.$update(function() {
         $location.path('classrooms/' + classroom._id);

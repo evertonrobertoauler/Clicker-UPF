@@ -102,7 +102,7 @@ angular.module('knowledge-tests').controller('KnowledgeTestsController', [
       });
 
       Questions.query().$promise.then(function(result){
-        result.forEach(function(question){
+        result.list.forEach(function(question){
           $scope.questions[question._id] = question.text;
         });
       });

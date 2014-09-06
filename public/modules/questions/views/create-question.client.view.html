@@ -1,53 +1,33 @@
 <section ng-controller="QuestionsController">
   <div class="page-header text-center">
-    <h1>Nova Pergunta</h1>
+    <h1>Nova Turma</h1>
   </div>
-  <div class="col-md-offset-2 col-md-8">
-    <form class="form-horizontal" ng-submit="create()" novalidate>
-      <fieldset>
-        <div class="form-group">
-          <label class="control-label" for="text">Pergunta</label>
-
-          <div class="controls">
-            <textarea ng-model="text" id="text" class="form-control" rows="3" required></textarea>
-          </div>
-        </div>
-
-        <div class="form-group">
-          <label class="control-label" for="text">Alternativas</label>
-
-          <div class="input-group" ng-repeat="answer in answers track by $index">
-            <span class="input-group-addon">{{ $index + 1 }}.</span>
-            <input type="text" ng-model="answers[$index]" class="form-control" placeholder="Alternativa" required>
-            <span class="input-group-btn">
-              <button class="btn btn-default" type="button"
-                      ng-click="answers.splice($index, 1)"
-                      title="Remover Alternativa">
-                <span class="glyphicon glyphicon-remove"></span>
-              </button>
-            </span>
-          </div>
-        </div>
-        <div class="form-group">
-          <button type="button" class="btn btn-default" ng-click="answers.push('')">Adicionar Alternativa</button>
-        </div>
-        <div class="form-group">
-          <label class="control-label" for="text">Alternativa Correta</label>
-
-          <div class="controls">
-
-            <label class="radio-inline" ng-repeat="a in answers track by $index">
-              <input type="radio" ng-model="$parent.rightAnswer" ng-value="$index"> {{ $index + 1}}
-            </label>
-          </div>
-        </div>
-        <div class="form-group">
+  <div class="col-sm-offset-2 col-sm-8">
+    <form i-form="create()">
+      <i-form-field type="textarea"
+                    label="Pergunta"
+                    model="question.text"
+                    validators="{required: 1}"
+                    placeholder="Descrição da pergunta">
+      </i-form-field>
+      <i-form-field type="string-list"
+                    label="Alternativas"
+                    model="question.answers"
+                    placeholder="Adicionar Alternativa"
+                    validators="{required: [1, 'Campo obrigatório, preencha corretamente as alternativas!']}">
+      </i-form-field>
+      <i-form-field type="radio"
+                    label="Alternativa Correta"
+                    model="question.rightAnswer"
+                    validators="{required: 1}"
+                    options="options">
+      </i-form-field>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-7 text-center">
           <input type="submit" class="btn btn-primary" value="Salvar">
+          <a href="#!/questions" class="btn btn-danger">Cancelar</a>
         </div>
-        <div ng-show="error" class="text-danger">
-          <strong ng-bind="error"></strong>
-        </div>
-      </fieldset>
+      </div>
     </form>
   </div>
 </section>

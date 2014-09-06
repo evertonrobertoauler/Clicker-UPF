@@ -96,14 +96,33 @@ exports.delete = function(req, res) {
  * List of Questions
  */
 exports.list = function(req, res) {
-  Question.find({user: req.user}).sort('-created')
-    .populate('user', 'displayName')
-    .exec(function(err, questions) {
-      if (err)
-        return res.send(400, {message: getErrorMessage(err)});
-      else
-        res.jsonp(questions);
-    });
+  var q = req.query.q ? JSON.parse(req.query.q) : {};
+
+  var limit = Math.min(10, q.limit || 10);
+  var offset = ((q.offset || 1) - 1) * limit;
+  var sort = q.sort || '-created';
+  var where = {user: req.user};
+
+  Question.count(where, function(err, count) {
+
+    var obj = {length: count};
+
+    Question.find(where)
+      .populate('user', 'displayName')
+      .sort(sort)
+      .skip(offset)
+      .limit(limit)
+      .exec(function(err, classrooms) {
+        if (err) {
+          return res.send(400, {
+            message: getErrorMessage(err)
+          });
+        } else {
+          obj.list = classrooms;
+          res.jsonp(obj);
+        }
+      });
+  });
 };
 
 /**
