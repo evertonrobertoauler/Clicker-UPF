@@ -34,7 +34,7 @@ module.exports = function() {
     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
     if ('OPTIONS' === req.method) {
-      res.send(200);
+      res.send();
     } else {
       next();
     }

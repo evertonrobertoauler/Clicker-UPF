@@ -9,8 +9,8 @@ var config = require('./../config');
 module.exports = function() {
   passport.use(new BearerStrategy(function(token, done) {
     jwt.verify(token, config.sessionSecret, function(err, decoded) {
-      if (err) {
-        done(null, false, err);
+      if (err || !decoded) {
+        return done(null, false, err);
       }
 
       Token.findOne({_id: decoded.id}).populate('user').exec(function(err, token) {
