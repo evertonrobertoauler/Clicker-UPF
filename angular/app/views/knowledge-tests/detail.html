@@ -1,0 +1,51 @@
+<section ng-controller="KnowledgeTestsCtrl">
+  <div class="page-header">
+    <small class="list-group-item-text">
+      Turma: {{ kt.classroom.name }}
+    </small>
+    <h1 class="list-group-item-heading">
+      Pergunta: {{ kt.question.text }}
+    </h1>
+    <small class="list-group-item-text">
+      Período: {{ kt.start | date : 'dd/MM/yyyy HH:mm'}} -
+      {{ kt.end | date : 'dd/MM/yyyy HH:mm'}} -
+      <countdown end="kt.end"></countdown>
+      <a class="btn btn-primary btn-xs" ng-click="add(1)">+ 1</a>
+      <a class="btn btn-primary btn-xs" ng-click="add(2)">+ 2</a>
+      <a class="btn btn-primary btn-xs" ng-click="add(3)">+ 3</a>
+      <a class="btn btn-danger btn-xs" ng-click="add(-1)">Parar</a>
+    </small>
+  </div>
+  <div class="progress text-center">
+    <div class="progress-bar progress-bar-info progress-bar-striped"
+         role="progressbar"
+         ng-style="{width: ((kt.answers.length / kt.classroom.students.length) * 100) + '%'}">
+      <span>
+        <b>{{ kt.answers.length }} / {{ kt.classroom.students.length}} responderam!</b>
+      </span>
+    </div>
+    <div class="progress-bar progress-bar-danger progress-bar-striped"
+         ng-style="{width: (100 - (kt.answers.length / kt.classroom.students.length) * 100) + '%'}">
+      <span>
+        <b>{{ kt.classroom.students.length - kt.answers.length }} / {{ kt.classroom.students.length}} não responderam!</b>
+      </span>
+    </div>
+  </div>
+  <div class="row" ng-if="kt.answers.length > 0">
+    <div class="col-md-6">
+      <div google-chart chart="answersChart" style="height:300px; width:100%;"></div>
+    </div>
+    <div class="col-md-6">
+      <div google-chart chart="correctAnswerChart" style="height:300px; width:100%;"></div>
+    </div>
+  </div>
+  <div class="pull-right">
+    <a class="btn btn-primary" ui-sref="knowledge-tests.list" ng-show="!$parent.$parent.obj">
+      <i class="glyphicon glyphicon-circle-arrow-left"></i>
+    </a>
+    <a class="btn btn-primary"
+       ui-sref="knowledge-tests.edit(kt)">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+  </div>
+</section>

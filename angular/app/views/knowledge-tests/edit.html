@@ -1,0 +1,36 @@
+<section>
+  <div class="page-header text-center">
+    <h1>Editar Avaliação</h1>
+  </div>
+  <div class="col-sm-offset-2 col-sm-8">
+    <div class="row form-group">
+      <label class="col-sm-3 control-label text-right">Turma</label>
+      <div class="col-sm-9">{{ kt.classroom.name }}</div>
+    </div>
+    <div class="row form-group">
+      <label class="col-sm-3 control-label text-right">Pergunta</label>
+      <div class="col-sm-9">{{ kt.question.text }}</div>
+    </div>
+    <form i-form="save()">
+      <i-form-field type="datetime"
+                    label="Data / Hora de Início"
+                    model="kt.start"
+                    validators="{'required': 1}">
+      </i-form-field>
+      <i-form-field type="datetime"
+                    label="Data / Hora de Término"
+                    model="kt.end"
+                    validators="{
+                      'required': 1,
+                      'equal-bigger-than': ['kt.start', 'Término deve ser após o Início!']
+                    }">
+      </i-form-field>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-7 text-center">
+          <input type="submit" class="btn btn-primary" value="Salvar">
+          <a ui-sref="knowledge-tests.list" class="btn btn-danger">Cancelar</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

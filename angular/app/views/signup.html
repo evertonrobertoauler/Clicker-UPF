@@ -1,0 +1,60 @@
+<section>
+  <div class="col-sm-12 text-center">
+    <h1>Cadastre-se usando sua rede social</h1>
+  </div>
+  <div class="col-sm-12 text-center">
+    <a href="{{ url + 'login/facebook/' }}" class="undecorated-link">
+      <img src="images/facebook.png">
+    </a>
+    <a href="{{ url + 'login/twitter/' }}" class="undecorated-link">
+      <img src="images/twitter.png">
+    </a>
+    <a href="{{ url + 'login/google/' }}" class="undecorated-link">
+      <img src="images/google.png">
+    </a>
+  </div>
+  <br />
+  <div class="col-sm-12 text-center">
+    <h1>Ou crie uma conta</h1>
+  </div>
+  <div class="col-sm-10">
+    <form i-form="signup()">
+      <i-form-field type="text"
+                    label="Nome"
+                    model="user.firstName"
+                    name="firstName"
+                    validators="{required: 1}">
+      </i-form-field>
+      <i-form-field type="text"
+                    label="Sobrenome"
+                    model="user.lastName"
+                    name="lastName"
+                    validators="{required: 1}">
+      </i-form-field>
+      <i-form-field type="email"
+                    label="E-mail"
+                    model="user.email"
+                    name="email"
+                    validators="{required: 1}">
+      </i-form-field>
+      <i-form-field type="password"
+                    label="Senha"
+                    model="user.password"
+                    name="password"
+                    validators="{required: 1, minlength: [6, 'Senha muito curta']}">
+      </i-form-field>
+      <i-form-field type="password"
+                    label="Confirmar Senha"
+                    model="user.password2"
+                    validators="{required: 1, match: ['$user.password', 'Senhas não correspondem!']}">
+      </i-form-field>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-7 text-center">
+          <input type="submit" class="btn btn-primary" value="Cadastrar">
+          &nbsp;ou&nbsp;
+          <a href="#/login">Login</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

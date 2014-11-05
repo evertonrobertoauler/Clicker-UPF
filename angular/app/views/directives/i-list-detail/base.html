@@ -1,0 +1,25 @@
+<div>
+  <div class="list-group">
+    <div class="row list-group-item"
+         ng-repeat="(key, obj) in list track by key"
+         ng-include="view">
+    </div>
+    <div class="row list-group-item" ng-show="msg">
+      {{ msg }}
+    </div>
+  </div>
+
+  <pagination total-items="total"
+              ng-model="query.offset"
+              ng-change="submit()"
+              items-per-page="query.limit"
+              class="pagination-sm"
+              boundary-links="true"
+              rotate="false"
+              max-size="3"
+              previous-text="Anterior"
+              next-text="Próximo"
+              first-text="Início"
+              last-text="Fim">
+  </pagination>
+</div>

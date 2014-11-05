@@ -1,0 +1,8 @@
+<select class="form-control"
+        i-model>
+  <option value="">{{ field.placeholder }}</option>
+  <option ng-repeat="(k, v) in field.options track by $index"
+          value="{{ field.optionsIsArray && v || k }}">
+    {{v}}
+  </option>
+</select>

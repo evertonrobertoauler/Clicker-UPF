@@ -1,0 +1,40 @@
+<i-button-select resource="{{ field.resource }}">
+  <input type="hidden" i-model />
+
+  <span ng-repeat="obj in selected">
+    <button type="button"
+            class="btn btn-info"
+            ng-click="selected.splice(selected.indexOf(obj), 1)"
+            title="{{ 'Remover:\n' + Resource.toString(obj) }}">
+      <span class="glyphicon glyphicon-remove"></span> {{ Resource.toString(obj).substr(0, 15) }}
+    </button>
+  </span>
+
+  <span class="help-block" ng-show="selected.length == 0">{{ field.placeholder }}</span>
+  <hr ng-show="total !== 0"/>
+
+  <div class="row text-center" ng-show="query.offset > 1"
+       ng-click="query.offset = query.offset - 1">
+    <button type="button" class="btn btn-default">
+      <i class="glyphicon glyphicon-chevron-up"></i>
+    </button>
+  </div>
+
+  <div class="help-block">
+    <span ng-repeat="obj in result.list">
+      <button type="button"
+              class="btn btn-default"
+              ng-click="select(obj)"
+              title="{{ 'Selecionar:\n' + Resource.toString(obj) }}">
+        <span class="glyphicon glyphicon-plus"></span> {{ Resource.toString(obj).substr(0, 15) }}
+      </button>
+    </span>
+  </div>
+
+  <div class="row text-center" ng-show="(query.offset * query.limit) < total">
+    <button type="button" class="btn btn-default"
+            ng-click="query.offset = query.offset + 1">
+      <i class="glyphicon glyphicon-chevron-down"></i>
+    </button>
+  </div>
+</i-button-select>

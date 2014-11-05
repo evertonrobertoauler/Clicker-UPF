@@ -1,0 +1,17 @@
+<section>
+  <div class="page-header text-center">
+    <h1>{{ 'Turma: ' + classroom.name }}</h1>
+  </div>
+  <ol>
+    <li ng-repeat="s in classroom.students">{{ s.full_name || s.email }}</li>
+  </ol>
+  <div class="pull-right">
+    <a class="btn btn-primary" ui-sref="classrooms.list">
+      <i class="glyphicon glyphicon-circle-arrow-left"></i>
+    </a>
+    <a class="btn btn-primary"
+       ui-sref="classrooms.edit(classroom)">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+  </div>
+</section>

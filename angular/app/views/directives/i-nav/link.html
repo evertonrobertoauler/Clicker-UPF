@@ -1,0 +1,7 @@
+<li ui-sref-active="active"
+    ng-show="canShow(navItem.role)">
+  <a ui-sref="{{ navItem.state }}"
+     ng-click="collapse()">
+    {{ navItem.title }}
+  </a>
+</li>

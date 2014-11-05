@@ -1,0 +1,14 @@
+<input type="text"
+       class="form-control dropdown-toggle"
+       placeholder="{{ field.placeholder }}"
+       i-model
+       i-dropdown
+       data-toggle="dropdown"/>
+<ul class="dropdown-menu i-autoconplete" role="menu">
+  <li ng-repeat="v in results  = (field.options | filter:value) | limitTo:6">
+    <a ng-click="setValue(v)">{{ v }}</a>
+  </li>
+  <li ng-if="results.length == 0">
+    <a class="text-center">Nenhum resultado encontrado!</a>
+  </li>
+</ul>

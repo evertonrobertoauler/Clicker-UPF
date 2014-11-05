@@ -1,0 +1,40 @@
+<section>
+  <div class="page-header text-center">
+    <h1>{{ (question.id && 'Editar' || 'Nova') + ' Pergunta' }}</h1>
+  </div>
+  <div class="col-sm-offset-2 col-sm-8">
+    <form i-form="save()">
+      <i-form-field type="textarea"
+                    label="Pergunta"
+                    model="question.text"
+                    name="text"
+                    validators="{required: 1}"
+                    placeholder="Descrição da pergunta">
+      </i-form-field>
+      <i-form-field type="string-list"
+                    label="Alternativas"
+                    model="question.answers"
+                    name="answers"
+                    placeholder="Adicionar Alternativa"
+                    validators="{required: 1}">
+      </i-form-field>
+      <i-form-field type="radio"
+                    label="Alternativa Correta"
+                    model="question.rightAnswer"
+                    name="rightAnswer"
+                    validators="{required: 1}"
+                    options="options">
+      </i-form-field>
+      <span class="col-sm-offset-3 col-sm-7 text-center text-danger"
+            ng-show="error">
+        <h4>{{ error }}</h4>
+      </span>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-7 text-center">
+          <input type="submit" class="btn btn-primary" value="Salvar">
+          <a ui-sref="questions.list" class="btn btn-danger">Cancelar</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

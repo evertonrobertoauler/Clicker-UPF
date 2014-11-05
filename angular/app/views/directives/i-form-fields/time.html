@@ -1,0 +1,19 @@
+<input type="hidden"
+       i-model/>
+
+<div class="input-group date">
+  <input class="form-control"
+         i-date-time
+         type="text"/>
+  <span class="input-group-addon"
+        ng-click="togglePicker($event)">
+    <i class="glyphicon glyphicon-time"
+       data-time-icon="glyphicon glyphicon-time"
+       data-date-icon="glyphicon glyphicon-calendar">
+    </i>
+  </span>
+</div>
+<span class="help-block"
+      ng-show="field.placeholder">
+    {{ field.placeholder }}
+</span>

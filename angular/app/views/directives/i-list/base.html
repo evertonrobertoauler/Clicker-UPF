@@ -1,0 +1,94 @@
+<div ng-init="filtro = false">
+  <ul class="nav nav-tabs">
+    <li class="active"><a>Listar</a></li>
+    <li><a ui-sref="{{ abstractState + '.create' }}">Criar</a></li>
+    <li ng-show="hasFilters">
+      <a ng-click="filtro = !filtro">
+        {{ (filtro ? 'Ocultar' : 'Mostrar') + ' Filtros' }}
+      </a>
+    </li>
+  </ul>
+
+  <form i-form="submit()" ng-show="filtro">
+    <i-form-field class="col-sm-4"
+                  ng-repeat="(name, config) in Resource.filters"
+                  type="{{ config.type }}"
+                  label="{{ config.label }}"
+                  name="{{ name }}"
+                  model="$parent.query.where[name]">
+    </i-form-field>
+    <div class="form-group">
+      <div class="col-sm-offset-3 col-sm-7 text-center">
+        <button class="btn btn-primary"
+                type="submit">
+          Filtrar
+        </button>
+        <button class="btn btn-default"
+                type="reset"
+                ng-click="reset(); filtro = false">
+          Limpar
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <div class="list-group">
+    <div class="row list-group-item disabled">
+      <div class="col-xs-offset-1 col-xs-11 i-list-1">
+        <div ng-repeat="col in Resource.columns"
+             ng-class="col.classes">
+          <b>
+            <a ng-click="sort($index)">
+              {{ col.label }}
+              <span ng-show="col.sort"
+                    class="glyphicon glyphicon-chevron-{{ col.sort }}">
+              </span>
+            </a>
+          </b>
+        </div>
+      </div>
+    </div>
+    <div class="row list-group-item"
+         ng-repeat="obj in result.list track by $index">
+      <div class="col-xs-1 i-list-1">
+        <a title="Ver"
+           ui-sref="{{ abstractState + '.detail(obj)' }}">
+          <span class="glyphicon glyphicon-eye-open"></span>
+        </a>
+        <span class="hidden-xs hidden-sm">&nbsp;</span>
+        <a title="Editar"
+           ui-sref="{{ abstractState + '.edit(obj)' }}">
+          <span class="glyphicon glyphicon-pencil"></span>
+        </a>
+        <span class="hidden-xs hidden-sm">&nbsp;</span>
+        <a title="Excluir"
+           ng-click="delete(obj.id)">
+          <span class="glyphicon glyphicon-trash"></span>
+        </a>
+      </div>
+      <div class="col-xs-11 i-list-1">
+        <div ng-repeat="col in Resource.columns"
+             ng-class="col.classes">
+          {{ col.filter ? (obj | iFilter:col) : getValue(obj, col.field) }}
+        </div>
+      </div>
+    </div>
+    <div class="row list-group-item" ng-show="msg">
+      {{ msg }}
+    </div>
+  </div>
+
+  <pagination total-items="total"
+              ng-model="query.offset"
+              ng-change="submit()"
+              items-per-page="query.limit"
+              class="pagination-sm"
+              boundary-links="true"
+              rotate="false"
+              max-size="3"
+              previous-text="Anterior"
+              next-text="Próximo"
+              first-text="Início"
+              last-text="Fim">
+  </pagination>
+</div>

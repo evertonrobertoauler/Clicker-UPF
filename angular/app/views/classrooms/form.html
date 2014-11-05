@@ -1,0 +1,30 @@
+<section>
+  <div class="page-header text-center">
+    <h1>{{ (classroom.id && 'Editar' || 'Nova') + ' Turma' }}</h1>
+  </div>
+  <div class="col-sm-offset-2 col-sm-8">
+    <form i-form="save()">
+      <i-form-field type="text"
+                    label="Nome"
+                    model="classroom.name"
+                    name="name"
+                    validators="{required: 1}"
+                    placeholder="Nome da turma">
+      </i-form-field>
+      <i-form-field type="button-select"
+                    label="Alunos"
+                    model="classroom.students"
+                    name="students"
+                    placeholder="Selecione alguns alunos abaixo"
+                    resource="Students"
+                    multi="true">
+      </i-form-field>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-7 text-center">
+          <input type="submit" class="btn btn-primary" value="Salvar">
+          <a ui-sref="classrooms.list" class="btn btn-danger">Cancelar</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

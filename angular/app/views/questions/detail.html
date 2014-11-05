@@ -1,0 +1,18 @@
+<section>
+  <div class="page-header">
+    <h1 ng-bind="question.text"></h1>
+  </div>
+  <h3 ng-repeat="a in question.answers"
+      ng-class="{'text-primary': $index == question.rightAnswer}">
+    {{ (97 + $index | iFromCharCode) + ' ) ' + a }}
+  </h3>
+  <div class="pull-right">
+    <a class="btn btn-primary" ui-sref="questions.list">
+      <i class="glyphicon glyphicon-circle-arrow-left"></i>
+    </a>
+    <a class="btn btn-primary"
+       ui-sref="questions.edit(question)">
+      <i class="glyphicon glyphicon-edit"></i>
+    </a>
+  </div>
+</section>

@@ -1,0 +1,20 @@
+<form class="navbar-form navbar-{{ navItem.side || 'right' }}" role="search">
+  <div class="form-group">
+    <input type="text"
+           class="form-control dropdown-toggle"
+           placeholder="{{ navItem.placeholder }}"
+           ng-model="search"
+           i-dropdown
+           data-toggle="dropdown"/>
+    <ul class="dropdown-menu" role="menu" ng-show="search.length > 0">
+      <li ng-repeat="l in results  = (navItem.options | filter:search) | orderBy:'title' | limitTo:10">
+        <a ng-click="collapse()">
+          {{ l.title }}
+        </a>
+      </li>
+      <li ng-if="results.length == 0">
+        <a class="text-center">Nenhum resultado encontrado!</a>
+      </li>
+    </ul>
+  </div>
+</form>

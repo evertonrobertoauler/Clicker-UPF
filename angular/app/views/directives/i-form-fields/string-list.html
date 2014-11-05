@@ -1,0 +1,18 @@
+<div i-string-list>
+  <input type="hidden"
+         ng-init="field.validators['allRequired'] = [1, 'Preencha corretamente todos os campos']"
+         i-model>
+
+  <div class="input-group" ng-repeat="text in selected track by $index">
+    <span class="input-group-addon">{{ (97 + $index | iFromCharCode) + ' )' }}</span>
+    <input type="text" ng-model="selected[$index]" class="form-control" required>
+    <span class="input-group-btn">
+      <button class="btn btn-default" type="button"
+              ng-click="selected.splice($index, 1)"
+              title="Remover">
+        <span class="glyphicon glyphicon-remove"></span>
+      </button>
+    </span>
+  </div>
+  <button type="button" class="btn btn-default" ng-click="selected.push('')">{{ field.placeholder }}</button>
+</div>

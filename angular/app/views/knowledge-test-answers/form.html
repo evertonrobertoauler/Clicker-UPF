@@ -1,0 +1,26 @@
+<section ng-controller="KnowledgeTestAnswersCtrl">
+  <div class="page-header text-center">
+    <h1>{{ knowledgeTestAnswer.question.text }}</h1>
+    <p>Professor: {{ knowledgeTestAnswer.professor }}, Turma: {{ knowledgeTestAnswer.classroom }}</p>
+  </div>
+  <form i-form="save()">
+    <i-form-field type="radio"
+                  label="Alternativas"
+                  model="knowledgeTestAnswer.answer"
+                  name="answer"
+                  validators="{required: 1}"
+                  options="knowledgeTestAnswer.question.answers"
+                  options-is-array="false">
+    </i-form-field>
+    <div class="form-group">
+      <div class="text-center">
+        <p class="text-warning">
+          Você tem até {{ knowledgeTestAnswer.end | date : 'dd/MM/yyyy HH:mm'}} -
+          <countdown end="knowledgeTestAnswer.end"></countdown> para responder
+        </p>
+        <p ng-show="success" class="text-success">{{ success }}</p>
+        <input type="submit" class="btn btn-primary" value="Responder">
+      </div>
+    </div>
+  </form>
+</section>

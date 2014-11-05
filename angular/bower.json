@@ -1,0 +1,50 @@
+{
+  "name": "openpi",
+  "version": "0.0.0",
+  "dependencies": {
+    "angular": "1.3.1",
+    "json3": "3.3.1",
+    "es5-shim": "3.1.0",
+    "bootstrap": "3.2.0",
+    "angular-resource": "1.3.1",
+    "angular-cookies": "1.3.1",
+    "angular-sanitize": "1.3.1",
+    "angular-animate": "1.3.1",
+    "angular-touch": "1.3.1",
+    "angular-route": "1.3.1",
+    "angular-i18n": "1.3.1",
+    "angular-bootstrap": "0.11.0",
+    "angular-ui-router": "0.2.11",
+    "nabil1337-bootstrap3-datetimepicker": "0.3.0",
+    "angular-google-chart": "0.0.11",
+    "jQuery-Mask-Plugin": "1.6.4"
+  },
+  "devDependencies": {
+    "angular-mocks": "1.3.1",
+    "angular-scenario": "1.3.1"
+  },
+  "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/css/bootstrap.css",
+        "dist/css/bootstrap-theme.css",
+        "dist/js/bootstrap.js",
+        "dist/fonts/glyphicons-halflings-regular.eot",
+        "dist/fonts/glyphicons-halflings-regular.svg",
+        "dist/fonts/glyphicons-halflings-regular.ttf",
+        "dist/fonts/glyphicons-halflings-regular.woff"
+      ]
+    },
+    "angular-i18n": {
+      "main": "angular-locale_pt-br.js"
+    },
+    "nabil1337-bootstrap3-datetimepicker": {
+      "main": [
+        "build/css/bootstrap-datetimepicker.min.css",
+        "src/js/bootstrap-datetimepicker.js",
+        "src/js/locales/bootstrap-datetimepicker.pt-BR.js"
+      ]
+    }
+  },
+  "appPath": "app"
+}

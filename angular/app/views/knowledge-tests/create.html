@@ -1,0 +1,44 @@
+<section>
+  <div class="page-header text-center">
+    <h1>Nova Avaliação</h1>
+  </div>
+  <div class="col-sm-offset-2 col-sm-8">
+    <form i-form="save()">
+      <i-form-field type="button-select"
+                    label="Turma"
+                    model="kt.classroom"
+                    placeholder="Selecione uma turma"
+                    validators="{required: 1}"
+                    resource="Classrooms"
+                    multi="false">
+      </i-form-field>
+      <i-form-field type="button-select"
+                    label="Pergunta"
+                    model="kt.question"
+                    placeholder="Selecione uma pergunta"
+                    validators="{required: 1}"
+                    resource="Questions"
+                    multi="false">
+      </i-form-field>
+      <i-form-field type="datetime"
+                    label="Data / Hora de Início"
+                    model="kt.start"
+                    validators="{'required': 1}">
+      </i-form-field>
+      <i-form-field type="datetime"
+                    label="Data / Hora de Término"
+                    model="kt.end"
+                    validators="{
+                      'required': 1,
+                      'equal-bigger-than': ['kt.start', 'Término deve ser após o Início!']
+                    }">
+      </i-form-field>
+      <div class="form-group">
+        <div class="col-sm-offset-3 col-sm-7 text-center">
+          <input type="submit" class="btn btn-primary" value="Salvar">
+          <a ui-sref="knowledge-tests.list" class="btn btn-danger">Cancelar</a>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>

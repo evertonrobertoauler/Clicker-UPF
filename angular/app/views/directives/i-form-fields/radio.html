@@ -1,0 +1,12 @@
+<input type="hidden"
+       i-model/>
+
+<div class="radio" ng-repeat="(k, v) in field.options">
+  <label>
+    <input type="radio"
+           ng-click="setValue(field.optionsIsArray && v || k)"
+           name="test"
+           ng-checked="(field.optionsIsArray && v || k) == value"/>
+    {{ v }}
+  </label>
+</div>
