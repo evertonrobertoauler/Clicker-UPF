@@ -2,17 +2,22 @@
 
 angular
   .module('openpiApp')
-  .controller('SignupCtrl', function($scope, AUTH_URL) {
+  .controller('SignupCtrl', function($scope, Auth, AUTH_URL) {
 
     $scope.user = {};
 
     $scope.url = AUTH_URL;
 
-    $scope.Auth.testLogin();
+    Auth.testLogin();
 
     $scope.signup = function() {
-      $scope.Auth.userCreate($scope.user).error(function(errors) {
-        $scope.iForm.setErrors(errors);
-      });
+      Auth
+        .userCreate($scope.user)
+        .success(function() {
+          $scope.updateMenu();
+        })
+        .error(function(errors) {
+          $scope.iForm.setErrors(errors);
+        });
     };
   });

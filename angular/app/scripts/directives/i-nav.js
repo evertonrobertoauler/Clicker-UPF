@@ -36,8 +36,8 @@ angular
         };
 
         scope.canShow = function(role) {
-          var groups = scope.nav.user && scope.nav.user.groups || [];
-          return (!role && !groups.length || groups.indexOf(role) !== -1);
+          var roles = scope.nav.user && scope.nav.user.roles || [];
+          return (!role && !roles.length || roles.indexOf(role) !== -1);
         };
       }
     };

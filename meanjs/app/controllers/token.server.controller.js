@@ -17,7 +17,7 @@ exports.middleware = function(req, res, next) {
   })(req, res, next);
 };
 
-exports.create = function (user, done) {
+exports.create = function(user, done) {
   var token = new Token({user: user});
 
   token.save(function() {
@@ -28,11 +28,10 @@ exports.create = function (user, done) {
       {id: token._id, accessToken: token.accessToken}, config.sessionSecret
     );
     token.save(function() {
-      user.token = {
+      done({
         accessToken: token.accessToken,
         refreshToken: token.refreshToken
-      };
-      done();
+      });
     });
   });
 };
@@ -45,8 +44,7 @@ exports.createTemporary = function(user, done) {
       {id: token._id}, config.sessionSecret, {expiresInMinutes: 1}
     );
     token.save(function() {
-      user.token = {refreshToken: token.refreshToken};
-      done();
+      done(token.refreshToken);
     });
   });
 };
@@ -63,11 +61,12 @@ exports.refreshToken = function(req, res) {
     }).populate('user')
       .exec(function(err, token) {
         if (err || !token) {
-          res.status(400).jsonp(err || {message: 'Invalid token!'});
+          res.status(400).jsonp({error: err || 'Invalid token!'});
         } else {
           token.remove(function() {
-            exports.create(token.user, function() {
-              res.jsonp(token.user.token);
+            var user = token.user;
+            exports.create(token.user, function(token) {
+              res.jsonp({user: user, token: token});
             });
           });
         }

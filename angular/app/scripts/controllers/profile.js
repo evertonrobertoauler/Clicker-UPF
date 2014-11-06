@@ -2,13 +2,18 @@
 
 angular
   .module('openpiApp')
-  .controller('ProfileCtrl', function($scope) {
+  .controller('ProfileCtrl', function($scope, Auth) {
 
-    $scope.user = angular.copy($scope.Auth.user);
+    $scope.user = angular.copy(Auth.getUser());
 
     $scope.update = function() {
-      $scope.Auth.userUpdate($scope.user).error(function(errors) {
-        $scope.iForm.setErrors(errors);
-      });
+      Auth
+        .userUpdate($scope.user)
+        .success(function() {
+          $scope.updateMenu();
+        })
+        .error(function(errors) {
+          $scope.iForm.setErrors(errors);
+        });
     };
   });

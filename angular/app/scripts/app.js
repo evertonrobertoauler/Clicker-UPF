@@ -29,8 +29,9 @@ angular
       })
       .state('logout', {
         url: '/logout',
-        controller: function(Auth) {
+        controller: function($scope, Auth) {
           Auth.logout();
+          $scope.updateMenu();
         }
       })
       .state('token', {
@@ -124,15 +125,22 @@ angular
   })
   .value('AUTH_URL', 'http://127.0.0.1:3000/auth/')
   .value('API_URL', 'http://127.0.0.1:3000/api/v1/')
-  .config(function($httpProvider, $resourceProvider) {
+  .config(function($httpProvider) {
 
     $httpProvider.interceptors.push(function($q, $location, $cookieStore) {
       return {
         responseError: function(rejection) {
           switch (rejection.status) {
             case 401:
-              $cookieStore.remove('user');
-              $location.path('/login');
+              var auth = $cookieStore.get('auth') && JSON.parse($cookieStore.get('auth'));
+
+              if (auth && auth.token.refreshToken) {
+                $location.path('/token/' + auth.token.refreshToken);
+              } else {
+                $cookieStore.remove('auth');
+                $location.path('/login');
+              }
+
               break;
           }
 

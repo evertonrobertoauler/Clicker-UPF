@@ -2,20 +2,16 @@
 
 angular
   .module('openpiApp')
-  .controller('AuthCtrl', function($scope, $stateParams, AUTH_URL) {
+  .controller('AuthCtrl', function($scope, $stateParams, Auth, AUTH_URL) {
 
     if ($stateParams.refresh) {
-      $scope.Auth.saveToken({
-        expires_in: 36000,
-        refreshToken: $stateParams.refresh,
-        token_type: 'Bearer'
-      });
-
-      window.alert($stateParams.refresh);
-
-      $scope.Auth.getUserData();
+      Auth
+        .refreshLogin({refreshToken: $stateParams.refresh})
+        .success(function() {
+          $scope.updateMenu();
+        });
     } else {
-      $scope.Auth.testLogin();
+      Auth.testLogin();
     }
 
     $scope.url = AUTH_URL;
@@ -23,9 +19,11 @@ angular
     $scope.user = {};
 
     $scope.login = function() {
-      $scope.Auth
+      Auth
         .login($scope.user.email, $scope.user.password)
-        .success($scope.Auth.getUserData)
+        .success(function() {
+          $scope.updateMenu();
+        })
         .error(function() {
           $scope.error = 'Login inválido!';
         });

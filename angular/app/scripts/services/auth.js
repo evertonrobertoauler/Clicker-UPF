@@ -4,18 +4,45 @@ angular
   .module('openpiApp')
   .service('Auth', function Auth($http, $location, $cookies, AUTH_URL, API_URL) {
 
-    var self = this;
+    var auth, self = this;
+
+    self.getAuth = function() {
+      return auth;
+    };
+
+    self.setAuth = function(data) {
+      auth = data;
+
+      if (auth && auth.token && auth.token.accessToken) {
+        $cookies.auth = JSON.stringify(auth);
+        $http.defaults.headers.common.Authorization = 'Bearer ' + auth.token.accessToken || '';
+      } else {
+        delete $cookies.auth;
+        $http.defaults.headers.common.Authorization = '';
+      }
+    };
+
+    self.setAuth($cookies.auth && JSON.parse($cookies.auth));
+
+    self.saveAuth = function(auth) {
+      self.setAuth(auth);
+      $location.path('/');
+    };
+
+    self.getUser = function() {
+      return auth && auth.user;
+    };
+
+    self.getUserName = function() {
+      return auth && auth.user && (auth.user.displayName || auth.user.email);
+    };
 
     self.userCreate = function(user) {
       return $http({
         method: 'POST',
         url: AUTH_URL + 'signup',
         data: user
-      }).success(function(data) {
-        self.saveToken(data.auth);
-        self.user = data.user;
-        $location.path('/');
-      });
+      }).success(self.saveAuth);
     };
 
     self.userUpdate = function(user) {
@@ -23,18 +50,9 @@ angular
         method: 'PUT',
         url: API_URL + 'user',
         data: user
-      }).success(function(data) {
-        self.user = data;
-        $location.path('/');
-      });
-    };
-
-    self.userDeactivate = function() {
-      return $http({
-        method: 'DELETE',
-        url: API_URL + 'user/1/',
-      }).success(function() {
-        self.logout();
+      }).success(function(user) {
+        auth.user = user;
+        self.saveAuth(auth);
       });
     };
 
@@ -46,64 +64,35 @@ angular
           email: email,
           password: password
         },
-      }).success(function(data) {
-        self.user = data;
-        self.saveToken(data.token);
-      });
+      }).success(self.saveAuth);
     };
 
     self.logout = function() {
-      delete self.auth;
-      delete self.user;
-      delete $cookies.auth;
-      delete $cookies.user;
-      $http.defaults.headers.common.Authorization = '';
+      self.setAuth();
       $location.path('/login');
     };
 
     self.testLogin = function() {
       self.auth = $cookies.auth && JSON.parse($cookies.auth);
-      self.user = $cookies.user && JSON.parse($cookies.user);
 
       if (self.auth) {
-        if (self.user) {
-          self.saveToken(self.auth);
-          $location.path('/');
-        } else {
-          self.refreshLogin();
-        }
+        self.saveAuth(self.auth);
       }
     };
 
-    self.refreshLogin = function() {
-      if (self.auth.refreshToken) {
+    self.refreshLogin = function(token) {
+
+      token = token || (auth && auth.token) || {};
+
+      if (token.refreshToken) {
         return $http({
           url: AUTH_URL + 'token',
           method: 'POST',
-          data: self.auth,
-        }).success(self.saveToken)
-          .success(self.getUserData)
+          data: token,
+        }).success(self.saveAuth)
           .error(self.logout);
       } else {
         self.logout();
       }
     };
-
-    self.getUserData = function(noRedirect) {
-      return $http({
-        method: 'GET',
-        url: API_URL + 'user/',
-      }).success(function(data) {
-        self.user = data;
-        if (noRedirect !== true) {
-          $location.path('/');
-        }
-      }).error(self.logout);
-    };
-
-    self.saveToken = function(token) {
-      self.auth = token;
-      $http.defaults.headers.common.Authorization = 'Bearer ' + token.accessToken;
-    };
-
   });
