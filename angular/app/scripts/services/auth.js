@@ -2,7 +2,7 @@
 
 angular
   .module('openpiApp')
-  .service('Auth', function Auth($http, $location, $cookies, AUTH_URL, API_URL) {
+  .service('Auth', function Auth($http, $location, $cookies, Socket, AUTH_URL, API_URL) {
 
     var auth, self = this;
 
@@ -14,9 +14,11 @@ angular
       auth = data;
 
       if (auth && auth.token && auth.token.accessToken) {
+        Socket.connect(auth.token.accessToken);
         $cookies.auth = JSON.stringify(auth);
         $http.defaults.headers.common.Authorization = 'Bearer ' + auth.token.accessToken || '';
       } else {
+        Socket.disconnect();
         delete $cookies.auth;
         $http.defaults.headers.common.Authorization = '';
       }

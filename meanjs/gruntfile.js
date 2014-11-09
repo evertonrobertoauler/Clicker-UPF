@@ -25,14 +25,17 @@ module.exports = function(grunt) {
 			}
 		},
 		nodemon: {
-			dev: {
-				script: 'server.js',
-				options: {
-					nodeArgs: ['--debug'],
-					ext: 'js,html',
-					watch: watchFiles.serverJS
-				}
-			}
+      dev: {
+        script: 'server.js',
+        options: {
+          nodeArgs: ['--debug'],
+          ext: 'js,html',
+          watch: watchFiles.serverJS
+        }
+      },
+      socket: {
+        script: 'socket.js'
+      },
 		},
 		'node-inspector': {
 			custom: {
@@ -48,8 +51,9 @@ module.exports = function(grunt) {
 			}
 		},
 		concurrent: {
-			default: ['nodemon', 'watch'],
-			debug: ['nodemon', 'watch', 'node-inspector'],
+			default: ['nodemon:dev', 'watch'],
+      debug: ['nodemon:dev', 'watch', 'node-inspector'],
+      socket: ['nodemon:socket'],
 			options: {
 				logConcurrentOutput: true,
 				limit: 10
@@ -78,8 +82,11 @@ module.exports = function(grunt) {
 	// Default task(s).
 	grunt.registerTask('default', ['lint', 'concurrent:default']);
 
-	// Debug task.
-	grunt.registerTask('debug', ['lint', 'concurrent:debug']);
+  // Debug task.
+  grunt.registerTask('debug', ['lint', 'concurrent:debug']);
+
+  // Socket.io task.
+  grunt.registerTask('socket.io', ['lint', 'concurrent:socket']);
 
 	// Lint task(s).
 	grunt.registerTask('lint', ['jshint']);

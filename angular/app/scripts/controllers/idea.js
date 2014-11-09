@@ -1,12 +1,7 @@
 'use strict';
 
 angular.module('openpiApp')
-  .controller('IdeaCtrl', function($scope, Auth, Socket) {
-
-    Socket.on('this', function (data) {
-      console.log(data);
-      Socket.emit('private message', { my: 'data' });
-    });
+  .controller('IdeaCtrl', function($scope, Auth) {
 
     $scope.updateMenu = function() {
 

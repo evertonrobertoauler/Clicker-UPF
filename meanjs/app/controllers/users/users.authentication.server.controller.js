@@ -29,7 +29,7 @@ exports.signup = function(req, res) {
   user.save(function(err) {
     if (err) {
       return res.status(400).send({
-        message: errorHandler.getErrorMessage(err)
+        email: ['Já existe outra conta com este e-mail!'],
       });
     } else {
       // Remove sensitive data before login

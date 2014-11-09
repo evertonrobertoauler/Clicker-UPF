@@ -22,8 +22,10 @@ exports.create = function(user, done) {
 
   token.save(function() {
     token.accessToken = jwt.sign(
-      {id: token._id}, config.sessionSecret, {expiresInMinutes: 60 * 5}
+      {id: token._id, user: user._id}, config.sessionSecret,
+      {expiresInMinutes: 60 * 5}
     );
+
     token.refreshToken = jwt.sign(
       {id: token._id, accessToken: token.accessToken}, config.sessionSecret
     );
@@ -52,7 +54,7 @@ exports.createTemporary = function(user, done) {
 exports.refreshToken = function(req, res) {
   jwt.verify(req.body.refreshToken, config.sessionSecret, function(err, decoded) {
     if (err) {
-      res.status(400).jsonp(err);
+      return res.status(400).jsonp(err);
     }
 
     Token.findOne({
