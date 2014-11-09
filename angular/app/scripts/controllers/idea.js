@@ -3,12 +3,16 @@
 angular.module('openpiApp')
   .controller('IdeaCtrl', function($scope, Auth) {
 
+    $scope.user = {};
+
     $scope.updateMenu = function() {
+
+      $scope.user = Auth.getUser();
 
       $scope.nav = {
         title: 'Open Peer Instruction',
         href: '/',
-        user: Auth.getUser(),
+        user: $scope.user,
         left: [
           {type: 'link', title: 'Início', state: 'main', role: 'user'},
           {type: 'link', title: 'Turmas', state: 'classrooms.list', role: 'professor'},

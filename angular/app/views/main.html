@@ -1,25 +1,25 @@
 <section>
-  <div ng-if="Auth.user && Auth.user.groups.indexOf('student') !== -1">
+  <div ng-if="user.roles && user.roles.indexOf('student') !== -1">
     <div class="page-header text-center">
       <h1>Perguntas a serem respondidas</h1>
     </div>
     <i-list-detail resource="KnowledgeTestAnswers"
                    view="/views/knowledge-test-answers/form.html"
-                   where="{start__lte: '$now()', end__gte:'$now()'}"
+                   where="{open: true}"
                    reload="10">
     </i-list-detail>
   </div>
-  <div ng-if="Auth.user && Auth.user.groups.indexOf('professor') !== -1">
+  <div ng-if="user.roles && user.roles.roles.indexOf('professor') !== -1">
     <div class="page-header text-center">
       <h1>Avaliações em andamento</h1>
     </div>
     <i-list-detail resource="KnowledgeTests"
                    view="/views/knowledge-tests/detail.html"
-                   where="{start__lte: '$now()', end__gte:'$now()'}"
+                   where="{open: true}"
                    reload="10">
     </i-list-detail>
   </div>
-  <div ng-if="!Auth.user">
+  <div ng-if="!user.roles">
     <div class="jumbotron text-center">
       <h1>Open Peer Instruction</h1>
       <p class="lead">

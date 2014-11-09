@@ -8,8 +8,6 @@ module.exports = function(config) {
     runTask : function(name, params) {
       if (this.client) {
         this.client.call(name, params);
-      } else {
-        throw new Error('Celery not Connected!');
       }
     }
   };

@@ -50,4 +50,5 @@ class KnowledgeTest(Document):
     question = me.DictField(required=True)
     start = me.DateTimeField(required=True)
     end = me.DateTimeField(required=True)
+    open = me.BooleanField(default=False)
     answers = me.ListField(me.EmbeddedDocumentField(StundentAnswer))

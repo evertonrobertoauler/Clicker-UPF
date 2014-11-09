@@ -2,7 +2,7 @@
 
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
-var Token = require('./../models/token.server.model');
+var Token = require('./../models/token');
 var config = require('./../../config/config');
 
 exports.middleware = function(req, res, next) {

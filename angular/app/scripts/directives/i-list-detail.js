@@ -10,29 +10,30 @@ angular
         resource: '@',
         view: '@',
         where: '=',
-        reload: '=',
       },
-      controller: function($scope, $injector, $interval) {
+      controller: function($scope, $injector, Socket) {
 
         var Resource = $injector.get($scope.resource);
 
         $scope.Resource = Resource;
 
         var query = {
-          where: $scope.where,
+          where: $scope.where || {},
           limit: 5,
           offset: 1,
         };
 
-        if ($scope.reload) {
-          var interval = $interval(function(){
-            $scope.submit();
-          }, $scope.reload * 1000);
+        var cb = function(obj) {
+          if (obj.id) {
+            $scope.list[obj.id] = obj;
+          }
+        };
 
-          $scope.$on('$stateChangeStart', function(){
-            $interval.cancel(interval);
-          });
-        }
+        Socket.on($scope.resource, cb);
+
+        $scope.$on('$stateChangeStart', function() {
+          Socket.off($scope.resource, cb);
+        });
 
         $scope.total = 0;
 
@@ -41,16 +42,6 @@ angular
         $scope.submit = function() {
 
           $scope.query = angular.copy(query);
-
-          for (var i in $scope.query.where) {
-            var value = $scope.query.where[i];
-
-            if (value[0] === '$') {
-              value = $scope.$parent.$parent.$eval(value.substr(1));
-            }
-
-            $scope.query.where[i] = value;
-          }
 
           $scope.msg = 'Consultando ...';
 
