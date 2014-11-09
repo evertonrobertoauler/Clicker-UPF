@@ -2,16 +2,10 @@
 
 require('./config/init')();
 
-var config = require('./config/config'),
-	mongoose = require('mongoose');
+var config = require('./config/config');
 
-// Bootstrap db connection
-mongoose.connect(config.db, function(err) {
-	if (err) {
-		console.error('\x1b[31m', 'Could not connect to MongoDB!');
-		console.log(err);
-	}
-});
+require('./config/celery')(config);
+require('./config/mongo')(config);
 
 // Init the express application
 var app = require('./config/express')();

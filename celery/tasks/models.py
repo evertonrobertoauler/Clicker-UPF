@@ -1,5 +1,4 @@
 import mongoengine as me
-from .helpers import obj_search_string
 
 
 class Document(me.Document):
@@ -7,20 +6,23 @@ class Document(me.Document):
 
 
 class User(me.Document):
-    full_name = me.StringField()
-    short_name = me.StringField()
+    firstName = me.StringField()
+    lastName = me.StringField()
+    displayName = me.StringField()
     email = me.EmailField()
+    password = me.StringField()
+    salt = me.StringField()
+    provider = me.StringField()
+    providerData = me.DynamicField()
+    additionalProvidersData = me.DynamicField()
+    roles = me.ListField(me.StringField())
+    updated = me.DateTimeField()
+    created = me.DateTimeField()
+    resetPasswordToken = me.StringField()
+    resetPasswordExpires = me.DateTimeField()
     search = me.StringField()
-    token = me.StringField()
-    groups = me.ListField(me.StringField())
 
-    meta = dict(ordering=['search'], indexes=['token'])
-
-    @classmethod
-    def pre_save(cls, sender, document, **kwargs):
-        document.search = obj_search_string(document, ['full_name', 'email'])
-
-me.signals.pre_save.connect(User.pre_save, sender=User)
+    meta = dict(ordering=['search'], collection='users')
 
 
 class Classroom(Document):
@@ -39,7 +41,7 @@ class Question(Document):
 class StundentAnswer(me.EmbeddedDocument):
     student = me.DictField(required=True)
     answer = me.IntField(required=True)
-    old_answers = me.ListField(me.IntField())
+    triedAnswers = me.ListField(me.IntField())
 
 
 class KnowledgeTest(Document):

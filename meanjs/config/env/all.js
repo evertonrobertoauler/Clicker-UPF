@@ -11,5 +11,6 @@ module.exports = {
 	},
 	port: process.env.PORT || 3000,
 	templateEngine: 'swig',
-	sessionSecret: secret
+	sessionSecret: secret,
+  rabbitmqUrl: 'amqp://guest:guest@localhost:5672',
 };
