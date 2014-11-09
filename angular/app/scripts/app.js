@@ -123,6 +123,7 @@ angular
         templateUrl: '/views/knowledge-tests/detail.html',
       });
   })
+  .value('SOCKET_URL', 'http://127.0.0.1:3001/')
   .value('AUTH_URL', 'http://127.0.0.1:3000/auth/')
   .value('API_URL', 'http://127.0.0.1:3000/api/v1/')
   .config(function($httpProvider) {

@@ -1,0 +1,8 @@
+amqp==1.4.6
+anyjson==0.3.3
+billiard==3.3.0.18
+celery==3.1.16
+kombu==3.0.23
+mongoengine==0.8.7
+pymongo==2.7.2
+pytz==2014.9
