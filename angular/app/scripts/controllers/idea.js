@@ -11,7 +11,7 @@ angular.module('openpiApp')
 
       $scope.nav = {
         title: 'Open Peer Instruction',
-        href: '/',
+        href: '/#/',
         user: $scope.user,
         left: [
           {type: 'link', title: 'Início', state: 'main', role: 'user'},

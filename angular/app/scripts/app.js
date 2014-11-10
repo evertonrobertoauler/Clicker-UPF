@@ -133,7 +133,7 @@ angular
         responseError: function(rejection) {
           switch (rejection.status) {
             case 401:
-              var auth = $cookieStore.get('auth') && JSON.parse($cookieStore.get('auth'));
+              var auth = $cookieStore.get('auth');
 
               if (auth && auth.token.refreshToken) {
                 $location.path('/token/' + auth.token.refreshToken);

@@ -24,6 +24,8 @@ angular
         $state.transitionTo('questions.detail', q);
       };
 
+      $scope.question.rightAnswer = parseInt($scope.question.rightAnswer);
+
       if (!$scope.question.id) {
         $scope.question.$insert(success, error);
       } else {

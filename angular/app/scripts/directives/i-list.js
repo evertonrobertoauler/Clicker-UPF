@@ -67,18 +67,18 @@ angular
           switch (col.sort) {
             case 'down':
               col.sort = 'up';
-              sort = '-';
+              sort = -1;
               break;
             case 'up':
-              col.sort = '';
+              col.sort = 0;
               delete $scope.query.sort;
               break;
             default:
               col.sort = 'down';
-              sort = '+';
+              sort = 1;
           }
 
-          if (['-', '+'].indexOf(sort) !== -1) {
+          if ([-1, 1].indexOf(sort) !== -1) {
             $scope.query.sort = {};
             fields.forEach(function(field) {
               field = field === 'created' ? 'id' : field;
