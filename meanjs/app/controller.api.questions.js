@@ -4,7 +4,7 @@
 
   var mongoose = require('mongoose');
   var jsonschema = require('jsonschema');
-  var config = require('./../../../config/config');
+  var config = require('./../config/config');
 
   var db = mongoose.connections[0].db;
   var ObjectID = mongoose.mongo.ObjectID;

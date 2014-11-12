@@ -2,8 +2,8 @@
 
 var passport = require('passport');
 var jwt = require('jsonwebtoken');
-var Token = require('./../models/token');
-var config = require('./../../config/config');
+var Token = require('./model.token');
+var config = require('./../config/config');
 
 exports.middleware = function(req, res, next) {
   passport.authenticate('bearer', function(err, user, info) {

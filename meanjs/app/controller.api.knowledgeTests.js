@@ -3,7 +3,7 @@
 (function() {
 
   var jsonschema = require('jsonschema');
-  var config = require('./../../../config/config');
+  var config = require('./../config/config');
 
   var insertSchema = {
     type: 'object',

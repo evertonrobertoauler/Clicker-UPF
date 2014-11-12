@@ -2,13 +2,13 @@
 
 module.exports = function(app) {
 
-  var token = require('./../controllers/token');
-  var profile = require('../../app/controllers/user/profile');
-  var auth = require('../controllers/user/auth');
-  var students = require('./../controllers/api/students');
-  var classrooms = require('./../controllers/api/classrooms');
-  var questions = require('./../controllers/api/questions');
-  var knowledgeTests = require('./../controllers/api/knowledgeTests');
+  var token = require('./controller.token');
+  var profile = require('./controller.user.profile');
+  var auth = require('./controller.user.auth');
+  var students = require('./controller.api.students');
+  var classrooms = require('./controller.api.classrooms');
+  var questions = require('./controller.api.questions');
+  var knowledgeTests = require('./controller.api.knowledgeTests');
 
   var express = require('express');
   var router = express.Router();

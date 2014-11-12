@@ -4,7 +4,7 @@
  * Module dependencies.
  */
 var _ = require('lodash'),
-	errorHandler = require('../errors');
+	errorHandler = require('./controller.errors');
 
 /**
  * Update user details

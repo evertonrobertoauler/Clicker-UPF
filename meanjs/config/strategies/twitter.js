@@ -5,7 +5,7 @@ module.exports = function() {
   var passport = require('passport');
   var TwitterStrategy = require('passport-twitter').Strategy;
   var config = require('../config');
-  var auth = require('../../app/controllers/user/auth');
+  var auth = require('../../app/controller.user.auth');
 
 	passport.use(new TwitterStrategy({
 			consumerKey: config.twitter.clientID,

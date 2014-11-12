@@ -5,7 +5,7 @@
   var mongoose = require('mongoose');
   var collections = mongoose.connection.collections;
   var jsonschema = require('jsonschema');
-  var config = require('./../../../config/config');
+  var config = require('./../config/config');
 
   var schema = {
     type: 'object',

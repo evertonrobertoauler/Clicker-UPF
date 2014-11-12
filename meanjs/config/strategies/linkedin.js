@@ -5,7 +5,7 @@ module.exports = function() {
   var passport = require('passport');
   var LinkedInStrategy = require('passport-linkedin').Strategy;
   var config = require('../config');
-  var auth = require('../../app/controllers/user/auth');
+  var auth = require('../../app/controller.user.auth');
 
   passport.use(new LinkedInStrategy({
       consumerKey: config.linkedin.clientID,

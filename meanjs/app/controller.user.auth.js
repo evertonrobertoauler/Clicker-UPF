@@ -3,12 +3,12 @@
 /**
  * Module dependencies.
  */
-var errorHandler = require('../errors'),
+var errorHandler = require('./controller.errors'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
-  token = require('./../token'),
-  config = require('./../../../config/config');
+  token = require('./controller.token'),
+  config = require('./../config/config');
 
 /**
  * Signup

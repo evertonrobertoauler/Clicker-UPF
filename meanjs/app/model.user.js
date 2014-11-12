@@ -6,7 +6,7 @@
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
   crypto = require('crypto'),
-  config = require('./../../config/config');
+  config = require('./../config/config');
 
 /**
  * A Validation function for local strategy properties

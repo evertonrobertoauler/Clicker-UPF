@@ -3,8 +3,8 @@
 module.exports = function(app) {
 
   var passport = require('passport');
-	var auth = require('../controllers/user/auth');
-  var token = require('../../app/controllers/token');
+	var auth = require('./controller.user.auth');
+  var token = require('./controller.token');
 
 	// Setting up the users authentication api
 	app.route('/auth/signup').post(auth.signup);
