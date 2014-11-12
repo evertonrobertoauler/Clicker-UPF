@@ -4,10 +4,24 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var QuestionSchema = new Schema({
-  user: {type: Schema.Types.ObjectId, ref: 'User'},
-  expiration: Date,
-  accessToken: String,
-  refreshToken: String
+  text: {
+    type: String,
+    required: 'Question text is required!',
+  },
+  answers: [String],
+  rightAnswer: {
+    type: Number,
+    min: 0,
+    required: 'Right answer is required!',
+  },
+  professor: {
+    _id: {type: Schema.Types.ObjectId, ref: 'User'},
+    name: String
+  },
+  created: {
+    type: Date,
+    default: Date.now
+  },
 });
 
 module.exports = mongoose.model('Question', QuestionSchema);
