@@ -2,8 +2,6 @@
 
 (function() {
 
-  var mongoose = require('mongoose');
-  var collections = mongoose.connection.collections;
   var jsonschema = require('jsonschema');
   var config = require('./../../../config/config');
 
@@ -27,11 +25,7 @@
   };
 
   exports.list = function(req, res) {
-    if (collections.knowledge_tests) {
-      res.jsonp({length: 0, list: []});
-    } else {
-      res.jsonp({length: 0, list: []});
-    }
+    res.jsonp({length: 0, list: []});
   };
 
   exports.insert = function(req, res) {
