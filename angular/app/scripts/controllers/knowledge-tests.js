@@ -7,11 +7,11 @@ angular
     var $ngRepeat = $scope.$parent.$parent;
 
     if ($ngRepeat.obj) {
-      $ngRepeat.$parent.$watch('list[\'' + $ngRepeat.obj.id + '\']', function() {
+      $ngRepeat.$parent.$watch('list[\'' + $ngRepeat.obj._id + '\']', function() {
         $scope.updateKt($ngRepeat.obj);
       }, true);
-    } else if ($stateParams.id) {
-      $scope.kt = KnowledgeTests.get({id: $stateParams.id});
+    } else if ($stateParams._id) {
+      $scope.kt = KnowledgeTests.get({id: $stateParams._id});
 
       $scope.kt.$promise.then(function(kt) {
         kt.start = new Date(kt.start);
@@ -22,7 +22,7 @@ angular
           $scope.populateCorrectAnswerChart($scope.kt);
 
           var interval = $interval(function() {
-            KnowledgeTests.get({id: $stateParams.id}).$promise.then($scope.updateKt);
+            KnowledgeTests.get({id: $stateParams._id}).$promise.then($scope.updateKt);
           }, 5000);
 
           $scope.$on('$stateChangeStart', function() {
@@ -69,12 +69,12 @@ angular
         }
       };
 
-      if (!$scope.kt.id) {
+      if (!$scope.kt._id) {
         KnowledgeTests.insert($scope.kt, success, error);
       } else {
         var kt = angular.copy($scope.kt);
-        kt.classroom = kt.classroom.id;
-        kt.question = kt.question.id;
+        kt.classroom = kt.classroom._id;
+        kt.question = kt.question._id;
         KnowledgeTests.update(kt, success, error);
       }
     };

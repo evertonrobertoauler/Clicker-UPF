@@ -59,7 +59,7 @@ angular
         templateUrl: '/views/classrooms/list.html',
       })
       .state('classrooms.edit', {
-        url: '/form/:id',
+        url: '/form/:_id',
         controller: 'ClassroomsCtrl',
         templateUrl: '/views/classrooms/form.html',
       })
@@ -69,7 +69,7 @@ angular
         templateUrl: '/views/classrooms/form.html',
       })
       .state('classrooms.detail', {
-        url: '/:id',
+        url: '/:_id',
         controller: 'ClassroomsCtrl',
         templateUrl: '/views/classrooms/detail.html',
       })
@@ -84,7 +84,7 @@ angular
         templateUrl: '/views/questions/list.html',
       })
       .state('questions.edit', {
-        url: '/form/:id',
+        url: '/form/:_id',
         controller: 'QuestionsCtrl',
         templateUrl: '/views/questions/form.html',
       })
@@ -94,7 +94,7 @@ angular
         templateUrl: '/views/questions/form.html',
       })
       .state('questions.detail', {
-        url: '/:id',
+        url: '/:_id',
         controller: 'QuestionsCtrl',
         templateUrl: '/views/questions/detail.html',
       })
@@ -109,7 +109,7 @@ angular
         templateUrl: '/views/knowledge-tests/list.html',
       })
       .state('knowledge-tests.edit', {
-        url: '/form/:id',
+        url: '/form/:_id',
         controller: 'KnowledgeTestsCtrl',
         templateUrl: '/views/knowledge-tests/edit.html',
       })
@@ -119,7 +119,7 @@ angular
         templateUrl: '/views/knowledge-tests/create.html',
       })
       .state('knowledge-tests.detail', {
-        url: '/:id',
+        url: '/:_id',
         templateUrl: '/views/knowledge-tests/detail.html',
       });
   })

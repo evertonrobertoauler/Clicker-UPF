@@ -4,7 +4,7 @@ require('./config/init')();
 
 var config = require('./config/config');
 
-require('./config/celery')(config);
+//require('./config/celery')(config);
 require('./config/mongo')(config);
 
 // Init the express application

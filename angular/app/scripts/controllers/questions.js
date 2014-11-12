@@ -4,8 +4,8 @@ angular
   .module('openpiApp')
   .controller('QuestionsCtrl', function($scope, $stateParams, $state, Questions) {
 
-    if ($stateParams.id) {
-      $scope.question = Questions.get({id: $stateParams.id});
+    if ($stateParams._id) {
+      $scope.question = Questions.get({id: $stateParams._id});
     } else {
       $scope.question = new Questions();
     }
@@ -26,7 +26,7 @@ angular
 
       $scope.question.rightAnswer = parseInt($scope.question.rightAnswer);
 
-      if (!$scope.question.id) {
+      if (!$scope.question._id) {
         $scope.question.$insert(success, error);
       } else {
         $scope.question.$update(success, error);

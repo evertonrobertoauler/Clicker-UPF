@@ -2,90 +2,63 @@
 
 (function() {
 
-  var mongoose = require('mongoose');
-  var jsonschema = require('jsonschema');
   var config = require('./../config/config');
-
-  var db = mongoose.connections[0].db;
-  var ObjectID = mongoose.mongo.ObjectID;
-  var collection = db.collection('question');
-
-  var changeAttrId = function(obj) {
-    obj.id = obj._id;
-    delete obj._id;
-    return obj;
-  };
-
-  var schema = {
-    type: 'object',
-    properties: {
-      text: {type: 'string', required: true},
-      answers: {
-        type: 'array',
-        required: true,
-        items: {type: 'string', required: true}
-      },
-      rightAnswer: {type: 'integer', required: true}
-    }
-  };
+  var queries = require('./queries');
+  var SaveParser = require('./parsers.question').Save;
+  var Question = require('mongoose').model('Question');
 
   exports.list = function(req, res) {
 
-    var q = req.query;
+    var filter = queries.filter(req.query);
+    filter.where = {'professor._id': req.user._id};
 
-    var where = {'professor.id': req.user._id};
-    var limit = Math.min(10, q.limit || 10);
-    var offset = ((q.offset || 1) - 1) * limit;
-    var sort = q.sort || {_id: -1};
-
-    collection.count(where, function(err, length) {
-      collection.find(where).limit(limit).skip(offset).sort(sort).toArray(function(err, items) {
-        if (err || !items) {
-          res.status(500).send();
-        } else {
-          res.jsonp({length: length, list: items.map(changeAttrId)});
-        }
+    queries
+      .findList('Question', filter)
+      .then(function(data) {
+        res.jsonp({length: data[0], list: data[1]});
+      })
+      .fail(function(error) {
+        res.status(500).jsonp(error);
       });
-    });
   };
 
   exports.insert = function(req, res) {
-    var result = jsonschema.validate(req.body, schema);
 
-    if (result.errors.length) {
-      res.status(400).jsonp(result.errors);
-    } else {
-      result.instance.professor = req.user._id.toString();
-      config.celery.runTask('tasks.question.insert', [result.instance]);
-      res.jsonp(result.instance);
-    }
+    var parser = new SaveParser(req.body);
+
+    parser.validate()
+      .then(function(data) {
+        console.log(data);
+        var question = new Question(data);
+        console.log(question);
+        question.professor = req.user;
+        return queries.exec(question, 'save');
+      })
+      .then(function(data) {
+        res.jsonp(data);
+      })
+      .fail(function(error) {
+        console.trace(error);
+        res.status(400).jsonp(error);
+      });
   };
 
   exports.get = function(req, res) {
-
-    var filter = {_id: new ObjectID(req.params.id), 'professor.id': req.user._id};
-
-    collection.findOne(filter, function(err, item) {
-      if (err || !item) {
-        res.status(404).send();
-      } else {
-        res.jsonp(changeAttrId(item));
-      }
-    });
+    queries
+      .exec(Question.findOne({
+          _id: req.params.id,
+          'professor._id': req.user._id}
+      ))
+      .then(function(data) {
+        res.jsonp(data);
+      })
+      .fail(function(error) {
+        res.status(400).jsonp(error);
+      });
   };
 
   exports.update = function(req, res) {
-    req.body.id = req.params.id;
-
-    var result = jsonschema.validate(req.body, schema);
-
-    if (result.errors.length) {
-      res.status(400).jsonp(result.errors);
-    } else {
-      result.instance.professor = req.user._id.toString();
-      config.celery.runTask('tasks.question.update', [result.instance]);
-      res.jsonp(result.instance);
-    }
+    exports.insert(req, res);
   };
 
   exports.delete = function(req, res) {

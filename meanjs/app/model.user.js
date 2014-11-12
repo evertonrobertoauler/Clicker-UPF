@@ -5,8 +5,7 @@
  */
 var mongoose = require('mongoose'),
   Schema = mongoose.Schema,
-  crypto = require('crypto'),
-  config = require('./../config/config');
+  crypto = require('crypto');
 
 /**
  * A Validation function for local strategy properties
@@ -97,8 +96,6 @@ UserSchema.pre('save', function(next) {
     this.salt = new Buffer(crypto.randomBytes(16).toString('base64'), 'base64');
     this.password = this.hashPassword(this.password);
   }
-
-  config.celery.runTask('tasks.update_user', [this._id]);
 
   next();
 });

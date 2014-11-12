@@ -10,20 +10,21 @@ module.exports = function(objSchema) {
   var Parser = function(data) {
     this.schema = schema;
     mongoose.Document.call(this, data);
-    return this;
   };
 
-  Parser.prototype = mongoose.Document.prototype;
+  var proto = '__proto__';
+  Parser.prototype[proto] = mongoose.Document.prototype;
 
   Parser.prototype.validate = function() {
+    var self = this;
+
     return Q.Promise(function(resolve, reject) {
-      mongoose.Document.prototype.validate.call(this, function(err) {
+      mongoose.Document.prototype.validate.call(self, function(err) {
         if (err) { reject(err); }
-        else { resolve(this); }
+        else { resolve(self); }
       });
     });
   };
 
   return Parser;
-}
-;
+};

@@ -4,8 +4,8 @@ angular
   .module('openpiApp')
   .controller('ClassroomsCtrl', function($scope, $stateParams, $state, Classrooms) {
 
-    if ($stateParams.id) {
-      $scope.classroom = Classrooms.get({id: $stateParams.id});
+    if ($stateParams._id) {
+      $scope.classroom = Classrooms.get({id: $stateParams._id});
     } else {
       $scope.classroom = new Classrooms();
     }

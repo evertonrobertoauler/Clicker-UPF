@@ -16,7 +16,7 @@ var QuestionSchema = new Schema({
   },
   professor: {
     _id: {type: Schema.Types.ObjectId, ref: 'User'},
-    name: String
+    displayName: String
   },
   created: {
     type: Date,

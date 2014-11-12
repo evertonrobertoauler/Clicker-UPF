@@ -16,25 +16,6 @@
     }
   });
 
-  var amqp = require('amqp');
-
-  var connection = amqp.createConnection({
-    url: 'amqp://guest:guest@localhost:5672'
-  });
-
-  connection.on('ready', function() {
-    connection.queue('my-queue', function(q) {
-      q.bind('#');
-      q.subscribe(function(message) {
-        console.log(message.data.toString('utf8'));
-      });
-    });
-  });
-
-  connection.on('error', function(a, b, c) {
-    console.log(a, b, c);
-  });
-
   var io = require('socket.io')(3001);
 
   io.on('connection', function(socket) {

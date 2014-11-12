@@ -24,8 +24,8 @@ angular
         };
 
         var cb = function(obj) {
-          if (obj.id) {
-            $scope.list[obj.id] = obj;
+          if (obj._id) {
+            $scope.list[obj._id] = obj;
           }
         };
 
@@ -52,13 +52,13 @@ angular
               var ids = [];
 
               (result.list || []).forEach(function(obj) {
-                var oldObj = $scope.list[obj.id];
-                ids.push(obj.id);
+                var oldObj = $scope.list[obj._id];
+                ids.push(obj._id);
 
                 if (!oldObj) {
-                  $scope.list[obj.id] = obj;
+                  $scope.list[obj._id] = obj;
                 } else if (JSON.stringify(oldObj) !== JSON.stringify(obj)) {
-                  $scope.list[obj.id] = obj;
+                  $scope.list[obj._id] = obj;
                 }
               });
 

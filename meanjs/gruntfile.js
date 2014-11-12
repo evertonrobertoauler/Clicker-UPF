@@ -4,7 +4,7 @@ module.exports = function(grunt) {
 	// Unified Watch Object
 	var watchFiles = {
 		serverJS: ['gruntfile.js', 'server.js', 'config/**/*.js', 'app/**/*.js'],
-		mochaTests: ['app/tests/**/*.js']
+		mochaTests: ['tests/**/*.js']
 	};
 
 	// Project Configuration
@@ -12,13 +12,13 @@ module.exports = function(grunt) {
 		pkg: grunt.file.readJSON('package.json'),
 		watch: {
 			serverJS: {
-				files: watchFiles.serverJS,
+				files: watchFiles.serverJS.concat(watchFiles.mochaTests),
 				tasks: ['jshint'],
 			}
 		},
 		jshint: {
 			all: {
-				src: watchFiles.serverJS,
+        src: watchFiles.serverJS.concat(watchFiles.mochaTests),
 				options: {
 					jshintrc: true
 				}

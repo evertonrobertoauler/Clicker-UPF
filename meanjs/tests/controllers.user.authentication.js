@@ -12,7 +12,7 @@
   describe('Token Model Unit Tests:', function() {
 
     before(function(done) {
-      this.app = require('../../server');
+      this.app = require('./../server');
       mongoose.model('User').find().remove(done);
     });
 
