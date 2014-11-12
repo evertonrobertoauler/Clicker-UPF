@@ -1,7 +1,6 @@
 'use strict';
 
 (function() {
-  var mongoose = require('mongoose');
   var Q = require('q');
 
   exports.filter = function(data) {
@@ -43,9 +42,7 @@
     );
   };
 
-  exports.findList = function(model, filter) {
-    var Model = mongoose.model(model);
-
+  exports.findList = function(Model, filter) {
     return Q.all([
       getCount(Model, filter),
       getList(Model, filter),
