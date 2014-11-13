@@ -36,6 +36,7 @@
     return exec(
       Model
         .find(filter.where)
+        .select(filter.select)
         .sort(filter.sort)
         .skip(filter.offset)
         .limit(filter.limit)

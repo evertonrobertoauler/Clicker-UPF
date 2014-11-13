@@ -7,7 +7,9 @@ angular.module('openpiApp')
     });
 
     Students.toString = function(student) {
-      return student.full_name || student.email;
+      if (student) {
+        return student.displayName || student.email;
+      }
     };
 
     return Students;

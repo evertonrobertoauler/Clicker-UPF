@@ -6,7 +6,7 @@
             class="btn btn-info"
             ng-click="selected.splice(selected.indexOf(obj), 1)"
             title="{{ 'Remover:\n' + Resource.toString(obj) }}">
-      <span class="glyphicon glyphicon-remove"></span> {{ Resource.toString(obj).substr(0, 15) }}
+      <span class="glyphicon glyphicon-remove"></span> {{ Resource.toString(obj).substr(0, 20) }}
     </button>
   </span>
 
@@ -26,7 +26,7 @@
               class="btn btn-default"
               ng-click="select(obj)"
               title="{{ 'Selecionar:\n' + Resource.toString(obj) }}">
-        <span class="glyphicon glyphicon-plus"></span> {{ Resource.toString(obj).substr(0, 15) }}
+        <span class="glyphicon glyphicon-plus"></span> {{ Resource.toString(obj).substr(0, 20) }}
       </button>
     </span>
   </div>

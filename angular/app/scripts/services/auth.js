@@ -14,11 +14,11 @@ angular
       auth = data;
 
       if (auth && auth.token && auth.token.accessToken) {
-        Socket.connect(auth.token.accessToken);
+        //Socket.connect(auth.token.accessToken);
         $cookies.auth = JSON.stringify(auth);
         $http.defaults.headers.common.Authorization = 'Bearer ' + auth.token.accessToken || '';
       } else {
-        Socket.disconnect();
+        //Socket.disconnect();
         delete $cookies.auth;
         $http.defaults.headers.common.Authorization = '';
       }

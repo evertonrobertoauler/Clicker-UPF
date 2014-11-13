@@ -16,7 +16,7 @@ angular
 
         $scope.selected = [];
 
-        $scope.$watch('value', function(value){
+        $scope.$watch('value', function(value) {
           if (Array.isArray(value) && typeof(value[0]) !== 'string') {
             $scope.selected = value || [];
           } else if (!$scope.field.multi && typeof(value) !== 'string') {
@@ -32,25 +32,23 @@ angular
           }
         };
 
-        $scope.$watch('selected', function(){
-          var ids = $scope.selected.map(function(obj) { return obj.id; });
+        $scope.$watchCollection('selected', function() {
+          var ids = $scope.selected.map(function(obj) { return obj._id; });
           $scope.setValue($scope.field.multi && ids || ids[0]);
-          $scope.query.where.id__not__in = ids;
+          $scope.query.where = {_id: {$nin: ids}};
         }, true);
 
-        $scope.$watch('query', function(){
+        $scope.$watchCollection('query', function() {
           $scope.submit();
-        }, true);
+        });
 
         $scope.Resource = Resource;
 
-        var query = {
+        $scope.query = {
           where: {},
           limit: 10,
           offset: 1,
         };
-
-        $scope.query = angular.copy(query);
 
         $scope.total = 0;
 
