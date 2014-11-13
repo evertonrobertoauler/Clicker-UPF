@@ -3,7 +3,7 @@
 (function() {
 
   var queries = require('./queries');
-  var parsers = require('./parsers.knowledgeTest');
+  var parser = require('./parser.knowledgeTest');
   var mongoose = require('mongoose');
   var KnowledgeTest = mongoose.model('KnowledgeTest');
   var Classroom = mongoose.model('Classroom');
@@ -12,11 +12,11 @@
   var _ = require('lodash');
 
   var parseInsert = function(req) {
-    return (new parsers.Insert(req.body)).validate();
+    return (new parser.Insert(req.body)).validate();
   };
 
   var parseUpdate = function(req) {
-    return (new parsers.Update(req.body)).validate();
+    return (new parser.Update(req.body)).validate();
   };
 
   var getKnowledgeTest = function(req) {
@@ -53,7 +53,6 @@
 
     parseInsert(req)
       .then(function(data) {
-        data = data.toObject();
         return Q.all([data, getClassroom(data), getQuestion(data)]);
       })
       .then(function(data) {
@@ -86,7 +85,7 @@
   exports.update = function(req, res) {
     Q.all([getKnowledgeTest(req), parseUpdate(req)])
       .then(function(data) {
-        var knowledgeTest = _.extend(data[0], data[1].toObject());
+        var knowledgeTest = _.extend(data[0], data[1]);
         return queries.exec(knowledgeTest, 'save');
       })
       .then(function(knowledgeTest) {

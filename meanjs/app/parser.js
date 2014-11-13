@@ -21,7 +21,7 @@ module.exports = function(objSchema) {
     return Q.Promise(function(resolve, reject) {
       mongoose.Document.prototype.validate.call(self, function(err) {
         if (err) { reject(err); }
-        else { resolve(self); }
+        else { resolve(self.toObject()); }
       });
     });
   };

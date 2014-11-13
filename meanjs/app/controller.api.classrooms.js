@@ -3,16 +3,13 @@
 (function() {
 
   var queries = require('./queries');
-  var SaveParser = require('./parsers.classroom').Save;
+  var SaveParser = require('./parser.classroom').Save;
   var Classroom = require('mongoose').model('Classroom');
   var User = require('mongoose').model('User');
   var Q = require('q');
   var _ = require('lodash');
 
   var getStudents = function(classroom) {
-
-    classroom = classroom.toObject();
-
     var query = User.find({_id: {$in: classroom.students || []}}).select('displayName');
     return queries.exec(query).then(function(students) {
       classroom.students = students;

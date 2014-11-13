@@ -3,7 +3,7 @@
 (function() {
 
   var queries = require('./queries');
-  var SaveParser = require('./parsers.question').Save;
+  var SaveParser = require('./parser.question').Save;
   var Question = require('mongoose').model('Question');
   var Q = require('q');
   var _ = require('lodash');
@@ -64,7 +64,7 @@
   exports.update = function(req, res) {
     Q.all([getQuestion(req), parseQuestion(req)])
       .then(function(data) {
-        var question = _.extend(data[0], data[1].toObject());
+        var question = _.extend(data[0], data[1]);
         return queries.exec(question, 'save');
       })
       .then(function(question) {
