@@ -4,45 +4,43 @@
  * Module dependencies.
  */
 var errorHandler = require('./controller.errors'),
+  parser = require('./parser.user'),
+  queries = require('./queries'),
   mongoose = require('mongoose'),
   passport = require('passport'),
   User = mongoose.model('User'),
   token = require('./controller.token'),
   config = require('./../config/config');
 
+var parseInsert = function(req) {
+  return (new parser.Insert(req.body)).validate();
+};
+
 /**
  * Signup
  */
 exports.signup = function(req, res) {
-  // For security measurement we remove the roles from the req.body object
-  delete req.body.roles;
-  delete req.body.password2;
-
-  // Init Variables
-  var user = new User(req.body);
-
-  // Add missing user fields
-  user.provider = 'local';
-  user.displayName = user.firstName + ' ' + user.lastName;
-
-  // Then save the user
-  user.save(function(err) {
-    if (err) {
-      return res.status(400).send({
-        email: ['Já existe outra conta com este e-mail!'],
-      });
-    } else {
-      // Remove sensitive data before login
+  parseInsert(req)
+    .then(function(data) {
+      var user = new User(data);
+      user.provider = 'local';
+      user.displayName = user.firstName + ' ' + user.lastName;
+      return queries.exec(user, 'save');
+    })
+    .then(function(user) {
+      user = user.toObject();
       user.password = undefined;
       user.salt = undefined;
-
-      user = user.toObject();
-
       token.create(user, function(newToken) {
         res.jsonp({user: user, token: newToken});
       });
-    }
-  });
+    })
+    .fail(function(err) {
+      console.trace(err);
+      return res.status(400).jsonp({
+        email: ['Já existe outra conta com este e-mail!'],
+      });
+    });
 };
 
 /**

@@ -1,52 +1,39 @@
 'use strict';
 
-/**
- * Module dependencies.
- */
 var _ = require('lodash'),
-	errorHandler = require('./controller.errors');
+  parser = require('./parser.user'),
+  queries = require('./queries');
+
+var parseUpdate = function(req) {
+  return (new parser.Update(req.body)).validate();
+};
+
 
 /**
  * Update user details
  */
 exports.update = function(req, res) {
-	// Init Variables
-	var user = req.user;
-
-	// For security measurement we remove the roles from the req.body object
-	delete req.body.roles;
-
-	if (user) {
-		// Merge existing user
-		user = _.extend(user, req.body);
-		user.updated = Date.now();
-		user.displayName = user.firstName + ' ' + user.lastName;
-
-		user.save(function(err) {
-			if (err) {
-				return res.status(400).send({
-					message: errorHandler.getErrorMessage(err)
-				});
-			} else {
-				req.login(user, function(err) {
-					if (err) {
-						res.status(400).send(err);
-					} else {
-						res.jsonp(user);
-					}
-				});
-			}
-		});
-	} else {
-		res.status(400).send({
-			message: 'User is not signed in'
-		});
-	}
+  parseUpdate(req)
+    .then(function(data) {
+      var user = _.extend(req.user, data);
+      user.updated = Date.now();
+      user.displayName = user.firstName + ' ' + user.lastName;
+      return queries.exec(user, 'save');
+    })
+    .then(function(user) {
+      user.password = undefined;
+      user.salt = undefined;
+      res.status(202).jsonp(user);
+    })
+    .fail(function(err) {
+      console.trace(err);
+      res.status(400).jsonp(err);
+    });
 };
 
 /**
  * Send User
  */
 exports.me = function(req, res) {
-	res.jsonp(req.user || null);
+  res.jsonp(req.user || null);
 };
