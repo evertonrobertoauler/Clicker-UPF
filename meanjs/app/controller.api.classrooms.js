@@ -34,7 +34,7 @@
   exports.list = function(req, res) {
 
     var filter = queries.filter(req.query);
-    filter.where = {'professor._id': req.user._id};
+    filter.where = _.merge(req.query.where || {}, {'professor._id': req.user._id});
 
     queries.findList(Classroom, filter)
       .then(function(data) {

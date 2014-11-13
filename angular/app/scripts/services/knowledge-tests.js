@@ -5,7 +5,7 @@ angular.module('openpiApp')
     var KnowledgeTests = $resource(API_URL + 'knowledge/tests/:id/', {id: '@_id'}, {
       query: {method: 'GET'},
       insert: {method: 'POST'},
-      update: {method: 'PUT'},
+      update: {method: 'PATCH'},
     });
 
     KnowledgeTests.columns = [

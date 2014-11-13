@@ -47,6 +47,7 @@ module.exports = function(app) {
 
   router.get('/knowledge/tests', knowledgeTests.list);
   router.post('/knowledge/tests', knowledgeTests.insert);
+  router.get('/knowledge/tests/:id', knowledgeTests.get);
   router.patch('/knowledge/tests/:id', knowledgeTests.update);
   router.delete('/knowledge/tests/:id', knowledgeTests.delete);
 

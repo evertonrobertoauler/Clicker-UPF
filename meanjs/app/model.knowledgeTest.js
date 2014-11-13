@@ -15,8 +15,15 @@ var KnowledgeTestSchema = new Schema({
     _id: {type: Schema.Types.ObjectId, ref: 'Classroom'},
     name: String
   },
-  question: Object,
+  question: {
+    _id: {type: Schema.Types.ObjectId, ref: 'Question'},
+    text: String,
+    answers: [String],
+    rightAnswer: Number,
+  },
   answers: [answer],
+  start: Date,
+  end: Date,
   professor: {
     _id: {type: Schema.Types.ObjectId, ref: 'User'},
     name: String

@@ -2,65 +2,113 @@
 
 (function() {
 
-  var jsonschema = require('jsonschema');
-  var config = require('./../config/config');
+  var queries = require('./queries');
+  var parsers = require('./parsers.knowledgeTest');
+  var mongoose = require('mongoose');
+  var KnowledgeTest = mongoose.model('KnowledgeTest');
+  var Classroom = mongoose.model('Classroom');
+  var Question = mongoose.model('Question');
+  var Q = require('q');
+  var _ = require('lodash');
 
-  var insertSchema = {
-    type: 'object',
-    properties: {
-      classroom: {type: 'string', required: true},
-      question: {type: 'string', required: true},
-      end: {type: 'date', required: true},
-      start: {type: 'date', required: true}
-    }
+  var parseInsert = function(req) {
+    return (new parsers.Insert(req.body)).validate();
   };
 
-  var updateSchema = {
-    type: 'object',
-    properties: {
-      id: {type: 'string', required: true},
-      end: {type: 'date', required: true},
-      start: {type: 'date', required: true}
-    }
+  var parseUpdate = function(req) {
+    return (new parsers.Update(req.body)).validate();
+  };
+
+  var getKnowledgeTest = function(req) {
+    return queries.exec(KnowledgeTest.findOne({
+      _id: req.params.id,
+      'professor._id': req.user._id
+    }));
+  };
+
+  var getClassroom = function(knowledgeTest) {
+    return queries.exec(Classroom.findOne({_id: knowledgeTest.classroom}));
+  };
+
+  var getQuestion = function(knowledgeTest) {
+    return queries.exec(Question.findOne({_id: knowledgeTest.question}));
   };
 
   exports.list = function(req, res) {
-    res.jsonp({length: 0, list: []});
+
+    var filter = queries.filter(req.query);
+    filter.where = {'professor._id': req.user._id};
+
+    queries.findList(KnowledgeTest, filter)
+      .then(function(data) {
+        res.jsonp({length: data[0], list: data[1]});
+      })
+      .fail(function(err) {
+        console.trace(err);
+        res.status(400).jsonp(err);
+      });
   };
 
   exports.insert = function(req, res) {
-    var result = jsonschema.validate(req.body, insertSchema);
 
-    if (result.errors.length) {
-      res.status(400).jsonp(result.errors);
-    } else {
-      result.instance.professor = req.user._id.toString();
-      config.celery.runTask('tasks.knowledge_test.insert', [result.instance]);
-      res.jsonp(result.instance);
-    }
+    parseInsert(req)
+      .then(function(data) {
+        data = data.toObject();
+        return Q.all([data, getClassroom(data), getQuestion(data)]);
+      })
+      .then(function(data) {
+        var knowledgeTest = new KnowledgeTest(data[0]);
+        knowledgeTest.professor = req.user;
+        knowledgeTest.classroom = data[1];
+        knowledgeTest.question = data[2];
+        return queries.exec(knowledgeTest, 'save');
+      })
+      .then(function(data) {
+        res.status(201).jsonp(data);
+      })
+      .fail(function(err) {
+        console.trace(err);
+        res.status(400).jsonp(err);
+      });
+  };
+
+  exports.get = function(req, res) {
+    getKnowledgeTest(req)
+      .then(function(data) {
+        res.jsonp(data);
+      })
+      .fail(function(err) {
+        console.trace(err);
+        res.status(400).jsonp(err);
+      });
   };
 
   exports.update = function(req, res) {
-    req.body.id = req.params.id;
-
-    var result = jsonschema.validate(req.body, updateSchema);
-
-    if (result.errors.length) {
-      res.status(400).jsonp(result.errors);
-    } else {
-      result.instance.professor = req.user._id.toString();
-      config.celery.runTask('tasks.knowledge_test.update', [result.instance]);
-      res.jsonp(result.instance);
-    }
+    Q.all([getKnowledgeTest(req), parseUpdate(req)])
+      .then(function(data) {
+        var knowledgeTest = _.extend(data[0], data[1].toObject());
+        return queries.exec(knowledgeTest, 'save');
+      })
+      .then(function(knowledgeTest) {
+        res.status(202).jsonp(knowledgeTest);
+      })
+      .fail(function(err) {
+        console.trace(err);
+        res.status(400).jsonp(err);
+      });
   };
 
   exports.delete = function(req, res) {
-    if (req.params.id) {
-      var filter = {id: req.params.id, professor: req.user._id.toString()};
-      config.celery.runTask('tasks.knowledge_test.delete', [filter]);
-      res.jsonp(filter);
-    } else {
-      res.status(400).send();
-    }
+    getKnowledgeTest(req)
+      .then(function(knowledgeTest) {
+        return queries.exec(knowledgeTest, 'remove');
+      })
+      .then(function() {
+        return res.status(204).send();
+      })
+      .fail(function(err) {
+        console.trace(err);
+        res.status(400).jsonp(err);
+      });
   };
 })();

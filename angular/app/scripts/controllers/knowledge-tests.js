@@ -2,7 +2,7 @@
 
 angular
   .module('openpiApp')
-  .controller('KnowledgeTestsCtrl', function($scope, $stateParams, $state, $timeout, $interval, KnowledgeTests) {
+  .controller('KnowledgeTestsCtrl', function($scope, $stateParams, $state, KnowledgeTests) {
 
     var $ngRepeat = $scope.$parent.$parent;
 
@@ -20,14 +20,6 @@ angular
         if ($state.current.name === 'knowledge-tests.detail') {
           $scope.populateAnswersChart($scope.kt);
           $scope.populateCorrectAnswerChart($scope.kt);
-
-          var interval = $interval(function() {
-            KnowledgeTests.get({id: $stateParams._id}).$promise.then($scope.updateKt);
-          }, 5000);
-
-          $scope.$on('$stateChangeStart', function() {
-            $interval.cancel(interval);
-          });
         }
       });
     } else {
@@ -40,13 +32,13 @@ angular
     }
 
     $scope.updateKt = function(kt) {
-      $timeout(function() {
+      $scope.$applyAsync(function() {
         $scope.kt = kt;
         $scope.kt.start = new Date($scope.kt.start);
         $scope.kt.end = new Date($scope.kt.end);
         $scope.populateAnswersChart($scope.kt);
         $scope.populateCorrectAnswerChart($scope.kt);
-      }, 1);
+      });
     };
 
     $scope.add = function(minutes){
