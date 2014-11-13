@@ -85,16 +85,11 @@
         should.exist(auth.token.accessToken);
 
         request(this.app)
-          .get('/api/v1/test')
+          .get('/api/v1/user')
           .set('Authorization', 'Bearer ' + auth.token.accessToken)
           .expect('Content-Type', /json/)
           .expect(200)
-          .end(function(err) {
-
-            if (err) { throw err; }
-
-            done();
-          });
+          .end(done);
       });
 
       it('should refresh token', function(done) {

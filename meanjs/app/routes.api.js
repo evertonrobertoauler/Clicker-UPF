@@ -27,10 +27,6 @@ module.exports = function(app) {
   router.put('/user', profile.update);
   router.delete('/user/accounts', auth.removeOAuthProvider);
 
-  router.get('/test', function(req, res){
-    res.jsonp({status: 'OK', user: req.user._id});
-  });
-
   router.get('/students', students.list);
 
   router.get('/classrooms', classrooms.list);
