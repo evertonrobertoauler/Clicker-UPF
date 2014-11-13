@@ -20,7 +20,7 @@ angular
         $state.transitionTo('classrooms.detail', c);
       };
 
-      if (!$scope.classroom.id) {
+      if (!$scope.classroom._id) {
         $scope.classroom.$insert(success, error);
       } else {
         $scope.classroom.$update(success, error);

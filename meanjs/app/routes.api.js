@@ -35,7 +35,8 @@ module.exports = function(app) {
 
   router.get('/classrooms', classrooms.list);
   router.post('/classrooms', classrooms.insert);
-  router.patch('/classrooms/:id', classrooms.update);
+  router.get('/classrooms/:id', classrooms.get);
+  router.put('/classrooms/:id', classrooms.update);
   router.delete('/classrooms/:id', classrooms.delete);
 
   router.get('/questions', questions.list);
