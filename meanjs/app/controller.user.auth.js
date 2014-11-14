@@ -28,12 +28,13 @@ exports.signup = function(req, res) {
       return queries.exec(user, 'save');
     })
     .then(function(user) {
-      user = user.toObject();
       user.password = undefined;
       user.salt = undefined;
-      token.create(user, function(newToken) {
-        res.jsonp({user: user, token: newToken});
-      });
+
+      token.create(user)
+        .then(function(newToken) {
+          res.jsonp({user: user.toObject(), token: newToken});
+        });
     })
     .fail(function(err) {
       console.trace(err);
@@ -55,11 +56,10 @@ exports.signin = function(req, res, next) {
       user.password = undefined;
       user.salt = undefined;
 
-      user = user.toObject();
-
-      token.create(user, function(newToken) {
-        res.jsonp({user: user, token: newToken});
-      });
+      token.create(user)
+        .then(function(newToken) {
+          res.jsonp({user: user.toObject(), token: newToken});
+        });
     }
   })(req, res, next);
 };
@@ -74,9 +74,10 @@ exports.oauthCallback = function(strategy) {
         return res.redirect(config.url + '/#/signin');
       }
 
-      token.createTemporary(user, function(refreshToken) {
-        return res.redirect(config.url + '/#/token/' + refreshToken);
-      });
+      token.createTemporary(user)
+        .then(function(newToken) {
+          return res.redirect(config.url + '/#/token/' + newToken.refreshToken);
+        });
     })(req, res, next);
   };
 };

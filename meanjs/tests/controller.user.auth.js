@@ -9,7 +9,7 @@
   /**
    * Unit tests
    */
-  describe('Token Model Unit Tests:', function() {
+  describe('User Controller Functional Tests:', function() {
 
     before(function(done) {
       this.app = require('./../server');

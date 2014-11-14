@@ -67,7 +67,7 @@ describe('Token Model Unit Tests:', function() {
     });
 	});
 
-	afterEach(function(done) { 
+	afterEach(function(done) {
 		Token.remove().exec();
 		User.remove().exec();
 
