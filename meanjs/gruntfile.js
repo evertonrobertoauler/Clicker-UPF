@@ -68,7 +68,7 @@ module.exports = function(grunt) {
 			src: watchFiles.mochaTests,
 			options: {
 				reporter: 'spec',
-				require: ['server.js', 'tests/_init_db.js']
+				require: ['server.js']
 			}
 		}
 	});
@@ -92,5 +92,9 @@ module.exports = function(grunt) {
 	grunt.registerTask('lint', ['jshint']);
 
 	// Test task.
-	grunt.registerTask('test', ['lint', 'env:test', 'mochaTest']);
+	grunt.registerTask('test', ['lint', 'env:test', 'initDb', 'mochaTest']);
+
+  grunt.registerTask('initDb', function() {
+    require('./tests/_initDb')(grunt, this.async());
+  });
 };

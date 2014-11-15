@@ -3,7 +3,6 @@
 (function() {
   var should = require('should');
   var request = require('supertest');
-  var mongoose = require('mongoose');
   var auth;
 
   /**
@@ -13,7 +12,7 @@
 
     before(function(done) {
       this.app = require('./../server');
-      mongoose.model('User').find().remove(done);
+      done();
     });
 
     describe('Signup', function() {

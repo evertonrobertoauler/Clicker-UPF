@@ -28,6 +28,12 @@
     });
   };
 
+  exports.execList = function(queries, method) {
+    return Q.all(queries.map(function(q){
+      exec(q, method);
+    }));
+  };
+
   var getCount = function(Model, filter) {
     return exec(Model.count(filter.where));
   };

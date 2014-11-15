@@ -1,7 +1,8 @@
 'use strict';
 
 var mongoose = require('mongoose'),
-  Schema = mongoose.Schema;
+  Schema = mongoose.Schema,
+  moment = require('moment');
 
 var TokenSchema = new Schema({
   user: {type: Schema.Types.ObjectId, ref: 'User'},
@@ -16,9 +17,7 @@ TokenSchema.pre('save', function(next) {
   var Token = mongoose.model('Token');
 
   if (!this.expiration) {
-    var expiration = new Date();
-    expiration.setDate(expiration.getDate() + 30);
-    this.expiration = expiration;
+    this.expiration = moment().add(1, 'week');
   }
 
   Token
