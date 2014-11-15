@@ -7,7 +7,6 @@ var express = require('express'),
   morgan = require('morgan'),
   bodyParser = require('body-parser'),
   methodOverride = require('method-override'),
-  cookieParser = require('cookie-parser'),
   passport = require('passport'),
   config = require('./config'),
   path = require('path');
@@ -63,9 +62,6 @@ module.exports = function() {
 
   // Enable jsonp
   app.enable('jsonp callback');
-
-  // CookieParser should be above session
-  app.use(cookieParser());
 
   // use passport session
   app.use(passport.initialize());
