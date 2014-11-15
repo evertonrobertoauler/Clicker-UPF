@@ -67,7 +67,7 @@
 
       it('should return 401 Unauthorized', function(done) {
         request(this.app)
-          .get('/api/v1/test')
+          .get('/api/v1/user')
           .expect('Content-Type', /json/)
           .expect(401)
           .end(function(err, res) {
@@ -78,6 +78,16 @@
 
             done();
           });
+      });
+
+      it('should return 403 Forbidden', function(done) {
+        should.exist(auth.token.accessToken);
+
+        request(this.app)
+          .get('/api/v1/professor/classrooms')
+          .set('Authorization', 'Bearer ' + auth.token.accessToken)
+          .expect(403)
+          .end(done);
       });
 
       it('should be authenticated', function(done) {

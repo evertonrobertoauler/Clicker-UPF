@@ -2,7 +2,7 @@
 
 angular.module('openpiApp')
   .factory('KnowledgeTests', function($resource, API_URL) {
-    var KnowledgeTests = $resource(API_URL + 'knowledge/tests/:id/', {id: '@_id'}, {
+    var KnowledgeTests = $resource(API_URL + 'professor/knowledge/tests/:id/', {id: '@_id'}, {
       query: {method: 'GET'},
       insert: {method: 'POST'},
       update: {method: 'PATCH'},

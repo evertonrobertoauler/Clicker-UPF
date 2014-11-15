@@ -2,7 +2,7 @@
 
 angular.module('openpiApp')
   .factory('Classrooms', function($resource, API_URL) {
-    var Classrooms = $resource(API_URL + 'classrooms/:id/', {id: '@_id'}, {
+    var Classrooms = $resource(API_URL + 'professor/classrooms/:id/', {id: '@_id'}, {
       query: {method: 'GET'},
       insert: {method: 'POST'},
       update: {method: 'PUT'},

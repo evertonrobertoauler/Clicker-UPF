@@ -35,7 +35,7 @@ exports.create = function(user) {
 exports.createTemporary = function(user) {
   var token = new Token({user: user});
 
-  queries.exec(token, 'save').then(function() {
+  return queries.exec(token, 'save').then(function() {
     token.refreshToken = createHash({id: token._id}, {expiresInMinutes: 1});
     return queries.exec(token, 'save');
   });

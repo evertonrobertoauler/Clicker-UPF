@@ -11,11 +11,12 @@ module.exports = function(app) {
   var knowledgeTests = require('./controller.api.knowledgeTests');
 
   var express = require('express');
-  var router = express.Router();
+  var api = express.Router();
+  var professor = express.Router();
 
-  router.use(token.middleware);
+  api.use(token.middleware);
 
-  router.use(function(req, res, next){
+  api.use(function(req, res, next) {
     if (req.query.q) {
       req.query = JSON.parse(req.query.q);
     }
@@ -23,29 +24,38 @@ module.exports = function(app) {
     next();
   });
 
-  router.get('/user', profile.me);
-  router.put('/user', profile.update);
-  router.delete('/user/accounts', auth.removeOAuthProvider);
+  api.get('/user', profile.me);
+  api.put('/user', profile.update);
+  api.delete('/user/accounts', auth.removeOAuthProvider);
 
-  router.get('/students', students.list);
+  professor.use(function(req, res, next) {
+    if (req.user.roles.indexOf('professor') === -1) {
+      res.status(403).send();
+    } else {
+      next();
+    }
+  });
 
-  router.get('/classrooms', classrooms.list);
-  router.post('/classrooms', classrooms.insert);
-  router.get('/classrooms/:id', classrooms.get);
-  router.put('/classrooms/:id', classrooms.update);
-  router.delete('/classrooms/:id', classrooms.delete);
+  professor.get('/students', students.list);
 
-  router.get('/questions', questions.list);
-  router.post('/questions', questions.insert);
-  router.get('/questions/:id', questions.get);
-  router.put('/questions/:id', questions.update);
-  router.delete('/questions/:id', questions.delete);
+  professor.get('/classrooms', classrooms.list);
+  professor.post('/classrooms', classrooms.insert);
+  professor.get('/classrooms/:id', classrooms.get);
+  professor.put('/classrooms/:id', classrooms.update);
+  professor.delete('/classrooms/:id', classrooms.delete);
 
-  router.get('/knowledge/tests', knowledgeTests.list);
-  router.post('/knowledge/tests', knowledgeTests.insert);
-  router.get('/knowledge/tests/:id', knowledgeTests.get);
-  router.patch('/knowledge/tests/:id', knowledgeTests.update);
-  router.delete('/knowledge/tests/:id', knowledgeTests.delete);
+  professor.get('/questions', questions.list);
+  professor.post('/questions', questions.insert);
+  professor.get('/questions/:id', questions.get);
+  professor.put('/questions/:id', questions.update);
+  professor.delete('/questions/:id', questions.delete);
 
-  app.use('/api/v1', router);
+  professor.get('/knowledge/tests', knowledgeTests.list);
+  professor.post('/knowledge/tests', knowledgeTests.insert);
+  professor.get('/knowledge/tests/:id', knowledgeTests.get);
+  professor.patch('/knowledge/tests/:id', knowledgeTests.update);
+  professor.delete('/knowledge/tests/:id', knowledgeTests.delete);
+
+  api.use('/professor', professor);
+  app.use('/api/v1', api);
 };
