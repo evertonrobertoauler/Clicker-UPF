@@ -74,15 +74,26 @@ module.exports = function(grunt, done) {
     };
   };
 
-  var createTokens = function() {
+  var createTokens = function(users) {
     return Q.all(users.map(token.create));
   };
 
   dropCollections()
     .then(saveList(users))
+    .then(function(users){
+      question.professor = users[0];
+      classroom.professor = users[0];
+      classroom.students = users.slice(1);
+      knowledgeTest.professor = users[0];
+      return users;
+    })
     .then(createTokens)
     .then(saveList([question, classroom]))
-    .then(saveList([knowledgeTest]))
+    .then(function(data){
+      knowledgeTest.question = data[0];
+      knowledgeTest.classroom = data[1];
+      return queries.exec(knowledgeTest, 'save');
+    })
     .then(function() {
       grunt.log.ok('Database successfully initialized.');
       mongoose.disconnect(done);
