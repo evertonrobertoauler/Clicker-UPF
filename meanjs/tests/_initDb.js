@@ -19,6 +19,7 @@ module.exports = function(grunt, done) {
   var Question = mongoose.model('Question');
   var Classroom = mongoose.model('Classroom');
   var KnowledgeTest = mongoose.model('KnowledgeTest');
+  var Task = mongoose.model('Task');
 
   var baseUser = {
     firstName: 'Full',
@@ -64,7 +65,7 @@ module.exports = function(grunt, done) {
 
   var dropCollections = function() {
     var drop = function(c) { return queries.exec(c.find().remove()); };
-    var collections = [User, Token, Question, Classroom, KnowledgeTest];
+    var collections = [User, Token, Question, Classroom, KnowledgeTest, Task];
     return Q.all(collections.map(drop));
   };
 

@@ -10,6 +10,12 @@
   var Question = mongoose.model('Question');
   var Q = require('q');
   var _ = require('lodash');
+  var task = require('./tasks');
+
+  var scheduleTasks = function(kt) {
+    task.schedule('openKnowledgeTest', [kt._id], kt.start);
+    task.schedule('closeKnowledgeTest', [kt._id], kt.end);
+  };
 
   var parseInsert = function(req) {
     return (new parser.Insert(req.body)).validate();
@@ -37,7 +43,7 @@
   exports.list = function(req, res) {
 
     var filter = queries.filter(req.query);
-    filter.where = {'professor._id': req.user._id};
+    filter.where = _.merge(req.query.where || {}, {'professor._id': req.user._id});
 
     queries.findList(KnowledgeTest, filter)
       .then(function(data) {
@@ -62,8 +68,9 @@
         knowledgeTest.question = data[2];
         return queries.exec(knowledgeTest, 'save');
       })
-      .then(function(data) {
-        res.status(201).jsonp(data);
+      .then(function(knowledgeTest) {
+        scheduleTasks(knowledgeTest);
+        res.status(201).jsonp(knowledgeTest);
       })
       .fail(function(err) {
         console.trace(err);
@@ -89,6 +96,7 @@
         return queries.exec(knowledgeTest, 'save');
       })
       .then(function(knowledgeTest) {
+        scheduleTasks(knowledgeTest);
         res.status(202).jsonp(knowledgeTest);
       })
       .fail(function(err) {
