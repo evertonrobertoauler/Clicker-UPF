@@ -4,7 +4,7 @@ require('./config/init')();
 
 var config = require('./config/config');
 
-require('./config/mongo')(config);
+require('./config/mongodb')(config);
 
 // Init the express application
 var app = require('./config/express')();

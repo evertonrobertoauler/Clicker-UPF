@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var answer = {
   _id: {type: Schema.Types.ObjectId, ref: 'User'},
-  name: String,
+  displayName: String,
   answer: Number,
   triedAnswers: [Number],
 };
@@ -26,7 +26,7 @@ var KnowledgeTestSchema = new Schema({
   end: Date,
   professor: {
     _id: {type: Schema.Types.ObjectId, ref: 'User'},
-    name: String
+    displayName: String
   },
   created: {
     type: Date,

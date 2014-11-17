@@ -3,7 +3,7 @@
 module.exports = function(grunt, done) {
 
   require('./../config/init')();
-  require('./../config/mongo')(require('./../config/config'));
+  require('./../config/mongodb')(require('./../config/config'));
   require('./../config/express')();
   require('./../config/passport')();
 
