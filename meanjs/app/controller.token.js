@@ -6,6 +6,7 @@ var Token = require('./model.token');
 var config = require('./../config/config');
 var queries = require('./queries');
 var Q = require('q');
+var serializeUser = require('./../app/serializer.user');
 
 var createHash = function(obj, options) {
   return jwt.sign(obj, config.sessionSecret, options);
@@ -51,7 +52,7 @@ exports.refreshToken = function(req, res) {
 
     queries.exec(Token.findOne(filter).populate('user'))
       .then(function(token) {
-        return Q.all([token.user, exports.create(token.user), queries.exec(token, 'remove')]);
+        return Q.all([serializeUser(token.user), exports.create(token.user), queries.exec(token, 'remove')]);
       })
       .then(function(data) {
         res.jsonp({user: data[0], token: data[1]});

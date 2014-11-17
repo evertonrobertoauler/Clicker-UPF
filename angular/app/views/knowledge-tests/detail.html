@@ -8,12 +8,12 @@
     </h1>
     <small class="list-group-item-text">
       Período: {{ kt.start | date : 'dd/MM/yyyy HH:mm'}} -
-      {{ kt.end | date : 'dd/MM/yyyy HH:mm'}} -
-      <countdown end="kt.end"></countdown>
+      {{ kt.end | date : 'dd/MM/yyyy HH:mm'}}
+      <span ng-if="kt.open"> - <countdown end="kt.end"></countdown></span>
       <a class="btn btn-primary btn-xs" ng-click="add(1)">+ 1</a>
       <a class="btn btn-primary btn-xs" ng-click="add(2)">+ 2</a>
       <a class="btn btn-primary btn-xs" ng-click="add(3)">+ 3</a>
-      <a class="btn btn-danger btn-xs" ng-click="add(-1)">Parar</a>
+      <a class="btn btn-danger btn-xs" ng-if="kt.open" ng-click="add(-1)">Parar</a>
     </small>
   </div>
   <div class="progress text-center">

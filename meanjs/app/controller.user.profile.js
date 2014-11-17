@@ -2,7 +2,8 @@
 
 var _ = require('lodash'),
   parser = require('./parser.user'),
-  queries = require('./queries');
+  queries = require('./queries'),
+  serializeUser = require('./../app/serializer.user');
 
 var parseUpdate = function(req) {
   return (new parser.Update(req.body)).validate();
@@ -21,9 +22,7 @@ exports.update = function(req, res) {
       return queries.exec(user, 'save');
     })
     .then(function(user) {
-      user.password = undefined;
-      user.salt = undefined;
-      res.status(202).jsonp(user);
+      res.status(202).jsonp(serializeUser(user));
     })
     .fail(function(err) {
       console.trace(err);
@@ -35,5 +34,5 @@ exports.update = function(req, res) {
  * Send User
  */
 exports.me = function(req, res) {
-  res.jsonp(req.user || null);
+  res.jsonp(serializeUser(req.user));
 };

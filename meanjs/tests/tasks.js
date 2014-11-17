@@ -20,7 +20,7 @@ describe('Task Schedule Unit Tests:', function() {
       .fail(done);
   });
 
-  it('should have 2 task scheduled', function(done) {
+  it('should have 2 tasks scheduled', function(done) {
     queries.exec(Task.find().count())
       .then(function(count) {
         should(count).be.exactly(2);

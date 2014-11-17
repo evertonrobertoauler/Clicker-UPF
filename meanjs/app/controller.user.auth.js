@@ -10,7 +10,8 @@ var errorHandler = require('./controller.errors'),
   passport = require('passport'),
   User = mongoose.model('User'),
   token = require('./controller.token'),
-  config = require('./../config/config');
+  config = require('./../config/config'),
+  serializeUser = require('./../app/serializer.user');
 
 var parseInsert = function(req) {
   return (new parser.Insert(req.body)).validate();
@@ -28,12 +29,9 @@ exports.signup = function(req, res) {
       return queries.exec(user, 'save');
     })
     .then(function(user) {
-      user.password = undefined;
-      user.salt = undefined;
-
       token.create(user)
         .then(function(newToken) {
-          res.jsonp({user: user.toObject(), token: newToken});
+          res.jsonp({user: serializeUser(user), token: newToken});
         });
     })
     .fail(function(err) {
@@ -52,13 +50,9 @@ exports.signin = function(req, res, next) {
     if (err || !user) {
       res.status(400).send(info);
     } else {
-      // Remove sensitive data before login
-      user.password = undefined;
-      user.salt = undefined;
-
       token.create(user)
         .then(function(newToken) {
-          res.jsonp({user: user.toObject(), token: newToken});
+          res.jsonp({user: serializeUser(user), token: newToken});
         });
     }
   })(req, res, next);
@@ -176,7 +170,7 @@ exports.removeOAuthProvider = function(req, res) {
           message: errorHandler.getErrorMessage(err)
         });
       } else {
-        res.jsonp(user);
+        res.jsonp(serializeUser(user));
       }
     });
   }
