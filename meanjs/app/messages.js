@@ -36,7 +36,7 @@ exports.send = function(userId, name, data) {
 };
 
 exports.recv = function(userId, callback) {
-  getWorker(userId).then(function(worker) {
+  return getWorker(userId).then(function(worker) {
     worker.on('readable', function() {
       var msg = JSON.parse(worker.read());
       callback(msg.name, msg.data);
