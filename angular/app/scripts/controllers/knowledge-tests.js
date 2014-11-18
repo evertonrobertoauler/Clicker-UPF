@@ -14,8 +14,8 @@ angular
       $scope.kt = KnowledgeTests.get({id: $stateParams._id});
 
       $scope.kt.$promise.then(function(kt) {
-        kt.start = new Date(kt.start);
-        kt.end = new Date(kt.end);
+        kt.start = moment(kt.start).toDate();
+        kt.end = moment(kt.end).toDate();
 
         if ($state.current.name === 'knowledge-tests.detail') {
           $scope.populateAnswersChart($scope.kt);
@@ -24,18 +24,15 @@ angular
       });
     } else {
       $scope.kt = new KnowledgeTests();
-      $scope.kt.start = new Date();
-
-      var end = new Date();
-      end.setMinutes(end.getMinutes() + 5);
-      $scope.kt.end = end;
+      $scope.kt.start = moment().toDate();
+      $scope.kt.end = moment().add(5, 'minutes').toDate();
     }
 
     $scope.updateKt = function(kt) {
       $scope.$applyAsync(function() {
         $scope.kt = kt;
-        $scope.kt.start = new Date($scope.kt.start);
-        $scope.kt.end = new Date($scope.kt.end);
+        $scope.kt.start = moment($scope.kt.start).toDate();
+        $scope.kt.end = moment($scope.kt.end).toDate();
         $scope.populateAnswersChart($scope.kt);
         $scope.populateCorrectAnswerChart($scope.kt);
       });
