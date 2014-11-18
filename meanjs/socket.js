@@ -15,7 +15,7 @@
 
   var messages = require('./app/messages');
 
-  var users = {};
+  var USERS = {};
 
   var io = require('socket.io')(3001);
 
@@ -23,27 +23,35 @@
     jwt.verify(socket.request._query.token, config.sessionSecret, function(err, decoded) {
       if (err) {
         socket.disconnect();
-      } else if (users[decoded.user]) {
-        users[decoded.user].push(socket);
       } else {
-
         var userId = decoded.user;
-
+        console.log(decoded.user, 'connected');
         messages.send(userId, 'this', {hello: 'world'});
 
-        console.log(userId, 'connected');
+        if (USERS[userId]) {
+          USERS[userId].push(socket);
+        } else {
 
-        messages.recv(userId, function(name, data) {
-          console.log(name, data);
-          io.emit(name, data);
-        });
+          USERS[userId] = [socket];
+
+          messages.recv(userId, function(name, data) {
+            USERS[userId].forEach(function(s) {
+              console.log(name, data);
+              s.emit(name, data);
+            });
+          });
+        }
 
         socket.on('disconnect', function() {
           console.log(userId, 'disconnected');
-          _.pull(users[userId], socket);
+          console.log(USERS[userId].length);
 
-          if (!users[userId] || !users[userId].length) {
-            delete users[userId];
+          _.pull(USERS[userId], socket);
+
+          console.log(USERS[userId].length);
+
+          if (!USERS[userId] || !USERS[userId].length) {
+            delete USERS[userId];
             messages.stop(userId);
           }
         });
@@ -53,8 +61,8 @@
 
   process.on('uncaughtException', function(err) {
     console.log('Caught exception: ' + err);
-    setTimeout(function(){
+    setTimeout(function() {
       messages.reconnect();
-    }, 5000);
+    }, 15000);
   });
 })();
