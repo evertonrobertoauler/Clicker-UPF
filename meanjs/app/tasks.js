@@ -5,15 +5,26 @@ var mongoose = require('mongoose');
 var moment = require('moment');
 var Task = mongoose.model('Task');
 var KnowledgeTest = mongoose.model('KnowledgeTest');
+var Classroom = mongoose.model('Classroom');
 var queries = require('./queries');
+var _ = require('lodash');
+var Q = require('q');
 
 var tasks = {};
 
 tasks.openKnowledgeTest = function(id) {
+  var kt;
   return queries.exec(KnowledgeTest.findById(id))
-    .then(function(kt) {
+    .then(function(knowledgeTest) {
+      kt = knowledgeTest;
+      return queries.exec(Classroom.findById(kt && kt.classroom._id));
+    })
+    .then(function(classroom) {
       var now = moment().toDate();
-      if (kt && kt.start <= now && kt.end >= now) {
+      if (classroom && kt && kt.start <= now && kt.end >= now) {
+        var identity = function(u) { return u._id.toString(); };
+        var all = kt.answers.concat(classroom.students);
+        kt.answers = _.uniq(all, false, identity);
         kt.open = true;
         return queries.exec(kt, 'save');
       }
@@ -27,6 +38,30 @@ tasks.closeKnowledgeTest = function(id) {
       if (kt && kt.end <= now) {
         kt.open = false;
         return queries.exec(kt, 'save');
+      }
+    });
+};
+
+tasks.updateOpenKnowledgeTest = function(classroom) {
+  var filter = {'classroom._id': classroom, open: true};
+
+  var promises = [
+    queries.exec(Classroom.findById(classroom)),
+    queries.exec(KnowledgeTest.find(filter))
+  ];
+
+  return Q.all(promises)
+    .then(function(data) {
+      if (_.every(data)) {
+        var classroom = data[0];
+        var knowledgeTests = data[1];
+        var identity = function(u) { return u._id.toString(); };
+
+        return Q.all(knowledgeTests.map(function(kt) {
+          var all = kt.answers.concat(classroom.students);
+          kt.answers = _.uniq(all, false, identity);
+          return queries.exec(kt, 'save');
+        }));
       }
     });
 };
@@ -50,6 +85,6 @@ exports.init = function() {
 };
 
 exports.schedule = function(name, args, date) {
-  var task = new Task({name: name, args: args, date: date});
+  var task = new Task({name: name, args: args, date: (date || moment())});
   queries.exec(task, 'save').then(scheduleJob);
 };

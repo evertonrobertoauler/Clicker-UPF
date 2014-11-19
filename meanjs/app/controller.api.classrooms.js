@@ -8,6 +8,7 @@
   var User = require('mongoose').model('User');
   var Q = require('q');
   var _ = require('lodash');
+  var task = require('./tasks');
 
   var getStudents = function(classroom) {
     var query = User.find({_id: {$in: classroom.students || []}}).select('displayName');
@@ -77,6 +78,7 @@
         return queries.exec(classroom, 'save');
       })
       .then(function(classroom) {
+        task.schedule('updateOpenKnowledgeTest', [classroom._id]);
         res.status(202).jsonp(classroom);
       })
       .fail(function(err) {

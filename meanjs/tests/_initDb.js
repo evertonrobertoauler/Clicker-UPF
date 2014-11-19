@@ -84,7 +84,7 @@ module.exports = function(grunt, done) {
     .then(function(users){
       question.professor = users[0];
       classroom.professor = users[0];
-      classroom.students = users.slice(1);
+      classroom.students = users.slice(2);
       knowledgeTest.professor = users[0];
       return users;
     })
