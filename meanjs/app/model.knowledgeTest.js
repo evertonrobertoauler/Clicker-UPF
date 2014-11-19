@@ -15,6 +15,7 @@ var KnowledgeTestSchema = new Schema({
     _id: {type: Schema.Types.ObjectId, ref: 'Classroom'},
     name: String
   },
+  number: Number,
   question: {
     _id: {type: Schema.Types.ObjectId, ref: 'Question'},
     text: String,

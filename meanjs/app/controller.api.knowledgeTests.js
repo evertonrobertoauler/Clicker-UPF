@@ -13,6 +13,7 @@
   var task = require('./tasks');
 
   var scheduleTasks = function(kt) {
+    task.schedule('updateKnowledgeTestNumber', [kt.start, kt.professor._id, kt.classroom._id]);
     task.schedule('openKnowledgeTest', [kt._id], kt.start);
     task.schedule('closeKnowledgeTest', [kt._id], kt.end);
   };

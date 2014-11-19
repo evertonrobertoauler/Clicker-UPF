@@ -83,6 +83,7 @@ angular
 
               if (value) {
                 value.setSeconds(0);
+                value.setMilliseconds(0);
                 picker.setLocalDate(value);
               }
             }

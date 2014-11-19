@@ -42,6 +42,27 @@ tasks.closeKnowledgeTest = function(id) {
     });
 };
 
+tasks.updateKnowledgeTestNumber = function(date, professor, classroom) {
+
+  var date1 = moment(date).startOf('day');
+  var date2 = moment(date).add(1, 'day').startOf('day');
+
+  var filter = {
+    start: {$gte: date1.toDate(), $lt: date2.toDate()},
+    'classroom._id': classroom,
+    'professor._id': professor,
+  };
+
+  return queries.exec(KnowledgeTest.find(filter).sort('start _id'))
+    .then(function(knowledgeTests){
+      var number = 1;
+      return Q.all(knowledgeTests.map(function(kt){
+        kt.number = number++;
+        return queries.exec(kt, 'save');
+      }));
+    });
+};
+
 tasks.updateOpenKnowledgeTest = function(classroom) {
   var filter = {'classroom._id': classroom, open: true};
 
