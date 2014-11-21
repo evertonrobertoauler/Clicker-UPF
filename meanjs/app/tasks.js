@@ -55,10 +55,12 @@ tasks.updateKnowledgeTestNumber = function(date, professor, classroom) {
 
   return queries.exec(KnowledgeTest.find(filter).sort('start _id'))
     .then(function(knowledgeTests){
-      var number = 1;
+      var number = 0;
       return Q.all(knowledgeTests.map(function(kt){
-        kt.number = number++;
-        return queries.exec(kt, 'save');
+        if (kt.number !== ++number) {
+          kt.number = number;
+          return queries.exec(kt, 'save');
+        }
       }));
     });
 };

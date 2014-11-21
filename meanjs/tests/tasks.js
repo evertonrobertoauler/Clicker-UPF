@@ -121,7 +121,7 @@ describe('Task Schedule Unit Tests:', function() {
               done();
             })
             .fail(done);
-        }, 15);
+        }, 35);
       })
       .fail(done);
   });
