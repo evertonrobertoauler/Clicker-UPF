@@ -14,115 +14,85 @@ var should = require('should'),
 var knowledgeTest;
 
 describe('Task Schedule Unit Tests:', function() {
-  before(function(done) {
-    queries.exec(KnowledgeTest.findOne())
-      .then(function(data) {
-        knowledgeTest = data;
-        done();
-      })
-      .fail(done);
-  });
+  before(Q.async(function* () {
+    knowledgeTest = yield queries.exec(KnowledgeTest.findOne());
+  }));
 
-  it('should have 2 tasks scheduled', function(done) {
-    queries.exec(Task.find().count())
-      .then(function(count) {
-        should(count).be.exactly(2);
-        done();
-      })
-      .fail(done);
-  });
+  it('should have 2 tasks scheduled', Q.async(function* () {
+    var count = yield queries.exec(Task.find().count());
+    should(count).be.exactly(2);
+  }));
 
-  it('should open the knowledge test', function(done) {
+  it('should open the knowledge test', Q.async(function* () {
     knowledgeTest.open = false;
     knowledgeTest.start = moment();
     knowledgeTest.end = moment().add(5, 'seconds');
-    queries.exec(knowledgeTest, 'save')
-      .then(function() {
-        tasks.schedule('openKnowledgeTest', [knowledgeTest._id]);
+    knowledgeTest = yield queries.exec(knowledgeTest, 'save');
 
-        setTimeout(function() {
-          queries.exec(KnowledgeTest.findById(knowledgeTest._id))
-            .then(function(kt) {
-              should(kt.open).be.equal(true);
-              should(kt.answers.length).be.equal(2);
-              knowledgeTest = kt;
-              done();
-            })
-            .fail(done);
-        }, 15);
-      })
-      .fail(done);
-  });
+    tasks.schedule('openKnowledgeTest', [knowledgeTest._id]);
 
-  it('should close the knowledge test', function(done) {
+    yield Q.delay(0, 15);
+
+    knowledgeTest = yield queries.exec(KnowledgeTest.findById(knowledgeTest._id));
+
+    should(knowledgeTest.open).be.equal(true);
+    should(knowledgeTest.answers.length).be.equal(2);
+  }));
+
+  it('should close the knowledge test', Q.async(function* () {
     knowledgeTest.open = true;
     knowledgeTest.end = moment().add(1, 'milliseconds');
-    queries.exec(knowledgeTest, 'save')
-      .then(function() {
-        tasks.schedule('closeKnowledgeTest', [knowledgeTest._id], knowledgeTest.end);
+    knowledgeTest = yield queries.exec(knowledgeTest, 'save');
 
-        setTimeout(function() {
-          queries.exec(KnowledgeTest.findById(knowledgeTest._id))
-            .then(function(knowledgeTest) {
-              should(knowledgeTest.open).be.equal(false);
-              done();
-            })
-            .fail(done);
-        }, 25);
-      })
-      .fail(done);
-  });
+    tasks.schedule('closeKnowledgeTest', [knowledgeTest._id], knowledgeTest.end);
 
-  it('should reopen the knowledge test', function(done) {
+    yield Q.delay(0, 10);
+
+    knowledgeTest = yield queries.exec(KnowledgeTest.findById(knowledgeTest._id));
+
+    should(knowledgeTest.open).be.equal(false);
+  }));
+
+  it('should reopen the knowledge test', Q.async(function* () {
     knowledgeTest.open = false;
     knowledgeTest.end = moment().add(5, 'seconds');
     knowledgeTest.answers[1].answer = 1;
     knowledgeTest.answers[1].triedAnswers = [1];
-    queries.exec(knowledgeTest, 'save')
-      .then(function() {
-        tasks.schedule('openKnowledgeTest', [knowledgeTest._id]);
 
-        setTimeout(function() {
-          queries.exec(KnowledgeTest.findById(knowledgeTest._id))
-            .then(function(kt) {
-              should(kt.open).be.equal(true);
-              should(kt.answers.length).be.equal(2);
-              should(kt.answers[1].answer).be.equal(1);
-              done();
-            })
-            .fail(done);
-        }, 15);
-      })
-      .fail(done);
-  });
+    knowledgeTest = yield queries.exec(knowledgeTest, 'save');
 
-  it('should update open knowledge test when classroom changes', function(done) {
+    tasks.schedule('openKnowledgeTest', [knowledgeTest._id]);
+
+    yield Q.delay(0, 15);
+
+    knowledgeTest = yield queries.exec(KnowledgeTest.findById(knowledgeTest._id));
+
+    should(knowledgeTest.open).be.equal(true);
+    should(knowledgeTest.answers.length).be.equal(2);
+    should(knowledgeTest.answers[1].answer).be.equal(1);
+  }));
+
+  it('should update open knowledge test when classroom changes', Q.async(function* () {
 
     var promises = [
       queries.exec(Classroom.findOne()),
       queries.exec(User.findOne({email: 'student1@test.com'}))
     ];
 
-    var classroom;
+    var data = yield Q.all(promises);
 
-    Q.all(promises)
-      .then(function(data){
-        classroom = data[0];
-        classroom.students.push(data[1]);
-        return queries.exec(classroom, 'save');
-      })
-      .then(function(){
-        tasks.schedule('updateOpenKnowledgeTest', [classroom._id]);
-        setTimeout(function() {
-          queries.exec(KnowledgeTest.findById(knowledgeTest._id))
-            .then(function(kt) {
-              should(kt.answers.length).be.equal(3);
-              should(kt.answers[1].answer).be.equal(1);
-              done();
-            })
-            .fail(done);
-        }, 35);
-      })
-      .fail(done);
-  });
+    var classroom = data[0];
+    classroom.students.push(data[1]);
+
+    classroom = yield queries.exec(classroom, 'save');
+
+    tasks.schedule('updateOpenKnowledgeTest', [classroom._id]);
+
+    yield Q.delay(0, 20);
+
+    knowledgeTest = yield queries.exec(KnowledgeTest.findById(knowledgeTest._id));
+
+    should(knowledgeTest.answers.length).be.equal(3);
+    should(knowledgeTest.answers[1].answer).be.equal(1);
+  }));
 });

@@ -21,7 +21,7 @@ module.exports = function(grunt, done) {
   var KnowledgeTest = mongoose.model('KnowledgeTest');
   var Task = mongoose.model('Task');
 
-  Q.async(function* () {
+  var promise = Q.async(function* () {
 
     var drop = function(c) { return queries.exec(c.find().remove()); };
     var collections = [User, Token, Question, Classroom, KnowledgeTest, Task];
@@ -80,11 +80,16 @@ module.exports = function(grunt, done) {
     });
 
     return queries.exec(knowledgeTest, 'save');
-  })().then(function() {
-    grunt.log.ok('Database successfully initialized.');
-    mongoose.disconnect(done);
-  }).fail(function(err) {
-    grunt.log.error(err);
-    mongoose.disconnect(done);
   });
+
+  promise()
+    .then(function() {
+      grunt.log.ok('Database successfully initialized.');
+    })
+    .fail(function(err) {
+      grunt.log.error(err);
+    })
+    .fin(function() {
+      mongoose.disconnect(done);
+    });
 };
