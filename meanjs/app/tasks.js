@@ -12,37 +12,31 @@ var Q = require('q');
 
 var tasks = {};
 
-tasks.openKnowledgeTest = function(id) {
-  var kt;
-  return queries.exec(KnowledgeTest.findById(id))
-    .then(function(knowledgeTest) {
-      kt = knowledgeTest;
-      return queries.exec(Classroom.findById(kt && kt.classroom._id));
-    })
-    .then(function(classroom) {
-      var now = moment().toDate();
-      if (classroom && kt && kt.start <= now && kt.end >= now) {
-        var identity = function(u) { return u._id.toString(); };
-        var all = kt.answers.concat(classroom.students);
-        kt.answers = _.uniq(all, false, identity);
-        kt.open = true;
-        return queries.exec(kt, 'save');
-      }
-    });
+tasks.openKnowledgeTest = function* (id) {
+
+  var kt = yield queries.exec(KnowledgeTest.findById(id));
+  var classroom = yield queries.exec(Classroom.findById(kt && kt.classroom._id));
+  var now = moment().toDate();
+
+  if (classroom && kt && kt.start <= now && kt.end >= now) {
+    var identity = function(u) { return u._id.toString(); };
+    var all = kt.answers.concat(classroom.students);
+    kt.answers = _.uniq(all, false, identity);
+    kt.open = true;
+    yield queries.exec(kt, 'save');
+  }
 };
 
-tasks.closeKnowledgeTest = function(id) {
-  return queries.exec(KnowledgeTest.findById(id))
-    .then(function(kt) {
-      var now = moment().toDate();
-      if (kt && kt.end <= now) {
-        kt.open = false;
-        return queries.exec(kt, 'save');
-      }
-    });
+tasks.closeKnowledgeTest = function* (id) {
+  var kt = yield queries.exec(KnowledgeTest.findById(id));
+  var now = moment().toDate();
+  if (kt && kt.end <= now) {
+    kt.open = false;
+    yield queries.exec(kt, 'save');
+  }
 };
 
-tasks.updateKnowledgeTestNumber = function(date, professor, classroom) {
+tasks.updateKnowledgeTestNumber = function* (date, professor, classroom) {
 
   var date1 = moment(date).startOf('day');
   var date2 = moment(date).add(1, 'day').startOf('day');
@@ -53,45 +47,43 @@ tasks.updateKnowledgeTestNumber = function(date, professor, classroom) {
     'professor._id': professor,
   };
 
-  return queries.exec(KnowledgeTest.find(filter).sort('start _id'))
-    .then(function(knowledgeTests){
-      var number = 0;
-      return Q.all(knowledgeTests.map(function(kt){
-        if (kt.number !== ++number) {
-          kt.number = number;
-          return queries.exec(kt, 'save');
-        }
-      }));
-    });
+  var knowledgeTests = yield queries.exec(KnowledgeTest.find(filter).sort('start _id'));
+  var number = 0;
+
+  yield Q.all(knowledgeTests.map(function(kt){
+    if (kt.number !== ++number) {
+      kt.number = number;
+      return queries.exec(kt, 'save');
+    }
+  }));
 };
 
-tasks.updateOpenKnowledgeTest = function(classroom) {
-  var filter = {'classroom._id': classroom, open: true};
+tasks.updateOpenKnowledgeTest = function* (classID) {
+  var filter = {'classroom._id': classID, open: true};
 
   var promises = [
-    queries.exec(Classroom.findById(classroom)),
+    queries.exec(Classroom.findById(classID)),
     queries.exec(KnowledgeTest.find(filter))
   ];
 
-  return Q.all(promises)
-    .then(function(data) {
-      if (_.every(data)) {
-        var classroom = data[0];
-        var knowledgeTests = data[1];
-        var identity = function(u) { return u._id.toString(); };
+  var data = yield Q.all(promises);
 
-        return Q.all(knowledgeTests.map(function(kt) {
-          var all = kt.answers.concat(classroom.students);
-          kt.answers = _.uniq(all, false, identity);
-          return queries.exec(kt, 'save');
-        }));
-      }
-    });
+  if (_.every(data)) {
+    var classroom = data[0];
+    var knowledgeTests = data[1];
+    var identity = function(u) { return u._id.toString(); };
+
+    yield Q.all(knowledgeTests.map(function(kt) {
+      var all = kt.answers.concat(classroom.students);
+      kt.answers = _.uniq(all, false, identity);
+      return queries.exec(kt, 'save');
+    }));
+  }
 };
 
 var scheduleJob = function(task) {
   schedule.scheduleJob(task.date, function() {
-    tasks[task.name].apply(this, task.args)
+    Q.async(tasks[task.name]).apply(this, task.args)
       .then(function() {
         return queries.exec(task, 'remove');
       })
