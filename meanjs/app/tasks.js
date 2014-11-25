@@ -23,7 +23,7 @@ tasks.openKnowledgeTest = function* (id) {
     var all = kt.answers.concat(classroom.students);
     kt.answers = _.uniq(all, false, identity);
     kt.open = true;
-    yield queries.exec(kt, 'save');
+    return queries.exec(kt, 'save');
   }
 };
 
@@ -32,7 +32,7 @@ tasks.closeKnowledgeTest = function* (id) {
   var now = moment().toDate();
   if (kt && kt.end <= now) {
     kt.open = false;
-    yield queries.exec(kt, 'save');
+    return queries.exec(kt, 'save');
   }
 };
 
@@ -50,7 +50,7 @@ tasks.updateKnowledgeTestNumber = function* (date, professor, classroom) {
   var knowledgeTests = yield queries.exec(KnowledgeTest.find(filter).sort('start _id'));
   var number = 0;
 
-  yield Q.all(knowledgeTests.map(function(kt){
+  return Q.all(knowledgeTests.map(function(kt){
     if (kt.number !== ++number) {
       kt.number = number;
       return queries.exec(kt, 'save');
@@ -73,7 +73,7 @@ tasks.updateOpenKnowledgeTest = function* (classID) {
     var knowledgeTests = data[1];
     var identity = function(u) { return u._id.toString(); };
 
-    yield Q.all(knowledgeTests.map(function(kt) {
+    return Q.all(knowledgeTests.map(function(kt) {
       var all = kt.answers.concat(classroom.students);
       kt.answers = _.uniq(all, false, identity);
       return queries.exec(kt, 'save');
