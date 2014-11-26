@@ -5,6 +5,7 @@
   var request = require('supertest');
   var mongoose = require('mongoose');
   var queries = require('./../app/queries');
+  var Q = require('q');
 
   var User = mongoose.model('User');
   var Token = mongoose.model('Token');
@@ -12,24 +13,19 @@
   var token, professor, students, classroom;
 
   describe('Classrooms Controller Functional Tests:', function() {
-    before(function(done) {
+    before(Q.async(function*() {
       this.app = require('./../server');
 
-      queries.exec(User.findOne({roles: 'professor'}))
-        .then(function(user) {
-          professor = user;
-          return queries.execList([
-            User.find({roles: 'student'}),
-            Token.findOne({user: professor}),
-          ]);
-        })
-        .then(function(data) {
-          students = data[0];
-          token = data[1];
-          done();
-        })
-        .fail(done);
-    });
+      professor = yield queries.exec(User.findOne({roles: 'professor'}));
+
+      var data = yield queries.execList([
+        User.find({roles: 'student'}),
+        Token.findOne({user: professor}),
+      ]);
+
+      students = data[0];
+      token = data[1];
+    }));
 
 
     describe('Professor', function() {
@@ -57,7 +53,7 @@
 
       it('should be able to update a classroom', function(done) {
 
-        classroom.students = classroom.students.slice(1).map(function(s){
+        classroom.students = classroom.students.slice(1).map(function(s) {
           return s._id;
         });
 

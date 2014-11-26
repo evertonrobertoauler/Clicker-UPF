@@ -2,6 +2,7 @@
 
 var should = require('should');
 var parser = require('./../app/parser.classroom');
+var Q = require('q');
 
 /**
  * Unit tests
@@ -9,22 +10,19 @@ var parser = require('./../app/parser.classroom');
 describe('Classroom Parser Unit Tests:', function() {
 
   describe('Save parser', function() {
-    it('should validate', function(done) {
+    it('should validate', Q.async(function*() {
       var classroom = {
         name: 'Classroom name',
         students: ['545abb01ea9c6bd5161278d5', '5463f57d3e1f8ed227a8e94a']
       };
 
-      (new parser.Save(classroom)).validate()
-        .then(function(data) {
-          should.exist(data);
-          should.exist(data.name);
-          should.exist(data.students.length);
-          (data.students.length).should.be.exactly(2);
-          done();
-        })
-        .fail(done);
-    });
+      var data = yield (new parser.Save(classroom)).validate();
+
+      should.exist(data);
+      should.exist(data.name);
+      should.exist(data.students.length);
+      (data.students.length).should.be.exactly(2);
+    }));
 
     it('should not validate', function(done) {
       var classroom = {
@@ -40,20 +38,17 @@ describe('Classroom Parser Unit Tests:', function() {
         .fail(done);
     });
 
-    it('should ignore extra data', function(done) {
+    it('should ignore extra data', Q.async(function*() {
       var classroom = {
         name: 'Classroom name',
         students: ['545abb01ea9c6bd5161278d5', '5463f57d3e1f8ed227a8e94a'],
         extra: {data: 'test'}
       };
 
-      (new parser.Save(classroom)).validate()
-        .then(function(data) {
-          should.exist(data);
-          should.not.exist(data.extra);
-          done();
-        })
-        .fail(done);
-    });
+      var data = yield (new parser.Save(classroom)).validate();
+
+      should.exist(data);
+      should.not.exist(data.extra);
+    }));
   });
 });

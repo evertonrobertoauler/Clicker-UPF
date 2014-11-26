@@ -2,6 +2,7 @@
 
 var should = require('should');
 var parser = require('./../app/parser.knowledgeTest');
+var Q = require('q');
 
 /**
  * Unit tests
@@ -9,7 +10,7 @@ var parser = require('./../app/parser.knowledgeTest');
 describe('KnowledgeTest Parser Unit Tests:', function() {
 
   describe('Insert parser', function() {
-    it('should validate', function(done) {
+    it('should validate', Q.async(function*() {
       var knowledgeTest = {
         question: '5463f57d3e1f8ed227a8e94a',
         classroom: '545abb01ea9c6bd5161278d5',
@@ -17,13 +18,9 @@ describe('KnowledgeTest Parser Unit Tests:', function() {
         end: new Date()
       };
 
-      (new parser.Insert(knowledgeTest)).validate()
-        .then(function(data) {
-          should.exist(data);
-          done();
-        })
-        .fail(done);
-    });
+      var data = yield (new parser.Insert(knowledgeTest)).validate();
+      should.exist(data);
+    }));
 
     it('should not validate', function(done) {
       var knowledgeTest = {
@@ -31,17 +28,16 @@ describe('KnowledgeTest Parser Unit Tests:', function() {
         end: new Date()
       };
 
-      (new parser.Insert(knowledgeTest)).validate()
+      return (new parser.Insert(knowledgeTest)).validate()
         .fail(function(err) {
           should.exist(err);
           should.exist(err.errors.classroom);
           should.exist(err.errors.start);
           done();
-        })
-        .fail(done);
+        });
     });
 
-    it('should ignore extra data', function(done) {
+    it('should ignore extra data', Q.async(function*() {
       var knowledgeTest = {
         question: '5463f57d3e1f8ed227a8e94a',
         classroom: '545abb01ea9c6bd5161278d5',
@@ -50,30 +46,22 @@ describe('KnowledgeTest Parser Unit Tests:', function() {
         extraField: 'extra data',
       };
 
-      (new parser.Insert(knowledgeTest)).validate()
-        .then(function(data) {
-          should.exist(data);
-          should.not.exist(data.extraField);
-          done();
-        })
-        .fail(done);
-    });
+      var data = yield (new parser.Insert(knowledgeTest)).validate();
+      should.exist(data);
+      should.not.exist(data.extraField);
+    }));
   });
 
   describe('Update parser', function() {
-    it('should validate', function(done) {
+    it('should validate', Q.async(function*() {
       var knowledgeTest = {
         start: new Date(),
         end: new Date()
       };
 
-      (new parser.Update(knowledgeTest)).validate()
-        .then(function(data) {
-          should.exist(data);
-          done();
-        })
-        .fail(done);
-    });
+      var data = yield (new parser.Update(knowledgeTest)).validate();
+      should.exist(data);
+    }));
 
     it('should not validate', function(done) {
       var knowledgeTest = {
@@ -89,20 +77,17 @@ describe('KnowledgeTest Parser Unit Tests:', function() {
         .fail(done);
     });
 
-    it('should ignore extra data', function(done) {
+    it('should ignore extra data', Q.async(function*() {
       var knowledgeTest = {
         start: new Date(),
         end: new Date(),
         extraField: 'extra data',
       };
 
-      (new parser.Update(knowledgeTest)).validate()
-        .then(function(data) {
-          should.exist(data);
-          should.not.exist(data.extraField);
-          done();
-        })
-        .fail(done);
-    });
+      var data = yield (new parser.Update(knowledgeTest)).validate();
+
+      should.exist(data);
+      should.not.exist(data.extraField);
+    }));
   });
 });

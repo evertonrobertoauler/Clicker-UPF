@@ -4,13 +4,8 @@ var should = require('should');
 var messages = require('./../app/messages');
 
 describe('Message Service Functional Tests:', function() {
-  it('should send message', function(done) {
-
-    var data = {hello: 'World'};
-
-    messages.send('testQueue', 'testName', data)
-      .then(done)
-      .fail(done);
+  it('should send message', function() {
+    return messages.send('testQueue', 'testName', {hello: 'World'});
   });
 
   it('should receive message', function(done) {

@@ -5,6 +5,7 @@
   var request = require('supertest');
   var mongoose = require('mongoose');
   var queries = require('./../app/queries');
+  var Q = require('q');
 
   var User = mongoose.model('User');
   var Token = mongoose.model('Token');
@@ -12,20 +13,12 @@
   var token, professor;
 
   describe('Students Controller Functional Tests:', function() {
-    before(function(done) {
+    before(Q.async(function*() {
       this.app = require('./../server');
 
-      queries.exec(User.findOne({roles: 'professor'}))
-        .then(function(data) {
-          professor = data;
-          return queries.exec(Token.findOne({user: professor}));
-        })
-        .then(function(data) {
-          token = data;
-          done();
-        })
-        .fail(done);
-    });
+      professor = yield queries.exec(User.findOne({roles: 'professor'}));
+      token = yield queries.exec(Token.findOne({user: professor}));
+    }));
 
     describe('Professor', function() {
       it('should be able to list his classrooms', function(done) {
