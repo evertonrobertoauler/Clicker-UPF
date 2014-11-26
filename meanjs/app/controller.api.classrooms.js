@@ -30,74 +30,72 @@
   };
 
   exports.list = function(req, res) {
+    Q.spawn(function*() {
+      try {
+        var filter = queries.filter(req.query);
+        filter.where = _.merge(req.query.where || {}, {'professor._id': req.user._id});
 
-    var filter = queries.filter(req.query);
-    filter.where = _.merge(req.query.where || {}, {'professor._id': req.user._id});
-
-    queries.findList(Classroom, filter)
-      .then(function(data) {
+        var data = yield queries.findList(Classroom, filter);
         res.jsonp({length: data[0], list: data[1]});
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
+      } catch (e) {
+        console.trace(e);
+        res.status(400).jsonp(e);
+      }
+    });
   };
 
   exports.insert = function(req, res) {
-    parseClassroom(req)
-      .then(function(data) {
-        var classroom = new Classroom(data);
+    Q.spawn(function*() {
+      try {
+        var body = yield parseClassroom(req);
+        var classroom = new Classroom(body);
         classroom.professor = req.user;
-        return queries.exec(classroom, 'save');
-      })
-      .then(function(data) {
-        res.status(201).jsonp(data);
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
+        classroom = yield queries.exec(classroom, 'save');
+        res.status(201).jsonp(classroom);
+      } catch (e) {
+        console.trace(e);
+        res.status(400).jsonp(e);
+      }
+    });
   };
 
   exports.get = function(req, res) {
-    getClassroom(req)
-      .then(function(data) {
-        res.jsonp(data);
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
+    Q.spawn(function*() {
+      try {
+        var classroom = yield getClassroom(req);
+        res.jsonp(classroom);
+      } catch (e) {
+        console.trace(e);
+        res.status(400).jsonp(e);
+      }
+    });
   };
 
   exports.update = function(req, res) {
-    Q.all([getClassroom(req), parseClassroom(req)])
-      .then(function(data) {
+    Q.spawn(function*() {
+      try {
+        var data = yield Q.all([getClassroom(req), parseClassroom(req)]);
         var classroom = _.extend(data[0], data[1]);
-        return queries.exec(classroom, 'save');
-      })
-      .then(function(classroom) {
+        classroom = yield queries.exec(classroom, 'save');
         task.schedule('updateOpenKnowledgeTest', [classroom._id]);
         res.status(202).jsonp(classroom);
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
+      } catch (e) {
+        console.trace(e);
+        res.status(400).jsonp(e);
+      }
+    });
   };
 
   exports.delete = function(req, res) {
-    getClassroom(req)
-      .then(function(classroom) {
-        return queries.exec(classroom, 'remove');
-      })
-      .then(function() {
-        return res.status(204).send();
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
+    Q.spawn(function*() {
+      try {
+        var classroom = yield getClassroom(req);
+        yield queries.exec(classroom, 'remove');
+        res.status(204).send();
+      } catch (e) {
+        console.trace(e);
+        res.status(400).jsonp(e);
+      }
+    });
   };
 })();
