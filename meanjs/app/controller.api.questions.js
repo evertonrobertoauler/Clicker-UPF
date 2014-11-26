@@ -34,59 +34,49 @@
       });
   };
 
-  exports.insert = function(req, res) {
-    parseQuestion(req)
-      .then(function(data) {
-        var question = new Question(data);
-        question.professor = req.user;
-        return queries.exec(question, 'save');
-      })
-      .then(function(data) {
-        res.status(201).jsonp(data);
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
-  };
+  exports.insert = Q.async(function*(req, res) {
+    try {
+      var body = yield parseQuestion(req);
+      var question = new Question(body);
+      question.professor = req.user;
+      question = yield queries.exec(question, 'save');
+      res.status(201).jsonp(question);
+    } catch (e) {
+      console.trace(e);
+      res.status(400).jsonp(e);
+    }
+  });
 
-  exports.get = function(req, res) {
-    getQuestion(req)
-      .then(function(data) {
-        res.jsonp(data);
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
-  };
+  exports.get = Q.async(function*(req, res) {
+    try {
+      var question = yield getQuestion(req);
+      res.jsonp(question);
+    } catch (e) {
+      console.trace(e);
+      res.status(400).jsonp(e);
+    }
+  });
 
-  exports.update = function(req, res) {
-    Q.all([getQuestion(req), parseQuestion(req)])
-      .then(function(data) {
-        var question = _.extend(data[0], data[1]);
-        return queries.exec(question, 'save');
-      })
-      .then(function(question) {
-        res.status(202).jsonp(question);
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
-  };
+  exports.update = Q.async(function*(req, res) {
+    try {
+      var data = yield Q.all([getQuestion(req), parseQuestion(req)]);
+      var question = _.extend(data[0], data[1]);
+      question = yield queries.exec(question, 'save');
+      res.status(202).jsonp(question);
+    } catch (e) {
+      console.trace(e);
+      res.status(400).jsonp(e);
+    }
+  });
 
-  exports.delete = function(req, res) {
-    getQuestion(req)
-      .then(function(question) {
-        return queries.exec(question, 'remove');
-      })
-      .then(function() {
-        return res.status(204).send();
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
-  };
+  exports.delete = Q.async(function*(req, res) {
+    try {
+      var question = yield getQuestion(req);
+      yield queries.exec(question, 'remove');
+      res.status(204).send();
+    } catch (e) {
+      console.trace(e);
+      res.status(400).jsonp(e);
+    }
+  });
 })();

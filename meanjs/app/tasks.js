@@ -15,15 +15,18 @@ var tasks = {};
 tasks.openKnowledgeTest = function* (id) {
 
   var kt = yield queries.exec(KnowledgeTest.findById(id));
-  var classroom = yield queries.exec(Classroom.findById(kt && kt.classroom._id));
+
+  var ids = kt.answers.map(function(u){ return u.id; });
+
+  var classroom = yield queries.exec(Classroom.findById(kt && kt.classroom._id).where('students', { $elemMatch: {_id: {$nin: ids}}}));
+
   var now = moment().toDate();
 
-  if (classroom && kt && kt.start <= now && kt.end >= now) {
-    var identity = function(u) { return u._id.toString(); };
-    var all = kt.answers.concat(classroom.students);
-    kt.answers = _.uniq(all, false, identity);
-    kt.open = true;
-    return queries.exec(kt, 'save');
+  if (kt && kt.start <= now && kt.end >= now) {
+    return queries.exec(KnowledgeTest.update({_id: kt._id}, {
+      open: true,
+      $pushAll: {answers: (classroom && classroom.students || [])}
+    }));
   }
 };
 
