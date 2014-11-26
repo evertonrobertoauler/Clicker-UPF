@@ -19,20 +19,17 @@
     }));
   };
 
-  exports.list = function(req, res) {
-
-    var filter = queries.filter(req.query);
-    filter.where = _.merge(req.query.where || {}, {'professor._id': req.user._id});
-
-    queries.findList(Question, filter)
-      .then(function(data) {
-        res.jsonp({length: data[0], list: data[1]});
-      })
-      .fail(function(err) {
-        console.trace(err);
-        res.status(400).jsonp(err);
-      });
-  };
+  exports.list = Q.async(function*(req, res) {
+    try {
+      var filter = queries.filter(req.query);
+      filter.where = _.merge(req.query.where || {}, {'professor._id': req.user._id});
+      var data = yield queries.findList(Question, filter);
+      res.jsonp({length: data[0], list: data[1]});
+    } catch (e) {
+      console.trace(e);
+      res.status(400).jsonp(e);
+    }
+  });
 
   exports.insert = Q.async(function*(req, res) {
     try {
