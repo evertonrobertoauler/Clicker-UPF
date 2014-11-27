@@ -113,7 +113,11 @@
       filter.select = {
         answers: {$elemMatch: {_id: req.user._id}},
         'question.text': 1,
-        'question.answers': 1
+        'question.answers': 1,
+        'classroom.name': 1,
+        'professor.displayName': 1,
+        'end': 1,
+        'start': 1,
       };
 
       var data = yield queries.findList(KnowledgeTest, filter);

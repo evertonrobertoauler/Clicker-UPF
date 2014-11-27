@@ -1,7 +1,7 @@
 <section ng-controller="KnowledgeTestAnswersCtrl">
   <div class="page-header text-center">
     <h1>{{ knowledgeTestAnswer.question.text }}</h1>
-    <p>Professor: {{ knowledgeTestAnswer.professor }}, Turma: {{ knowledgeTestAnswer.classroom }}</p>
+    <p>Professor: {{ knowledgeTestAnswer.professor.displayName }}, Turma: {{ knowledgeTestAnswer.classroom.name }}</p>
   </div>
   <form i-form="save()">
     <i-form-field type="radio"
