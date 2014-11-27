@@ -118,6 +118,7 @@
         'professor.displayName': 1,
         'end': 1,
         'start': 1,
+        'number': 1,
       };
 
       var data = yield queries.findList(KnowledgeTest, filter);

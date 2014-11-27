@@ -4,7 +4,7 @@
       Turma: {{ kt.classroom.name }}
     </small>
     <h1 class="list-group-item-heading">
-      Pergunta: {{ kt.question.text }}
+      {{ kt.number + ') ' + kt.question.text }}
     </h1>
     <small class="list-group-item-text">
       Período: {{ kt.start | date : 'dd/MM/yyyy HH:mm'}} -
@@ -19,9 +19,9 @@
   <div class="progress text-center">
     <div class="progress-bar progress-bar-info progress-bar-striped"
          role="progressbar"
-         ng-style="{width: ((kt.answers.length / kt.answers.length) * 100) + '%'}">
+         ng-style="{width: ((kt.answers.length / kt.students.length) * 100) + '%'}">
       <span>
-        <b>{{ kt.answers.length }} / {{ kt.answers.length}} responderam!</b>
+        <b>{{ kt.answers.length }} / {{ kt.students.length}} responderam!</b>
       </span>
     </div>
     <div class="progress-bar progress-bar-danger progress-bar-striped"

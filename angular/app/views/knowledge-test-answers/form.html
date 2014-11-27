@@ -1,6 +1,6 @@
 <section ng-controller="KnowledgeTestAnswersCtrl">
   <div class="page-header text-center">
-    <h1>{{ knowledgeTestAnswer.question.text }}</h1>
+    <h1>{{ knowledgeTestAnswer.number + ') ' + knowledgeTestAnswer.question.text }}</h1>
     <p>Professor: {{ knowledgeTestAnswer.professor.displayName }}, Turma: {{ knowledgeTestAnswer.classroom.name }}</p>
   </div>
   <form i-form="save()">

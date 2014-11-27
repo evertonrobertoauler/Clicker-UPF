@@ -78,10 +78,9 @@ angular
         ]};
       });
 
-      for (var i in kt.answers) {
-        var a = kt.answers[i].answer;
-        rows[a].c[1].v += 1;
-      }
+      kt.students = kt.answers;
+      kt.answers = kt.answers.filter(function(a){ return a.answer !== undefined; });
+      kt.answers.forEach(function(a){ rows[a.answer].c[1].v += 1; });
 
       $scope.answersChart = {
         type: 'PieChart',
