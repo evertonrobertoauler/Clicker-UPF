@@ -13,23 +13,26 @@
   var Question = mongoose.model('Question');
   var Classroom = mongoose.model('Classroom');
 
-  var token, professor, question, classroom, knowledgeTest;
+  var professor, student, question, classroom, knowledgeTest;
 
   describe('Knowledge Tests Controller Functional Tests:', function() {
     before(Q.async(function*() {
       this.app = require('./../server');
 
       professor = yield queries.exec(User.findOne({roles: 'professor'}));
+      student = yield queries.exec(User.findOne({email: 'student2@test.com'}));
 
       var data = yield queries.execList([
         Token.findOne({user: professor}),
+        Token.findOne({user: student}),
         Question.findOne({'professor._id': professor}),
         Classroom.findOne({'professor._id': professor}),
       ]);
 
-      token = data[0];
-      question = data[1];
-      classroom = data[2];
+      professor = data[0];
+      student = data[1];
+      question = data[2];
+      classroom = data[3];
     }));
 
 
@@ -38,7 +41,7 @@
 
         request(this.app)
           .post('/api/v1/professor/knowledge/tests')
-          .set('Authorization', 'Bearer ' + token.accessToken)
+          .set('Authorization', 'Bearer ' + professor.accessToken)
           .send({
             question: question._id,
             classroom: classroom._id,
@@ -62,7 +65,7 @@
 
         request(this.app)
           .patch('/api/v1/professor/knowledge/tests/' + knowledgeTest._id)
-          .set('Authorization', 'Bearer ' + token.accessToken)
+          .set('Authorization', 'Bearer ' + professor.accessToken)
           .send({
             start: knowledgeTest.start,
             end: moment(knowledgeTest.end).add(2, 'minutes'),
@@ -81,7 +84,7 @@
       it('should be able to list his knowledge tests', function(done) {
         request(this.app)
           .get('/api/v1/professor/knowledge/tests')
-          .set('Authorization', 'Bearer ' + token.accessToken)
+          .set('Authorization', 'Bearer ' + professor.accessToken)
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(err, res) {
@@ -99,7 +102,7 @@
 
         request(this.app)
           .get('/api/v1/professor/knowledge/tests/' + knowledgeTest._id)
-          .set('Authorization', 'Bearer ' + token.accessToken)
+          .set('Authorization', 'Bearer ' + professor.accessToken)
           .expect('Content-Type', /json/)
           .expect(200)
           .end(function(err, res) {
@@ -115,10 +118,56 @@
 
         request(this.app)
           .delete('/api/v1/professor/knowledge/tests/' + knowledgeTest._id)
-          .set('Authorization', 'Bearer ' + token.accessToken)
+          .set('Authorization', 'Bearer ' + professor.accessToken)
           .expect(204)
           .end(function(err) {
             if (err) { throw err; }
+
+            done();
+          });
+      });
+    });
+
+    describe('Student', function() {
+
+      it('should be able to list his knowledge tests', function(done) {
+        request(this.app)
+          .get('/api/v1/student/knowledge/tests')
+          .set('Authorization', 'Bearer ' + student.accessToken)
+          .expect('Content-Type', /json/)
+          .expect(200)
+          .end(function(err, res) {
+            if (err) { throw err; }
+
+            should.exist(res.body);
+            should.exist(res.body.length);
+            (res.body.length).should.be.equal(1);
+
+            knowledgeTest = res.body.list[0];
+            should(knowledgeTest.answers.length).be.equal(1);
+
+            should.exist(knowledgeTest.question);
+            should.exist(knowledgeTest.question.text);
+            should.exist(knowledgeTest.question.answers);
+            should.not.exist(knowledgeTest.question.rightAnswer);
+
+            done();
+          });
+      });
+      
+      it('should be able to update a knowledge test', function(done) {
+
+        request(this.app)
+          .patch('/api/v1/student/knowledge/tests/' + knowledgeTest._id)
+          .set('Authorization', 'Bearer ' + student.accessToken)
+          .send({answer: 2})
+          .expect('Content-Type', /json/)
+          .expect(202)
+          .end(function(err, res) {
+            if (err) { throw err; }
+
+            should.exist(res.body);
+            should(res.body.answer).be.equal(2);
 
             done();
           });

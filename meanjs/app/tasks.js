@@ -12,21 +12,22 @@ var Q = require('q');
 
 var tasks = {};
 
+var getNewStudents = function(classroom, knowledgeTest) {
+  var identity = function(u) { return u._id.toString(); };
+  var ids = knowledgeTest.answers.map(identity);
+  return classroom.students.filter(function(u) {
+    return ids.indexOf(identity(u)) === -1;
+  });
+};
+
 tasks.openKnowledgeTest = function* (id) {
-
   var kt = yield queries.exec(KnowledgeTest.findById(id));
-
-  var ids = kt.answers.map(function(u){ return u.id; });
-
-  var classroom = yield queries.exec(Classroom.findById(kt && kt.classroom._id).where('students', { $elemMatch: {_id: {$nin: ids}}}));
-
+  var classroom = yield queries.exec(Classroom.findById(kt && kt.classroom._id));
   var now = moment().toDate();
 
   if (kt && kt.start <= now && kt.end >= now) {
-    return queries.exec(KnowledgeTest.update({_id: kt._id}, {
-      open: true,
-      $pushAll: {answers: (classroom && classroom.students || [])}
-    }));
+    var update = {open: true, $pushAll: {answers: getNewStudents(classroom, kt)}};
+    return queries.exec(KnowledgeTest.update({_id: kt._id}, update));
   }
 };
 
@@ -74,12 +75,9 @@ tasks.updateOpenKnowledgeTest = function* (classID) {
   if (_.every(data)) {
     var classroom = data[0];
     var knowledgeTests = data[1];
-    var identity = function(u) { return u._id.toString(); };
-
     return Q.all(knowledgeTests.map(function(kt) {
-      var all = kt.answers.concat(classroom.students);
-      kt.answers = _.uniq(all, false, identity);
-      return queries.exec(kt, 'save');
+      var update = {$pushAll: {answers: getNewStudents(classroom, kt)}};
+      return queries.exec(KnowledgeTest.update({_id: kt._id}, update));
     }));
   }
 };

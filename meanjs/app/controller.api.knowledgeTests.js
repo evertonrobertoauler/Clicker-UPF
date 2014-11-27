@@ -105,4 +105,46 @@
       res.status(400).jsonp(e);
     }
   });
+
+  exports.studentList = Q.async(function*(req, res) {
+    try {
+      var filter = queries.filter(req.query);
+      filter.where = _.merge(req.query.where || {}, {'answers._id': req.user._id});
+      filter.select = {
+        answers: {$elemMatch: {_id: req.user._id}},
+        'question.text': 1,
+        'question.answers': 1
+      };
+
+      var data = yield queries.findList(KnowledgeTest, filter);
+      res.jsonp({length: data[0], list: data[1]});
+    } catch (e) {
+      console.trace(e);
+      res.status(400).jsonp(e);
+    }
+  });
+
+  exports.studentAnswer = Q.async(function*(req, res) {
+    try {
+      var data = yield (new parser.Answer(req.body)).validate();
+
+      var filter = {
+        _id: req.params.id,
+        open: true,
+        answers: {$elemMatch: {_id: req.user._id, answer: {$ne: data.answer}}},
+      };
+
+      var update = {
+        'answers.$.answer': data.answer,
+        $push: { 'answers.$.triedAnswers': data.answer}
+      };
+
+      yield queries.exec(KnowledgeTest.update(filter, update));
+
+      res.status(202).jsonp(data);
+    } catch (e) {
+      console.trace(e);
+      res.status(400).jsonp(e);
+    }
+  });
 })();

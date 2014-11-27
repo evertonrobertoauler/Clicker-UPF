@@ -12,6 +12,7 @@ module.exports = function(app) {
 
   var express = require('express');
   var api = express.Router();
+  var student = express.Router();
   var professor = express.Router();
 
   api.use(token.middleware);
@@ -24,9 +25,13 @@ module.exports = function(app) {
     next();
   });
 
-  api.get('/user', profile.me);
-  api.put('/user', profile.update);
-  api.delete('/user/accounts', auth.removeOAuthProvider);
+  student.use(function(req, res, next) {
+    if (req.user.roles.indexOf('student') === -1) {
+      res.status(403).send();
+    } else {
+      next();
+    }
+  });
 
   professor.use(function(req, res, next) {
     if (req.user.roles.indexOf('professor') === -1) {
@@ -35,6 +40,13 @@ module.exports = function(app) {
       next();
     }
   });
+
+  api.get('/user', profile.me);
+  api.put('/user', profile.update);
+  api.delete('/user/accounts', auth.removeOAuthProvider);
+
+  student.get('/knowledge/tests', knowledgeTests.studentList);
+  student.patch('/knowledge/tests/:id', knowledgeTests.studentAnswer);
 
   professor.get('/students', students.list);
 
@@ -56,6 +68,7 @@ module.exports = function(app) {
   professor.patch('/knowledge/tests/:id', knowledgeTests.update);
   professor.delete('/knowledge/tests/:id', knowledgeTests.delete);
 
+  api.use('/student', student);
   api.use('/professor', professor);
   app.use('/api/v1', api);
 };

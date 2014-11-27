@@ -37,14 +37,14 @@ module.exports = function(grunt, done) {
       provider: 'local'
     };
 
+    var student1 = new User(_.merge(baseUser, {email: 'student1@test.com'}));
+    var student2 = new User(_.merge(baseUser, {email: 'student2@test.com'}));
+    var student3 = new User(_.merge(baseUser, {email: 'student3@test.com'}));
+
     var professor = new User(_.merge(baseUser, {
       email: 'professor@test.com',
       roles: ['user', 'professor']
     }));
-
-    var student1 = new User(_.merge(baseUser, {email: 'student1@test.com'}));
-    var student2 = new User(_.merge(baseUser, {email: 'student2@test.com'}));
-    var student3 = new User(_.merge(baseUser, {email: 'student3@test.com'}));
 
     var students = [student1, student2, student3];
     var users = [professor].concat(students);
@@ -77,6 +77,8 @@ module.exports = function(grunt, done) {
       question: docs[1].toObject(),
       start: moment(),
       end: moment().add(5, 'minutes'),
+      answers: students.slice(0, 1),
+      open: true,
     });
 
     return queries.exec(knowledgeTest, 'save');
