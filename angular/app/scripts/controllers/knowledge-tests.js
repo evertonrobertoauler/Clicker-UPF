@@ -79,8 +79,8 @@ angular
       });
 
       kt.students = kt.answers;
-      kt.answers = kt.answers.filter(function(a){ return a.answer !== undefined; });
-      kt.answers.forEach(function(a){ rows[a.answer].c[1].v += 1; });
+      kt.filteredAnswers = kt.answers.filter(function(a){ return a.answer !== undefined; });
+      kt.filteredAnswers.forEach(function(a){ rows[a.answer].c[1].v += 1; });
 
       $scope.answersChart = {
         type: 'PieChart',
@@ -108,8 +108,8 @@ angular
         ]},
       ];
 
-      for (var i in kt.answers) {
-        var a = (kt.answers[i].answer === kt.question.rightAnswer ? 0 : 1);
+      for (var i in kt.filteredAnswers) {
+        var a = (kt.filteredAnswers[i].answer === kt.question.rightAnswer ? 0 : 1);
         rows[a].c[1].v += 1;
       }
 

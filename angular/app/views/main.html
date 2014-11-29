@@ -5,8 +5,7 @@
     </div>
     <i-list-detail resource="KnowledgeTestAnswers"
                    view="/views/knowledge-test-answers/form.html"
-                   where="{open: true}"
-                   reload="10">
+                   where="{open: true}">
     </i-list-detail>
   </div>
   <div ng-if="user.roles && user.roles.indexOf('professor') !== -1">
@@ -15,8 +14,7 @@
     </div>
     <i-list-detail resource="KnowledgeTests"
                    view="/views/knowledge-tests/detail.html"
-                   where="{open: true}"
-                   reload="10">
+                   where="{open: true}">
     </i-list-detail>
   </div>
   <div ng-if="!user.roles">

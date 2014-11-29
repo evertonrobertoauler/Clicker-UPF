@@ -19,19 +19,19 @@
   <div class="progress text-center">
     <div class="progress-bar progress-bar-info progress-bar-striped"
          role="progressbar"
-         ng-style="{width: ((kt.answers.length / kt.students.length) * 100) + '%'}">
+         ng-style="{width: ((kt.filteredAnswers.length / kt.students.length) * 100) + '%'}">
       <span>
-        <b>{{ kt.answers.length }} / {{ kt.students.length}} responderam!</b>
+        <b>{{ kt.filteredAnswers.length }} / {{ kt.students.length}} responderam!</b>
       </span>
     </div>
     <div class="progress-bar progress-bar-danger progress-bar-striped"
-         ng-style="{width: (100 - (kt.answers.length / kt.classroom.students.length) * 100) + '%'}">
+         ng-style="{width: (100 - (kt.filteredAnswers.length / kt.students.length) * 100) + '%'}">
       <span>
-        <b>{{ kt.classroom.students.length - kt.answers.length }} / {{ kt.classroom.students.length}} não responderam!</b>
+        <b>{{ kt.students.length - kt.filteredAnswers.length }} / {{ kt.students.length}} não responderam!</b>
       </span>
     </div>
   </div>
-  <div class="row" ng-if="kt.answers.length > 0">
+  <div class="row" ng-if="kt.filteredAnswers.length > 0">
     <div class="col-md-6">
       <div google-chart chart="answersChart" style="height:300px; width:100%;"></div>
     </div>
