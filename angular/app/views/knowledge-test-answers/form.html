@@ -18,8 +18,10 @@
           Você tem até {{ knowledgeTestAnswer.end | date : 'dd/MM/yyyy HH:mm'}} -
           <countdown end="knowledgeTestAnswer.end"></countdown> para responder
         </p>
+        <p class="text-info">
+          Já foram {{ knowledgeTestAnswer.triedAnswers.length }} tentativas.
+        </p>
         <p ng-show="success" class="text-success">{{ success }}</p>
-        <input type="submit" class="btn btn-primary" value="Responder">
       </div>
     </div>
   </form>
