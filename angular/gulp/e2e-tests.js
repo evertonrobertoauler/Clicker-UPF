@@ -14,8 +14,6 @@ gulp.task('webdriver-standalone', $.protractor.webdriver_standalone);
 gulp.task('protractor-only', ['webdriver-update', 'wiredep'], function (done) {
   var testFiles = ['src/**/*.e2e.js'];
 
-  console.log(browserSync.instance.options.urls.local);
-
   gulp.src(testFiles)
     .pipe($.protractor.protractor({
       configFile: 'protractor.conf.js',

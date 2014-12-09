@@ -3,7 +3,7 @@
 var gulp = require('gulp');
 
 var $ = require('gulp-load-plugins')({
-  pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del']
+  pattern: ['gulp-*', 'main-bower-files', 'uglify-save-license', 'del', 'run-sequence']
 });
 
 gulp.task('scripts', function () {
@@ -109,4 +109,6 @@ gulp.task('clean', function (done) {
   $.del(['.tmp', 'dist'], done);
 });
 
-gulp.task('build', ['html', 'images', 'fonts', 'misc']);
+gulp.task('build', function(done) {
+  $.runSequence('clean', ['html', 'images', 'fonts', 'misc'], done);
+});

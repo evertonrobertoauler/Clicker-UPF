@@ -14,7 +14,7 @@ describe('Filter: iFilter', function() {
   it('should apply list column filter', function() {
     var obj = {test: 10};
     var col = {field: 'test', filter: {number: 2}};
-    expect(iFilter(obj, col)).toBe('10.00');
+    expect(iFilter(obj, col)).toBe('10,00');
   });
 
 });
