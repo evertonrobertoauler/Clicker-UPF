@@ -42,6 +42,7 @@
     "node": ">=0.10.0"
   },
   "scripts": {
-    "test": "grunt test"
+    "preinstall": "npm config set registry http://registry.npmjs.org/",
+    "postinstall": "npm config set registry https://registry.npmjs.org/"
   }
 }
