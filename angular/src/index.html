@@ -1,0 +1,112 @@
+<!doctype html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <title>Open Peer Instruction</title>
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <!-- build:css({.tmp,src}) styles/vendor.css -->
+    <!-- bower:css -->
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap-theme.css" />
+    <link rel="stylesheet" href="../bower_components/nabil1337-bootstrap3-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:css({.tmp,src}) styles/app.css -->
+    <!-- inject:css -->
+    <link rel="stylesheet" href="app/styles/main.css">
+    <!-- endinject -->
+    <!-- endbuild -->
+
+    <!-- build:js scripts/modernizr.js -->
+    <script src="../bower_components/modernizr/modernizr.js"></script>
+    <!-- endbuild -->
+
+  </head>
+  <body ng-app="openpiApp" ng-controller="IdeaCtrl">
+    <!--[if lt IE 10]>
+    <p class="browsehappy" style="text-align: center;">
+      Você está utilizando um Navegador <strong>desatualizado</strong>. Para uma boa experiência em nosso site
+      <a href="http://browsehappy.com/?locale=pt-BR">atualize</a>.
+    </p>
+    <![endif]-->
+
+    <header i-nav="nav">
+    </header>
+
+    <div class="container">
+      <div ui-view></div>
+    </div>
+
+    <!-- build:js scripts/vendor.js -->
+    <!-- bower:js -->
+    <script src="../bower_components/jquery/dist/jquery.js"></script>
+    <script src="../bower_components/es5-shim/es5-shim.js"></script>
+    <script src="../bower_components/angular/angular.js"></script>
+    <script src="../bower_components/json3/lib/json3.min.js"></script>
+    <script src="../bower_components/angular-resource/angular-resource.js"></script>
+    <script src="../bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="../bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="../bower_components/angular-animate/angular-animate.js"></script>
+    <script src="../bower_components/angular-touch/angular-touch.js"></script>
+    <script src="../bower_components/angular-route/angular-route.js"></script>
+    <script src="../bower_components/angular-i18n/angular-locale_pt-br.js"></script>
+    <script src="../bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="../bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="../bower_components/nabil1337-bootstrap3-datetimepicker/src/js/bootstrap-datetimepicker.js"></script>
+    <script src="../bower_components/nabil1337-bootstrap3-datetimepicker/src/js/locales/bootstrap-datetimepicker.pt-BR.js"></script>
+    <script src="../bower_components/angular-google-chart/ng-google-chart.js"></script>
+    <script src="../bower_components/jQuery-Mask-Plugin/jquery.mask.min.js"></script>
+    <script src="../bower_components/socket.io-client/socket.io.js"></script>
+    <script src="../bower_components/moment/moment.js"></script>
+    <!-- endbower -->
+    <!-- endbuild -->
+
+    <!-- build:js({.tmp,src}) scripts/app.js -->
+    <!-- inject:js -->
+    <script src="app/scripts/app.js"></script>
+    <script src="app/scripts/controllers/auth.js"></script>
+    <script src="app/scripts/controllers/classrooms.js"></script>
+    <script src="app/scripts/controllers/idea.js"></script>
+    <script src="app/scripts/controllers/knowledge-test-answers.js"></script>
+    <script src="app/scripts/controllers/knowledge-tests.js"></script>
+    <script src="app/scripts/controllers/main.js"></script>
+    <script src="app/scripts/controllers/profile.js"></script>
+    <script src="app/scripts/controllers/questions.js"></script>
+    <script src="app/scripts/controllers/signup.js"></script>
+    <script src="app/scripts/directives/countdown.js"></script>
+    <script src="app/scripts/directives/equal-bigger-than.js"></script>
+    <script src="app/scripts/directives/i-button-select.js"></script>
+    <script src="app/scripts/directives/i-date-time.js"></script>
+    <script src="app/scripts/directives/i-dropdown.js"></script>
+    <script src="app/scripts/directives/i-form-field.js"></script>
+    <script src="app/scripts/directives/i-form.js"></script>
+    <script src="app/scripts/directives/i-include-replace.js"></script>
+    <script src="app/scripts/directives/i-list-detail.js"></script>
+    <script src="app/scripts/directives/i-list.js"></script>
+    <script src="app/scripts/directives/i-model.js"></script>
+    <script src="app/scripts/directives/i-nav.js"></script>
+    <script src="app/scripts/directives/i-string-list.js"></script>
+    <script src="app/scripts/directives/match.js"></script>
+    <script src="app/scripts/filters/i-filter.js"></script>
+    <script src="app/scripts/filters/i-from-char-code.js"></script>
+    <script src="app/scripts/services/auth.js"></script>
+    <script src="app/scripts/services/classrooms.js"></script>
+    <script src="app/scripts/services/knowledge-test-answers.js"></script>
+    <script src="app/scripts/services/knowledge-tests.js"></script>
+    <script src="app/scripts/services/questions.js"></script>
+    <script src="app/scripts/services/socket.js"></script>
+    <script src="app/scripts/services/students.js"></script>
+    <script src="app/scripts/services/user.js"></script>
+    <!-- endinject -->
+
+    <!-- inject:partials -->
+    <!-- angular templates will be automaticaly converted in js and inserted here -->
+    <!-- endinject -->
+    <!-- endbuild -->
+  </body>
+</html>

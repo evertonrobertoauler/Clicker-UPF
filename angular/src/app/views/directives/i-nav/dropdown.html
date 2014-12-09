@@ -1,12 +1,12 @@
 <li class=" {{ navItem.first && 'dropdown' || 'dropdown-submenu' }}">
-  <a href="void(0)" 
-     class="dropdown-toggle" 
+  <a href="void(0)"
+     class="dropdown-toggle"
      data-toggle="dropdown">
     {{ navItem.title }} <b ng-if="navItem.first" class="caret"></b>
   </a>
   <ul class="dropdown-menu">
     <li ng-repeat="navItem in navItem.links"
-        ng-include="'/views/directives/i-nav/' + navItem.type + '.html'"
+        ng-include="'app/views/directives/i-nav/' + navItem.type + '.html'"
         i-include-replace>
     </li>
   </ul>

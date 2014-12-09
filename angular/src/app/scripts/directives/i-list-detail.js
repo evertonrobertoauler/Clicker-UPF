@@ -4,7 +4,7 @@ angular
   .module('openpiApp')
   .directive('iListDetail', function() {
     return {
-      templateUrl: '/views/directives/i-list-detail/base.html',
+      templateUrl: 'app/views/directives/i-list-detail/base.html',
       restrict: 'E',
       scope: {
         resource: '@',

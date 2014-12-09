@@ -4,7 +4,7 @@ angular
   .module('openpiApp')
   .directive('iNav', function($location) {
     return {
-      templateUrl: '/views/directives/i-nav/base.html',
+      templateUrl: 'app/views/directives/i-nav/base.html',
       restrict: 'A',
       transclude: true,
       scope: {

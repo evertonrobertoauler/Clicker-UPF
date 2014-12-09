@@ -4,7 +4,7 @@ angular
   .module('openpiApp')
   .directive('iFormField', function() {
     return {
-      templateUrl: '/views/directives/i-form-fields/base.html',
+      templateUrl: 'app/views/directives/i-form-fields/base.html',
       restrict: 'E',
       transclude: true,
       scope: {

@@ -19,12 +19,12 @@ angular
     $stateProvider
       .state('main', {
         url: '/',
-        templateUrl: '/views/main.html',
+        templateUrl: 'app/views/main.html',
         controller: 'MainCtrl'
       })
       .state('login', {
         url: '/login',
-        templateUrl: '/views/login.html',
+        templateUrl: 'app/views/login.html',
         controller: 'AuthCtrl'
       })
       .state('logout', {
@@ -40,12 +40,12 @@ angular
       })
       .state('signup', {
         url: '/signup',
-        templateUrl: '/views/signup.html',
+        templateUrl: 'app/views/signup.html',
         controller: 'SignupCtrl'
       })
       .state('profile', {
         url: '/profile',
-        templateUrl: '/views/profile.html',
+        templateUrl: 'app/views/profile.html',
         controller: 'ProfileCtrl',
       })
       .state('classrooms', {
@@ -56,22 +56,22 @@ angular
       .state('classrooms.list', {
         url: '',
         controller: 'ClassroomsCtrl',
-        templateUrl: '/views/classrooms/list.html',
+        templateUrl: 'app/views/classrooms/list.html',
       })
       .state('classrooms.edit', {
         url: '/form/:_id',
         controller: 'ClassroomsCtrl',
-        templateUrl: '/views/classrooms/form.html',
+        templateUrl: 'app/views/classrooms/form.html',
       })
       .state('classrooms.create', {
         url: '/form',
         controller: 'ClassroomsCtrl',
-        templateUrl: '/views/classrooms/form.html',
+        templateUrl: 'app/views/classrooms/form.html',
       })
       .state('classrooms.detail', {
         url: '/:_id',
         controller: 'ClassroomsCtrl',
-        templateUrl: '/views/classrooms/detail.html',
+        templateUrl: 'app/views/classrooms/detail.html',
       })
       .state('questions', {
         abstract: true,
@@ -81,22 +81,22 @@ angular
       .state('questions.list', {
         url: '',
         controller: 'QuestionsCtrl',
-        templateUrl: '/views/questions/list.html',
+        templateUrl: 'app/views/questions/list.html',
       })
       .state('questions.edit', {
         url: '/form/:_id',
         controller: 'QuestionsCtrl',
-        templateUrl: '/views/questions/form.html',
+        templateUrl: 'app/views/questions/form.html',
       })
       .state('questions.create', {
         url: '/form',
         controller: 'QuestionsCtrl',
-        templateUrl: '/views/questions/form.html',
+        templateUrl: 'app/views/questions/form.html',
       })
       .state('questions.detail', {
         url: '/:_id',
         controller: 'QuestionsCtrl',
-        templateUrl: '/views/questions/detail.html',
+        templateUrl: 'app/views/questions/detail.html',
       })
       .state('knowledge-tests', {
         abstract: true,
@@ -106,21 +106,21 @@ angular
       .state('knowledge-tests.list', {
         url: '',
         controller: 'KnowledgeTestsCtrl',
-        templateUrl: '/views/knowledge-tests/list.html',
+        templateUrl: 'app/views/knowledge-tests/list.html',
       })
       .state('knowledge-tests.edit', {
         url: '/form/:_id',
         controller: 'KnowledgeTestsCtrl',
-        templateUrl: '/views/knowledge-tests/edit.html',
+        templateUrl: 'app/views/knowledge-tests/edit.html',
       })
       .state('knowledge-tests.create', {
         url: '/form',
         controller: 'KnowledgeTestsCtrl',
-        templateUrl: '/views/knowledge-tests/create.html',
+        templateUrl: 'app/views/knowledge-tests/create.html',
       })
       .state('knowledge-tests.detail', {
         url: '/:_id',
-        templateUrl: '/views/knowledge-tests/detail.html',
+        templateUrl: 'app/views/knowledge-tests/detail.html',
       });
   })
   .value('SOCKET_URL', 'http://127.0.0.1:3001/')

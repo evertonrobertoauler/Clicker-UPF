@@ -15,20 +15,20 @@
     <ul class="nav navbar-nav">
       <li ng-repeat="navItem in nav.left"
           ng-init="navItem.first = 1"
-          ng-include="'/views/directives/i-nav/' + navItem.type + '.html'"
+          ng-include="'app/views/directives/i-nav/' + navItem.type + '.html'"
           i-include-replace>
       </li>
     </ul>
 
     <div ng-repeat="navItem in nav.form"
-         ng-include="'/views/directives/i-nav/' + navItem.type + '.html'"
+         ng-include="'app/views/directives/i-nav/' + navItem.type + '.html'"
          i-include-replace>
     </div>
 
     <ul class="nav navbar-nav navbar-right" ng-if="nav.right.length > 0">
       <li ng-repeat="navItem in nav.right"
           ng-init="navItem.first = 1"
-          ng-include="'/views/directives/i-nav/' + navItem.type + '.html'"
+          ng-include="'app/views/directives/i-nav/' + navItem.type + '.html'"
           i-include-replace>
       </li>
     </ul>
