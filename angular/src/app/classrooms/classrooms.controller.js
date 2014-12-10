@@ -2,7 +2,7 @@
 
 angular
   .module('openpiApp')
-  .controller('ClassroomsCtrl', function($scope, $stateParams, $state, Classrooms) {
+  .controller('ClassroomsController', function($scope, $stateParams, $state, Classrooms) {
 
     if ($stateParams._id) {
       $scope.classroom = Classrooms.get({id: $stateParams._id});

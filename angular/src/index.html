@@ -27,7 +27,7 @@
     <!-- endbuild -->
 
   </head>
-  <body ng-app="openpiApp" ng-controller="IdeaCtrl">
+  <body ng-app="openpiApp" ng-controller="AppController">
     <!--[if lt IE 10]>
     <p class="browsehappy" style="text-align: center;">
       Você está utilizando um Navegador <strong>desatualizado</strong>. Para uma boa experiência em nosso site
@@ -68,8 +68,21 @@
 
     <!-- build:js({.tmp,src}) scripts/app.js -->
     <!-- inject:js -->
-    <script src="app/app.js"></script>
+    <script src="app/_app.module.js"></script>
+    <script src="app/app.controller.js"></script>
+    <script src="app/classrooms/_classrooms.module.js"></script>
+    <script src="app/classrooms/classrooms.controller.js"></script>
+    <script src="app/classrooms/classrooms.service.js"></script>
+    <script src="app/classrooms/students.service.js"></script>
+    <script src="app/knowledgeTests/_knowledgeTests.module.js"></script>
+    <script src="app/knowledgeTests/knowledgeTestAnswers.controller.js"></script>
+    <script src="app/knowledgeTests/knowledgeTestAnswers.service.js"></script>
+    <script src="app/knowledgeTests/knowledgeTests.controller.js"></script>
+    <script src="app/knowledgeTests/knowledgeTests.service.js"></script>
     <script src="app/main/_main.module.js"></script>
+    <script src="app/questions/_questions.module.js"></script>
+    <script src="app/questions/questions.controller.js"></script>
+    <script src="app/questions/questions.service.js"></script>
     <script src="app/user/_user.module.js"></script>
     <script src="app/user/auth.controller.js"></script>
     <script src="app/user/auth.service.js"></script>
@@ -78,16 +91,6 @@
     <script src="app/user/socket.service.js"></script>
     <script src="app/user/user.service.js"></script>
     <script src="components/idea/_idea.module.js"></script>
-    <script src="app/scripts/controllers/classrooms.js"></script>
-    <script src="app/scripts/controllers/idea.js"></script>
-    <script src="app/scripts/controllers/knowledge-test-answers.js"></script>
-    <script src="app/scripts/controllers/knowledge-tests.js"></script>
-    <script src="app/scripts/controllers/questions.js"></script>
-    <script src="app/scripts/services/classrooms.js"></script>
-    <script src="app/scripts/services/knowledge-test-answers.js"></script>
-    <script src="app/scripts/services/knowledge-tests.js"></script>
-    <script src="app/scripts/services/questions.js"></script>
-    <script src="app/scripts/services/students.js"></script>
     <script src="components/idea/extra/i-filter.js"></script>
     <script src="components/idea/extra/i-from-char-code.js"></script>
     <script src="components/idea/extra/i-include-replace.js"></script>

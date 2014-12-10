@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('openpiApp')
+angular.module('openpiApp.knowledgeTests')
   .factory('KnowledgeTestAnswers', function($resource, API_URL) {
     return $resource(API_URL + 'student/knowledge/tests/:_id/', {_id: '@_id'}, {
       query: {method: 'GET'},

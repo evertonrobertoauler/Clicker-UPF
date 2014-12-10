@@ -1,8 +1,8 @@
 'use strict';
 
 angular
-  .module('openpiApp')
-  .controller('KnowledgeTestsCtrl', function($scope, $stateParams, $state, KnowledgeTests) {
+  .module('openpiApp.knowledgeTests')
+  .controller('KnowledgeTestsController', function($scope, $stateParams, $state, KnowledgeTests) {
 
     var $ngRepeat = $scope.$parent.$parent;
 

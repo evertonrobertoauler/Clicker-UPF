@@ -1,4 +1,4 @@
-<section ng-controller="KnowledgeTestAnswersCtrl">
+<section ng-controller="KnowledgeTestAnswersController">
   <div class="page-header text-center">
     <h1>{{ knowledgeTestAnswer.number + ') ' + knowledgeTestAnswer.question.text }}</h1>
     <p>Professor: {{ knowledgeTestAnswer.professor.displayName }}, Turma: {{ knowledgeTestAnswer.classroom.name }}</p>
@@ -19,7 +19,7 @@
           <countdown end="knowledgeTestAnswer.end"></countdown> para responder
         </p>
         <p class="text-info">
-          Já foram {{ knowledgeTestAnswer.triedAnswers.length }} tentativas.
+          Já foram {{ knowledgeTestAnswer.triedAnswers.length }} tentativa(s).
         </p>
         <p ng-show="success" class="text-success">{{ success }}</p>
       </div>

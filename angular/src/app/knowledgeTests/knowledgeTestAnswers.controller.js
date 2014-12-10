@@ -1,8 +1,8 @@
 'use strict';
 
 angular
-  .module('openpiApp')
-  .controller('KnowledgeTestAnswersCtrl', function($scope, $timeout, KnowledgeTestAnswers) {
+  .module('openpiApp.knowledgeTests')
+  .controller('KnowledgeTestAnswersController', function($scope, $timeout, KnowledgeTestAnswers) {
 
     $scope.knowledgeTestAnswer = $scope.$parent.$parent.obj;
     $scope.knowledgeTestAnswer.start = new Date($scope.knowledgeTestAnswer.start);

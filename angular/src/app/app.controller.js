@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('openpiApp')
-  .controller('IdeaCtrl', function($scope, Auth) {
+  .controller('AppController', function($scope, Auth) {
 
     $scope.user = {};
 
