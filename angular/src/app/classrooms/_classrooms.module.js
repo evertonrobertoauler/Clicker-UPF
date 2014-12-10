@@ -1,8 +1,12 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('openpiApp.classrooms', [])
-  .config(function ($stateProvider) {
+  angular
+    .module('openpiApp.classrooms', ['openpiApp.main'])
+    .config(stateConfig);
+
+  /** @ngInject */
+  function stateConfig($stateProvider) {
     $stateProvider
       .state('classrooms', {
         abstract: true,
@@ -29,4 +33,5 @@ angular
         controller: 'ClassroomsController',
         templateUrl: 'app/classrooms/classrooms.detail.html',
       });
-  });
+  }
+})();

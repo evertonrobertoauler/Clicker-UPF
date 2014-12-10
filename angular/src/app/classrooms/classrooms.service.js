@@ -1,14 +1,19 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('openpiApp')
-  .factory('Classrooms', function($resource, API_URL) {
-    var Classrooms = $resource(API_URL + 'professor/classrooms/:id/', {id: '@_id'}, {
+  angular
+    .module('openpiApp.classrooms')
+    .factory('Classrooms', Classrooms);
+
+  /** @ngInject */
+  function Classrooms($resource, API_URL) {
+    var service = $resource(API_URL + 'professor/classrooms/:id/', {id: '@_id'}, {
       query: {method: 'GET'},
       insert: {method: 'POST'},
       update: {method: 'PUT'},
     });
 
-    Classrooms.columns = [
+    service.columns = [
       {
         label: 'Criação',
         classes: 'col-xs-4 col-sm-4 col-md-2 col-lg-2 text-center',
@@ -22,9 +27,10 @@ angular.module('openpiApp')
       },
     ];
 
-    Classrooms.toString = function(classroom) {
+    service.toString = function (classroom) {
       return classroom.name;
     };
 
-    return Classrooms;
-  });
+    return service;
+  }
+})();

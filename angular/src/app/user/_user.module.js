@@ -1,7 +1,7 @@
 'use strict';
 
 angular
-  .module('openpiApp.user', [])
+  .module('openpiApp.user', ['openpiApp.main'])
   .config(function ($stateProvider) {
     $stateProvider
       .state('login', {

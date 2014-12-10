@@ -1,8 +1,12 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('openpiApp')
-  .controller('ClassroomsController', function($scope, $stateParams, $state, Classrooms) {
+  angular
+    .module('openpiApp.classrooms')
+    .controller('ClassroomsController', ClassroomsController);
+
+  /** @ngInject */
+  function ClassroomsController($scope, $stateParams, $state, Classrooms) {
 
     if ($stateParams._id) {
       $scope.classroom = Classrooms.get({id: $stateParams._id});
@@ -10,13 +14,11 @@ angular
       $scope.classroom = new Classrooms();
     }
 
-    $scope.save = function() {
-
-      var error = function(e) {
+    $scope.save = function () {
+      var error = function (e) {
         $scope.iForm.setErrors(e.data);
       };
-
-      var success = function(c) {
+      var success = function (c) {
         $state.transitionTo('classrooms.detail', c);
       };
 
@@ -26,5 +28,5 @@ angular
         $scope.classroom.$update(success, error);
       }
     };
-
-  });
+  }
+})();

@@ -2,7 +2,7 @@
 
 describe('Controller: ClassroomsController', function () {
 
-  beforeEach(module('openpiApp'));
+  beforeEach(module('openpiApp.classrooms'));
 
   var ClassroomsController, scope;
 
