@@ -1,14 +1,18 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('openpiApp.knowledgeTests')
-  .factory('KnowledgeTests', function($resource, API_URL) {
-    var KnowledgeTests = $resource(API_URL + 'professor/knowledge/tests/:id/', {id: '@_id'}, {
+  angular
+    .module('openpiApp.knowledgeTests')
+    .factory('KnowledgeTests', KnowledgeTests);
+
+  function KnowledgeTests($resource, API_URL) {
+    var service = $resource(API_URL + 'professor/knowledge/tests/:id/', {id: '@_id'}, {
       query: {method: 'GET'},
       insert: {method: 'POST'},
       update: {method: 'PATCH'},
     });
 
-    KnowledgeTests.columns = [
+    service.columns = [
       {
         label: 'Número',
         classes: 'col-xs-2 col-sm-2 col-md-1 col-lg-1 text-center',
@@ -38,5 +42,6 @@ angular.module('openpiApp.knowledgeTests')
       },
     ];
 
-    return KnowledgeTests;
-  });
+    return service;
+  }
+})();
