@@ -1,12 +1,16 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('idea')
-  .directive('iDateTime', function($timeout) {
+  angular
+    .module('idea')
+    .directive('iDateTime', iDateTime);
+
+  /** @ngInject */
+  function iDateTime($timeout) {
     return {
       restrict: 'A',
       priority: 10,
-      link: function(scope, elem) {
+      link: function (scope, elem) {
         if (scope.field.ngModel) {
 
           var mask, options = {};
@@ -39,23 +43,23 @@ angular
 
           var value;
 
-          elem.on('keyup', function(e) {
+          elem.on('keyup', function (e) {
 
             var cursor = this.selectionStart;
             if (
               elem.val().length === options.format.length &&
               [16, 37, 38, 39, 40].indexOf(e.keyCode) === -1
-              ) {
+            ) {
               picker.change(e);
               this.selectionStart = this.selectionEnd = cursor;
             }
           });
 
-          elem.on('blur', function(e) {
+          elem.on('blur', function (e) {
             picker.hide(e);
           });
 
-          elem.on('changeDate', function(e) {
+          elem.on('changeDate', function (e) {
 
             var newValue = e.localDate;
 
@@ -66,13 +70,13 @@ angular
                 picker.widget.hide();
               }
 
-              $timeout(function() {
+              $timeout(function () {
                 scope.setValue(newValue);
               }, 1);
             }
           });
 
-          scope.$watch('value', function(newValue) {
+          scope.$watch('value', function (newValue) {
             if (JSON.stringify(newValue) !== JSON.stringify(value)) {
 
               if (typeof newValue === 'string') {
@@ -89,10 +93,11 @@ angular
             }
           });
 
-          scope.$parent.togglePicker = function(e) {
+          scope.$parent.togglePicker = function (e) {
             picker.show(e);
           };
         }
       }
     };
-  });
+  }
+})();

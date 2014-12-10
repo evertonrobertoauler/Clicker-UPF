@@ -1,8 +1,12 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('idea')
-  .directive('equalBiggerThan', function() {
+  angular
+    .module('idea')
+    .directive('equalBiggerThan', equalBiggerThan);
+
+  /** @ngInject */
+  function equalBiggerThan() {
     return {
       require: '?ngModel',
       link: function (scope, element, attrs, ctrl) {
@@ -10,7 +14,7 @@ angular
         scope = scope.$parent.$parent;
 
         if (ctrl) {
-          var validator = function(value) {
+          var validator = function (value) {
             var equalBiggerThan = value >= scope.$eval(attrs.equalBiggerThan);
             ctrl.$setValidity('equal-bigger-than', equalBiggerThan);
             return value;
@@ -19,14 +23,15 @@ angular
           ctrl.$formatters.push(validator);
           ctrl.$parsers.unshift(validator);
 
-          attrs.$observe('equalBiggerThan', function() {
+          attrs.$observe('equalBiggerThan', function () {
             validator(ctrl.$viewValue);
           });
 
-          scope.$watch(attrs.equalBiggerThan, function() {
+          scope.$watch(attrs.equalBiggerThan, function () {
             validator(ctrl.$viewValue);
           });
         }
       }
     };
-  });
+  }
+})();

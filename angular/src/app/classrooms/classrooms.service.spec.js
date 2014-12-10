@@ -2,7 +2,7 @@
 
 describe('Service: Classrooms', function() {
 
-  beforeEach(module('openpiApp'));
+  beforeEach(module('openpiApp.classrooms'));
 
   var Classrooms;
   beforeEach(inject(function(_Classrooms_) {

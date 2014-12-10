@@ -1,8 +1,12 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('idea')
-  .directive('iFormField', function() {
+  angular
+    .module('idea')
+    .directive('iFormField', iFormField);
+
+  /** @ngInject */
+  function iFormField() {
     return {
       templateUrl: 'components/idea/form/i-form-fields/base.html',
       restrict: 'E',
@@ -19,7 +23,7 @@ angular
         optionsIsArray: '=',
         multi: '@',
       },
-      link: function(scope, elem, attrs) {
+      link: function (scope, elem, attrs) {
 
         scope.iForm = scope.$parent.iForm;
 
@@ -27,7 +31,7 @@ angular
         attrs.multi = attrs.multi && scope.$parent.$eval(attrs.multi) || false;
 
         if (attrs.options) {
-          scope.$parent.$watch(attrs.options + '', function(value){
+          scope.$parent.$watch(attrs.options + '', function (value) {
             attrs.options = value;
 
             if (attrs.optionsIsArray === undefined) {
@@ -46,11 +50,12 @@ angular
           }
         }
 
-        attrs.getName = function() {
+        attrs.getName = function () {
           return attrs.name || attrs.model;
         };
 
         scope.field = scope.$parent.iForm.fields[attrs.getName()] = attrs;
       }
     };
-  });
+  }
+})();

@@ -1,19 +1,23 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('idea')
-  .directive('countdown', function($interval) {
+  angular
+    .module('idea')
+    .directive('countdown', countdown);
+
+  /** @ngInject */
+  function countdown($interval) {
     return {
       template: '<span ng-if="seconds">{{ hours + \':\' +minutes + \':\' + seconds }}</span>',
       restrict: 'E',
       scope: {
         end: '=',
       },
-      link: function(scope) {
+      link: function (scope) {
 
         var end, now, interval;
 
-        scope.$watch('end', function() {
+        scope.$watch('end', function () {
           if (scope.end && scope.end.getTime() !== end) {
             end = scope.end.getTime();
             now = (new Date()).getTime();
@@ -23,7 +27,7 @@ angular
 
             $interval.cancel(interval);
 
-            interval = $interval(function() {
+            interval = $interval(function () {
               scope.time -= 1000;
 
               if (scope.time > 0) {
@@ -39,4 +43,5 @@ angular
         });
       }
     };
-  });
+  }
+})();

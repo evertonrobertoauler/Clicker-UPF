@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('openpiApp')
+    .module('openpiApp.questions')
     .controller('QuestionsController', QuestionsController);
 
   /** @ngInject */

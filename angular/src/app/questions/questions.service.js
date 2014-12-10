@@ -2,9 +2,10 @@
   'use strict';
 
   angular
-    .module('openpiApp')
+    .module('openpiApp.questions')
     .factory('Questions', Questions);
 
+  /** @ngInject */
   function Questions($resource, API_URL) {
     var service = $resource(API_URL + 'professor/questions/:id/', {id: '@_id'}, {
       query: {method: 'GET'},
