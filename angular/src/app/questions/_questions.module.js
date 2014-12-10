@@ -1,8 +1,12 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('openpiApp.questions', ['openpiApp.main'])
-  .config(function ($stateProvider) {
+  angular
+    .module('openpiApp.questions', ['openpiApp.main'])
+    .config(stateConfig);
+
+  /** @ngInject */
+  function stateConfig($stateProvider) {
     $stateProvider
       .state('questions', {
         abstract: true,
@@ -29,4 +33,5 @@ angular
         controller: 'QuestionsController',
         templateUrl: 'app/questions/questions.detail.html',
       });
-  });
+  }
+})();

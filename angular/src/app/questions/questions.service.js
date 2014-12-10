@@ -1,14 +1,18 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('openpiApp')
-  .factory('Questions', function($resource, API_URL) {
-    var Questions = $resource(API_URL + 'professor/questions/:id/', {id: '@_id'}, {
+  angular
+    .module('openpiApp')
+    .factory('Questions', Questions);
+
+  function Questions($resource, API_URL) {
+    var service = $resource(API_URL + 'professor/questions/:id/', {id: '@_id'}, {
       query: {method: 'GET'},
       insert: {method: 'POST'},
       update: {method: 'PUT'},
     });
 
-    Questions.columns = [
+    service.columns = [
       {
         label: 'Criação',
         classes: 'col-xs-4 col-sm-4 col-md-2 col-lg-2 text-center',
@@ -22,11 +26,12 @@ angular.module('openpiApp')
       },
     ];
 
-    Questions.filters = {};
+    service.filters = {};
 
-    Questions.toString = function(question) {
+    service.toString = function (question) {
       return question.text.substr(0, 50);
     };
 
-    return Questions;
-  });
+    return service;
+  }
+})();

@@ -1,11 +1,15 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('openpiApp.knowledgeTests', [
-    'openpiApp.classrooms',
-    'openpiApp.questions',
-  ])
-  .config(function ($stateProvider) {
+  angular
+    .module('openpiApp.knowledgeTests', [
+      'openpiApp.classrooms',
+      'openpiApp.questions',
+    ])
+    .config(stateConfig);
+
+  /** @ngInject */
+  function stateConfig($stateProvider) {
     $stateProvider
       .state('knowledge-tests', {
         abstract: true,
@@ -31,4 +35,5 @@ angular
         url: '/:_id',
         templateUrl: 'app/knowledgeTests/knowledgeTests.detail.html',
       });
-  });
+  }
+})();

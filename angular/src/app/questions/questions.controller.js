@@ -1,8 +1,12 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('openpiApp')
-  .controller('QuestionsController', function($scope, $stateParams, $state, Questions) {
+  angular
+    .module('openpiApp')
+    .controller('QuestionsController', QuestionsController);
+
+  /** @ngInject */
+  function QuestionsController($scope, $stateParams, $state, Questions) {
 
     if ($stateParams._id) {
       $scope.question = Questions.get({id: $stateParams._id});
@@ -10,9 +14,9 @@ angular
       $scope.question = new Questions();
     }
 
-    $scope.save = function() {
+    $scope.save = function () {
 
-      var error = function(e) {
+      var error = function (e) {
         $scope.iForm.setErrors(e.data);
 
         if (e.data.detail) {
@@ -20,7 +24,7 @@ angular
         }
       };
 
-      var success = function(q) {
+      var success = function (q) {
         $state.transitionTo('questions.detail', q);
       };
 
@@ -33,7 +37,7 @@ angular
       }
     };
 
-    $scope.$watch('question.answers', function(answers) {
+    $scope.$watch('question.answers', function (answers) {
       var options = {};
 
       for (var i in answers || []) {
@@ -46,4 +50,5 @@ angular
 
       $scope.options = options;
     }, true);
-  });
+  }
+})();
