@@ -1,11 +1,16 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular.module('openpiApp')
-  .controller('AppController', function($scope, Auth) {
+  angular
+    .module('openpiApp')
+    .controller('AppController', AppController);
+
+  /** @ngInject */
+  function AppController($scope, Auth) {
 
     $scope.user = {};
 
-    $scope.updateMenu = function() {
+    $scope.updateMenu = function () {
 
       $scope.user = Auth.getUser();
 
@@ -29,4 +34,5 @@ angular.module('openpiApp')
     };
 
     $scope.updateMenu();
-  });
+  }
+})();

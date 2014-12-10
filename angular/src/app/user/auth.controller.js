@@ -1,13 +1,17 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('openpiApp.user')
-  .controller('AuthController', function($scope, $stateParams, Auth, AUTH_URL) {
+  angular
+    .module('openpiApp.user')
+    .controller('AuthController', AuthController);
+
+  /** @ngInject */
+  function AuthController($scope, $stateParams, Auth, AUTH_URL) {
 
     if ($stateParams.refresh) {
       Auth
         .refreshLogin({refreshToken: $stateParams.refresh})
-        .success(function() {
+        .success(function () {
           $scope.updateMenu();
         });
     } else {
@@ -18,14 +22,15 @@ angular
 
     $scope.user = {};
 
-    $scope.login = function() {
+    $scope.login = function () {
       Auth
         .login($scope.user.email, $scope.user.password)
-        .success(function() {
+        .success(function () {
           $scope.updateMenu();
         })
-        .error(function() {
+        .error(function () {
           $scope.error = 'Login inválido!';
         });
     };
-  });
+  }
+})();

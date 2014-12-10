@@ -1,8 +1,13 @@
-'use strict';
+(function () {
+  'use strict';
 
-angular
-  .module('openpiApp.user', ['openpiApp.main'])
-  .config(function ($stateProvider) {
+  angular
+    .module('openpiApp.user', ['openpiApp.main'])
+    .config(stateConfig)
+    .config(addHttpInterceptor);
+
+  /** @ngInject */
+  function stateConfig($stateProvider) {
     $stateProvider
       .state('login', {
         url: '/login',
@@ -30,12 +35,14 @@ angular
         templateUrl: 'app/user/profile.html',
         controller: 'ProfileController',
       });
-  })
-  .config(function($httpProvider) {
+  }
 
-    $httpProvider.interceptors.push(function($q, $location, $cookieStore) {
+  /** @ngInject */
+  function addHttpInterceptor($httpProvider) {
+
+    $httpProvider.interceptors.push(function ($q, $location, $cookieStore) {
       return {
-        responseError: function(rejection) {
+        responseError: function (rejection) {
           switch (rejection.status) {
             case 401:
               var auth = $cookieStore.get('auth');
@@ -54,4 +61,5 @@ angular
         }
       };
     });
-  });
+  }
+})();
