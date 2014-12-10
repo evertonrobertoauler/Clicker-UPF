@@ -1,12 +1,7 @@
 'use strict';
 
 angular
-  .module('openpiApp.questions', [
-    'ngResource',
-    'ui.router',
-    'idea',
-    'openpiApp.main',
-  ])
+  .module('openpiApp.questions', [])
   .config(function ($stateProvider) {
     $stateProvider
       .state('questions', {

@@ -1,12 +1,7 @@
 'use strict';
 
 angular
-  .module('openpiApp.classrooms', [
-    'ngResource',
-    'ui.router',
-    'idea',
-    'openpiApp.main',
-  ])
+  .module('openpiApp.classrooms', [])
   .config(function ($stateProvider) {
     $stateProvider
       .state('classrooms', {
