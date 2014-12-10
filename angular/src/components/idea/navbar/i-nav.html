@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="navbar-header">
+    <button type="button"
+            class="navbar-toggle"
+            data-toggle="collapse"
+            data-target="#iNavBar">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="{{ nav.href }}">{{ nav.title }}</a>
+  </div>
+  <nav class="collapse navbar-collapse" id="iNavBar">
+    <ul class="nav navbar-nav">
+      <li ng-repeat="navItem in nav.left"
+          ng-init="navItem.first = 1"
+          ng-include="'components/idea/navbar/' + navItem.type + '.html'"
+          i-include-replace>
+      </li>
+    </ul>
+
+    <div ng-repeat="navItem in nav.form"
+         ng-include="'components/idea/navbar/' + navItem.type + '.html'"
+         i-include-replace>
+    </div>
+
+    <ul class="nav navbar-nav navbar-right" ng-if="nav.right.length > 0">
+      <li ng-repeat="navItem in nav.right"
+          ng-init="navItem.first = 1"
+          ng-include="'components/idea/navbar/' + navItem.type + '.html'"
+          i-include-replace>
+      </li>
+    </ul>
+  </nav>
+</div>

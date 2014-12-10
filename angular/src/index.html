@@ -18,7 +18,7 @@
 
     <!-- build:css({.tmp,src}) styles/app.css -->
     <!-- inject:css -->
-    <link rel="stylesheet" href="app/styles/main.css">
+    <link rel="stylesheet" href="components/idea/idea.css">
     <!-- endinject -->
     <!-- endbuild -->
 
@@ -68,40 +68,42 @@
 
     <!-- build:js({.tmp,src}) scripts/app.js -->
     <!-- inject:js -->
-    <script src="app/scripts/app.js"></script>
-    <script src="app/scripts/controllers/auth.js"></script>
+    <script src="app/app.js"></script>
+    <script src="app/main/_main.module.js"></script>
+    <script src="app/user/_user.module.js"></script>
+    <script src="app/user/auth.controller.js"></script>
+    <script src="app/user/auth.service.js"></script>
+    <script src="app/user/profile.controller.js"></script>
+    <script src="app/user/signup.controller.js"></script>
+    <script src="app/user/socket.service.js"></script>
+    <script src="app/user/user.service.js"></script>
+    <script src="components/idea/_idea.module.js"></script>
     <script src="app/scripts/controllers/classrooms.js"></script>
     <script src="app/scripts/controllers/idea.js"></script>
     <script src="app/scripts/controllers/knowledge-test-answers.js"></script>
     <script src="app/scripts/controllers/knowledge-tests.js"></script>
-    <script src="app/scripts/controllers/main.js"></script>
-    <script src="app/scripts/controllers/profile.js"></script>
     <script src="app/scripts/controllers/questions.js"></script>
-    <script src="app/scripts/controllers/signup.js"></script>
-    <script src="app/scripts/directives/countdown.js"></script>
-    <script src="app/scripts/directives/equal-bigger-than.js"></script>
-    <script src="app/scripts/directives/i-button-select.js"></script>
-    <script src="app/scripts/directives/i-date-time.js"></script>
-    <script src="app/scripts/directives/i-dropdown.js"></script>
-    <script src="app/scripts/directives/i-form-field.js"></script>
-    <script src="app/scripts/directives/i-form.js"></script>
-    <script src="app/scripts/directives/i-include-replace.js"></script>
-    <script src="app/scripts/directives/i-list-detail.js"></script>
-    <script src="app/scripts/directives/i-list.js"></script>
-    <script src="app/scripts/directives/i-model.js"></script>
-    <script src="app/scripts/directives/i-nav.js"></script>
-    <script src="app/scripts/directives/i-string-list.js"></script>
-    <script src="app/scripts/directives/match.js"></script>
-    <script src="app/scripts/filters/i-filter.js"></script>
-    <script src="app/scripts/filters/i-from-char-code.js"></script>
-    <script src="app/scripts/services/auth.js"></script>
     <script src="app/scripts/services/classrooms.js"></script>
     <script src="app/scripts/services/knowledge-test-answers.js"></script>
     <script src="app/scripts/services/knowledge-tests.js"></script>
     <script src="app/scripts/services/questions.js"></script>
-    <script src="app/scripts/services/socket.js"></script>
     <script src="app/scripts/services/students.js"></script>
-    <script src="app/scripts/services/user.js"></script>
+    <script src="components/idea/extra/i-filter.js"></script>
+    <script src="components/idea/extra/i-from-char-code.js"></script>
+    <script src="components/idea/extra/i-include-replace.js"></script>
+    <script src="components/idea/form/countdown.js"></script>
+    <script src="components/idea/form/equal-bigger-than.js"></script>
+    <script src="components/idea/form/i-button-select.js"></script>
+    <script src="components/idea/form/i-date-time.js"></script>
+    <script src="components/idea/form/i-form.js"></script>
+    <script src="components/idea/form/i-model.js"></script>
+    <script src="components/idea/form/i-string-list.js"></script>
+    <script src="components/idea/form/match.js"></script>
+    <script src="components/idea/list/i-list-detail.js"></script>
+    <script src="components/idea/list/i-list.js"></script>
+    <script src="components/idea/navbar/i-dropdown.js"></script>
+    <script src="components/idea/navbar/i-nav.js"></script>
+    <script src="components/idea/form/i-form-fields/i-form-field.js"></script>
     <!-- endinject -->
 
     <!-- inject:partials -->
