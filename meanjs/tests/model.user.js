@@ -33,13 +33,20 @@ describe('User Model Unit Tests:', function() {
       return queries.exec(user, 'save');
     });
 
-    it('should fail to save an existing user again', Q.async(function*() {
-      should(yield queries.exec(user, 'save')).throw();
-    }));
+    it('should fail to save an existing user again', function(done) {
+      user.save();
+      return user2.save(function(err) {
+        should.exist(err);
+        done();
+      });
+    });
 
-    it('should be able to show an error when try to save without first name', function() {
+    it('should be able to show an error when try to save without first name', function(done) {
       user.firstName = '';
-      should(queries.exec(user, 'save')).throw();
+      return user.save(function(err) {
+        should.exist(err);
+        done();
+      });
     });
   });
 });
